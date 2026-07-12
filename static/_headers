@@ -1,0 +1,29 @@
+# Netlify response headers. Served from static/, so Hugo copies this to the
+# site root verbatim.
+#
+# Netlify already edge-caches the HTML itself and purges the edge atomically on
+# every deploy, so there is nothing to configure for pages — only for the
+# long-lived assets below.
+
+# Fonts never change: the filename encodes family, weight, style and subset, and
+# a different font would be a different file. Safe to cache forever. This is what
+# makes self-hosting them pay off — a repeat visitor fetches zero font bytes.
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Images and the walkthrough video: long, but NOT immutable — these could be
+# re-exported under the same name.
+/images/*
+  Cache-Control: public, max-age=2592000
+
+# style.css is deliberately short-lived. It is not content-hashed, so a long
+# cache would strand repeat visitors on a stale stylesheet. (DreamHost currently
+# serves it with max-age=2592000 — 30 days — which means a CSS change today would
+# not reach a returning visitor until August.) If this is ever fingerprinted via
+# Hugo's asset pipeline, raise it to a year and mark it immutable.
+/style.css
+  Cache-Control: public, max-age=3600
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin

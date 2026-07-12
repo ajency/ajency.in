@@ -1,0 +1,18 @@
+# Old WordPress site archive — ~7.4 GB combined, and ajency.tar alone is 2.2 GB,
+# far over GitHub's 100 MB per-file hard limit. Not part of the Hugo site.
+ajency/
+ajency.tar
+
+# Build output — Netlify runs `hugo --gc --minify` itself (see netlify.toml).
+# Keeping this out of git is also what stops a stray `hugo server` build
+# (which rewrites URLs to localhost:1313) from ever reaching production.
+public/
+.hugo_build.lock
+resources/_gen/
+
+# macOS
+.DS_Store
+
+# Machine-local, per the convention in ~/.claude/CLAUDE.md
+.claude/settings.local.json
+.claude/CLAUDE.local.md

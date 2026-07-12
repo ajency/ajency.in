@@ -1,0 +1,184 @@
++++
+title = "Tests that maintain themselves: record once, replay free, heal on change — Ajency.in"
+description = "AI made writing browser tests free. Maintaining them is still hell. A replay-first agent: the test records itself once, replays in seconds at zero tokens, heals itself when the UI changes — and pass/fail is decided by the database, never a model."
+date = 2026-07-07
+# Retired in favour of /four-hours/ (79% duplicate content, and Google was being
+# shown two competing near-identical pages). Kept as a draft rather than deleted:
+# it is the longer rewrite and worth mining for material. Not built, not in the
+# sitemap or RSS. /four-hours-v2/ is 301'd to /four-hours/ in static/_redirects —
+# that redirect only fires because this page is no longer generated.
+draft = true
+[params]
+og_type = "article"
+og_title = "Four hours to save fifteen minutes."
+og_description = "I was only trying to get out of UAT. I accidentally solved the part of testing everyone actually hates — the maintenance."
+schema = "blogposting"
+
+[[params.faq]]
+q = "What happens to the tests when the UI changes?"
+a = "They heal themselves. Each passing run records a trace; the next run replays it in seconds. If the UI moved, the replay diverges at that step and a free local model picks up mid-step from the plain-language goal, finishes the flow, and re-records the trace. No selector rot, no rewrite."
+
+[[params.faq]]
+q = "How much does it cost to run an AI agent for browser testing?"
+a = "On the happy path: nothing. The frontier model writes the test once as plain intent. Every run after that is deterministic trace replay — about 90 seconds and zero model tokens. Only when the UI actually changes does a local model spend ~70,000 free tokens on my own GPU to heal the trace."
+
+[[params.faq]]
+q = "How do you know the AI didn't fake the pass?"
+a = "It can't. The model's job ends when the clicking ends. PASS or FAIL is a deterministic backend check against the database — each record's actual values, not a green toast on screen. No model vote, no vision vote."
+
+[[params.faq]]
+q = "Do the self-documenting walkthroughs go stale when the UI changes?"
+a = "No. Each walkthrough is generated on demand against the live app, so it matches the UI as it stands today. Nothing is written in advance, so there's nothing to fall out of date."
++++
+    <section class="hero">
+      <p class="back-link"><a href="/">&larr; Back</a></p>
+      <h1>Four hours to save fifteen minutes.</h1>
+      <p class="subhead">I was only trying to get out of UAT. I accidentally solved the part of testing everyone actually hates.</p>
+    </section>
+
+    <article class="essay">
+      <p>I'm lazy in a specific way. I'll spend four hours building something to avoid fifteen minutes of doing it by hand.</p>
+
+      <p>The thing I was avoiding was UAT. But the fifteen minutes I actually saved wasn't the clicking &mdash; it was what happened every time the UI changed.</p>
+
+      <figure class="figure-wide">
+        <picture>
+          <source media="(max-width: 600px)" type="image/webp" srcset="/images/uat-storyboard-mobile.webp" />
+          <source media="(max-width: 600px)" srcset="/images/uat-storyboard-mobile.png" />
+          <source type="image/webp" srcset="/images/uat-storyboard.webp" />
+          <img src="/images/uat-storyboard.png" alt="A six-panel comic: a self-maintaining browser-test agent walks the app in Chrome, records a replayable trace of every step, and heals the trace itself when the UI changes — so the tests never rot and never need rewriting." loading="lazy" />
+        </picture>
+      </figure>
+
+      <h2 class="kicker">The problem was never writing the tests</h2>
+
+      <p>Every coding agent can write a browser test now. That part became free somewhere in the last two years. What didn't become free is keeping the tests alive.</p>
+
+      <p>Ask anyone who owns an end-to-end suite. Selectors rot the moment a designer moves a button. Runs go red for reasons that aren't bugs. And after the tenth false alarm, the team stops believing red at all &mdash; which is the moment a real regression walks straight through.</p>
+
+      <p class="agency-lines">A test has two lives. The first run needs judgment &mdash; something has to figure out where the buttons are and what "done" looks like. Every run after that shouldn't need any judgment at all. <span class="highlight">The industry keeps paying for the first life on every single run: either frontier-model prices per step, or an engineer's afternoon every time a selector breaks.</span></p>
+
+      <p>So I built the ladder.</p>
+
+      <h2 class="kicker">Record once. Replay free. Heal on change.</h2>
+
+      <p>The expensive model runs once. Everything after that only pays for what actually changed:</p>
+
+        <pre class="ascii-flow">
+┌────────────────────────────────────────────────────────┐
+│ Claude · frontier · ONE-TIME                           │
+│ writes the test once, as plain intent                  │
+└────────────────────────────────────────────────────────┘
+                             │  first PASS records a trace
+                             ▼
+┌────────────────────────────────────────────────────────┐
+│ TRACE REPLAY · Python · EVERY RUN — free               │
+│ drives Chrome from the last good run                   │
+│ ~90 seconds · ZERO model tokens                        │
+└────────────────────────────────────────────────────────┘
+                             │  UI changed? replay diverges
+                             ▼
+┌────────────────────────────────────────────────────────┐
+│ <a href="https://huggingface.co/Qwen/Qwen3.5-35B-A3B" target="_blank" rel="noopener">Qwen 3.5 35B</a> · local · FREE — the healer            │
+│ picks up mid-step from the plain-language goal,        │
+│ finishes the flow, re-records the trace                │
+│                                                        │
+│ TEXT   snapshot (DOM/buttons) → picks the click        │
+│ VISION (pixels) → for what text can't see:             │
+│        error box · toast · dead click · stuck spinner  │
+└────────────────────────────────────────────────────────┘
+                             │  novel surprise Qwen can't resolve
+                             ▼
+┌────────────────────────────────────────────────────────┐
+│ Claude · ESCALATION ONLY (rare)                        │
+│ gets a 2-line digest — NOT the image — decides,        │
+│ then hands the answer back to the run                  │
+└────────────────────────────────────────────────────────┘
+                             │
+                             ▼
+┌────────────────────────────────────────────────────────┐
+│ PASS / FAIL · deterministic backend check              │
+│ no model vote · no vision vote                         │
+└────────────────────────────────────────────────────────┘
+</pre>
+
+      <p>The trace doesn't store brittle selectors or pixel coordinates &mdash; it stores what the agent meant ("the Submit button", "the amount field"), re-resolved against the live page at replay time. So new test data, shuffled record IDs, cosmetic drift: the replay doesn't care. Only a real change in the flow wakes a model up, and it's the free one.</p>
+
+      <p class="pullquote">First run: a few minutes and ~70,000 tokens on my own GPU. Every run after: ~90 seconds and nothing.</p>
+
+      <div class="has-aside">
+        <p class="agency-lines">Which is when I noticed I'd rebuilt a corporate org chart. I delegate to Claude, Claude delegates to Qwen, Qwen delegates to Python. <span class="highlight">Best team I've ever run.</span></p>
+        <figure class="margin-fig">
+          <picture>
+            <source type="image/webp" srcset="/images/delegate-yoda.webp" />
+            <img src="/images/delegate-yoda.jpg" alt="Yoda meme about model cost-routing: &lsquo;Delegate to the cheapest model, you must. Middle management, this is.&rsquo; — the frontier model decides once, the free local model heals changes, deterministic replay does the rest." loading="lazy" />
+          </picture>
+          <figcaption>Middle management, this is.</figcaption>
+        </figure>
+      </div>
+
+      <h2 class="kicker">The model never grades its own homework</h2>
+
+      <p>Here's the objection every engineer raises about AI testing, and they're right to: <em>the agent hallucinates green.</em> A model watching itself click through a flow will happily declare victory because a toast appeared &mdash; while the actual data landed wrong, or didn't land at all.</p>
+
+      <p>So in this ladder, the model's job ends when the clicking ends. PASS or FAIL is a boring, deterministic script asserting against the database. Not "did a success message show" &mdash; did the records land, with the right values, in the right state.</p>
+
+      <p class="agency-lines">This isn't theoretical. Early on, the UI would silently record UPI and cheque payments as CASH if the fields were filled in the wrong order. Every screen-level check passed &mdash; nice green toast, correct total. <span class="highlight">The verdict caught it, because the verdict doesn't check the screen. It checks each receipt's mode and amount in the database.</span> The model drives; the evidence decides.</p>
+
+      <h2 class="kicker">When it fails, you know which side broke</h2>
+
+      <p>The most expensive part of a red build isn't the failure &mdash; it's the twenty minutes deciding whether the test is stale or the app is broken. The ladder answers that as a side effect of its own structure.</p>
+
+      <p>If the replay diverged and the healer finished the flow and the verdict passed: stale trace. It re-recorded itself; there's a note in the log; nobody's afternoon was harmed. If the flow can't complete, or the verdict fails: real regression &mdash; and the run hands over the exact step, the page state, and what it expected to find. Next on the list: attaching the failing API request and response right beside the DOM state, so "frontend or backend?" is answered in the failure report itself, not in a debugging session after it.</p>
+
+      <h2 class="kicker">The part I didn't plan: it documents itself</h2>
+
+      <p>Because the agent screenshots every step it takes, each run leaves behind a click-through record of the journey. Then the support questions started. Cashiers would ask things like:</p>
+
+      <div class="has-aside">
+        <blockquote>
+          <p>How do I cancel an incorrect money receipt?</p>
+        </blockquote>
+
+        <p>Before, I'd write the steps out or hop on a call myself. Now I forward the question to the agent. It builds a walkthrough for that exact need &mdash; pulls the right screenshots, marks the buttons to press, and sends back something you click through instead of read.</p>
+
+        <figure class="margin-fig">
+          <video src="/images/cancel-receipt-walkthrough.mp4" poster="/images/cancel-receipt-poster.webp" width="480" height="852" autoplay loop muted playsinline preload="none" aria-label="A self-documenting walkthrough generated on demand: the agent steps through cancelling an incorrect money receipt, screen by screen, highlighting the button to press at each step — built live against the current UI so it never goes stale."></video>
+          <figcaption>What comes back &mdash; click through, don't read.</figcaption>
+        </figure>
+      </div>
+
+      <p class="agency-lines">Most user docs are written once and quietly go stale the moment the UI moves. This is the opposite &mdash; built on the spot, always matching the app as it stands today, shaped around the person who asked. <span class="highlight">Never out of date, because it's never written in advance.</span></p>
+
+      <p class="pullquote">I didn't set out to build any of this. I was trying to get out of UAT.</p>
+
+      <h2 class="kicker">Straight answers, for humans and crawlers alike</h2>
+
+      <div class="faq">
+        <details class="faq-item">
+          <summary>What happens to the tests when the UI changes?</summary>
+          <div class="faq-answer">
+            <p>They heal themselves. Each passing run records a trace; the next run replays it in seconds. If the UI moved, the replay diverges at that step and a free local model picks up mid-step from the plain-language goal, finishes the flow, and re-records the trace. No selector rot, no rewrite.</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>How much does it cost to run an AI agent for browser testing?</summary>
+          <div class="faq-answer">
+            <p>On the happy path: nothing. The frontier model writes the test once as plain intent. Every run after that is deterministic trace replay &mdash; about 90 seconds and zero model tokens. Only when the UI actually changes does a local model spend ~70,000 free tokens on my own GPU to heal the trace.</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>How do you know the AI didn&rsquo;t fake the pass?</summary>
+          <div class="faq-answer">
+            <p>It can&rsquo;t. The model&rsquo;s job ends when the clicking ends. PASS or FAIL is a deterministic backend check against the database &mdash; each record&rsquo;s actual values, not a green toast on screen. No model vote, no vision vote.</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>Do the self-documenting walkthroughs go stale when the UI changes?</summary>
+          <div class="faq-answer">
+            <p>No. Each walkthrough is generated on demand against the live app, so it matches the UI as it stands today. Nothing is written in advance, so there&rsquo;s nothing to fall out of date.</p>
+          </div>
+        </details>
+      </div>
+
+    </article>

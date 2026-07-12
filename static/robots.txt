@@ -1,0 +1,11 @@
+# ajency.in — open to crawlers, including AI agents.
+User-agent: *
+Allow: /
+
+# Point crawlers at the sitemap and the LLM guide.
+Sitemap: https://ajency.in/sitemap.xml
+
+# AI / LLM crawlers are explicitly welcome (this site is about agency for agents).
+# To opt any of them out later, add e.g.:
+#   User-agent: GPTBot
+#   Disallow: /

@@ -1,0 +1,20 @@
+baseURL = "https://ajency.in/"
+locale = "en"
+title = "Ajency.in"
+
+# Pretty URLs: /about/, /four-hours/ (do not set uglyURLs).
+# Hugo auto-generates /sitemap.xml and /index.xml (RSS).
+enableInlineShortcodes = false
+disableKinds = ["taxonomy", "term"]
+
+[markup.goldmark.renderer]
+  unsafe = true  # harmless here (content is .html, passed through verbatim)
+
+[security]
+  # Allow HTML content files (content/*.html) — our pages are hand-written HTML,
+  # passed through verbatim. Default policy blocks text/html; re-enable markdown + html.
+  allowContent = ['^text/markdown$', '^text/html$']
+
+[params]
+  ogImage = "https://ajency.in/og-image.png"
+  ogImageAlt = "It was always about agency. — ajency.in"

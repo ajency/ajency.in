@@ -1,0 +1,13 @@
+# Netlify build config.
+#
+# Netlify builds from source on every push, so `public/` is never uploaded by
+# hand and a `hugo server` artifact can't reach production.
+
+[build]
+  publish = "public"
+  command = "hugo --gc --minify"
+
+[build.environment]
+  # Must be pinned — Netlify's default Hugo is far older and won't build this site.
+  # Keep in step with the local toolchain (`hugo version`).
+  HUGO_VERSION = "0.163.3"

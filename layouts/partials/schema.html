@@ -1,0 +1,71 @@
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {{- if eq .Params.schema "website" }}
+      {
+        "@type": "WebSite",
+        "@id": "https://ajency.in/#website",
+        "url": "https://ajency.in/",
+        "name": "Ajency.in",
+        "description": "An independent builder in pursuit of agency — work on autonomous systems, AI agents, and products.",
+        "inLanguage": "en",
+        "publisher": { "@id": "https://ajency.in/#person" }
+      },
+      {{- else if eq .Params.schema "blogposting" }}
+      {
+        "@type": "BlogPosting",
+        "@id": "{{ .Permalink }}#post",
+        "headline": "{{ .Params.og_title }}",
+        "description": "{{ .Params.og_description }}",
+        "url": "{{ .Permalink }}",
+        "datePublished": "{{ .Date.Format "2006-01-02" }}",
+        "inLanguage": "en",
+        "author": { "@id": "https://ajency.in/#person" },
+        "publisher": { "@id": "https://ajency.in/#org" }
+      },
+      {{- end }}
+      {{- with .Params.faq }}
+      {
+        "@type": "FAQPage",
+        "@id": "{{ $.Permalink }}#faq",
+        "mainEntity": [
+          {{- range $i, $e := . }}{{ if $i }},{{ end }}
+          {
+            "@type": "Question",
+            "name": "{{ $e.q }}",
+            "acceptedAnswer": { "@type": "Answer", "text": "{{ $e.a }}" }
+          }
+          {{- end }}
+        ]
+      },
+      {{- end }}
+      {
+        "@type": "Person",
+        "@id": "https://ajency.in/#person",
+        "name": "Anuj Khurana",
+        "url": "https://ajency.in/",
+        "email": "talktous@ajency.in",
+        "jobTitle": "Founder",
+        "description": "Solo product and AI-agent builder. Founded Ajency.in (2012), acquired by Turtlemint (2022); now working solo again.",
+        "knowsAbout": ["AI agents", "Product management", "UX/UI design", "Software development", "Automation"],
+        "worksFor": { "@id": "https://ajency.in/#org" }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://ajency.in/#org",
+        "name": "Ajency.in",
+        "legalName": "Digital Dwarves Pvt Ltd",
+        "url": "https://ajency.in/",
+        "foundingDate": "2012",
+        "email": "talktous@ajency.in",
+        "areaServed": "Worldwide",
+        "location": "Panjim, Goa, India",
+        "sameAs": [
+          "https://www.linkedin.com/company/ajency-in",
+          "https://www.facebook.com/Ajency.in/"
+        ]
+      }
+    ]
+  }
+  </script>

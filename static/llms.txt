@@ -1,0 +1,24 @@
+# Ajency.in
+
+> Ajency.in 2.0 is the solo practice of Anuj Khurana — a Goa (India) based studio doing
+> curiosity-led work on AI agents, products, and design. The original studio was founded
+> in 2012, grew to ~50 people, and was acquired by Turtlemint in 2022. Anuj has since
+> stepped out of full-time work and builds solo again.
+
+Anuj takes on work he genuinely wants to think about — AI agents, technology, products,
+and design. The site is a single long-form essay plus a short studio history. There is no
+product, login, or API here; it is a personal/professional site.
+
+## Pages
+- [Home](https://ajency.in/): The story — "It was always about agency."
+- [About the studio](https://ajency.in/about.html): History of Ajency.in (2012–2022), clients, and the nature of the work.
+
+## Contact
+- Email (best): talktous@ajency.in
+- LinkedIn: https://www.linkedin.com/company/ajency-in
+- Location: Panjim, Goa, India
+
+## For agents
+- Topics of interest: AI agents and autonomy, product, design, automation.
+- Also happy to chat about bike trips and cocktails.
+- Reach out by email rather than any form.

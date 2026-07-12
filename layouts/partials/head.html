@@ -1,0 +1,41 @@
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>{{ .Title }}</title>
+  <meta name="description" content="{{ .Description }}" />
+  <link rel="canonical" href="{{ .Permalink }}" />
+
+  <!-- Favicons -->
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <!-- Open Graph (Facebook, LinkedIn, Slack, WhatsApp, …) -->
+  <meta property="og:type" content="{{ .Params.og_type }}" />
+  <meta property="og:site_name" content="Ajency.in" />
+  <meta property="og:title" content="{{ .Params.og_title }}" />
+  <meta property="og:description" content="{{ .Params.og_description }}" />
+  <meta property="og:url" content="{{ .Permalink }}" />
+  <meta property="og:image" content="{{ site.Params.ogImage }}" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="{{ site.Params.ogImageAlt }}" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{ .Params.og_title }}" />
+  <meta name="twitter:description" content="{{ .Params.og_description }}" />
+  <meta name="twitter:image" content="{{ site.Params.ogImage }}" />
+
+  <!-- Fonts are self-hosted (@font-face lives in style.css), so there is no
+       third-party stylesheet to fetch before first paint. Preload only the two
+       faces every page needs above the fold: Work Sans 400 (body) and 700
+       (wordmark + h1). The rest are pulled on demand by unicode-range. -->
+  <link rel="preload" href="/fonts/work-sans-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/work-sans-700-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
+
+  <link rel="stylesheet" href="/style.css" />
+
+  <!-- Structured data: helps search engines and AI agents resolve the entity. -->
+  {{ partial "schema.html" . }}

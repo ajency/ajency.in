@@ -1,0 +1,144 @@
++++
+title = "A self-documenting UAT agent: walkthroughs that never go stale and barely cost tokens — Ajency.in"
+description = "A UAT agent that walks the app, documents itself, and answers support questions — building live walkthroughs that never go stale and cost almost nothing to run (~70k tokens at $0 on a local GPU)."
+date = 2026-06-30
+[params]
+og_type = "article"
+og_title = "Four hours to save fifteen minutes."
+og_description = "I was only trying to get out of UAT. It became a self-documenting UAT agent whose walkthroughs never go stale — and barely cost a token to run."
+schema = "blogposting"
+
+[[params.faq]]
+q = "Do self-documenting walkthroughs go stale when the UI changes?"
+a = "No. Each walkthrough is generated on demand against the live app, so it matches the UI as it stands today. Nothing is written in advance, so there's nothing to fall out of date."
+
+[[params.faq]]
+q = "How much does it cost to run an AI agent for UAT testing?"
+a = "Almost nothing. The frontier model writes the test once as plain intent; every run after that is a local model plus Python driving Chrome. A full job-card-to-payment walkthrough is ~70,000 tokens on a local GPU — re-run it a hundred times and the bill stays flat at zero."
+
+[[params.faq]]
+q = "Can a local LLM drive browser-based UAT?"
+a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snapshot, and reads pixels when text can't see an error box, toast, or stuck spinner. It escalates to a frontier model only for the rare novel surprise it can't resolve itself."
++++
+    <section class="hero">
+      <p class="back-link"><a href="/">&larr; Back</a></p>
+      <h1>Four hours to save fifteen minutes.</h1>
+      <p class="subhead">I was only trying to get out of UAT.</p>
+    </section>
+
+    <article class="essay">
+      <p>I'm lazy in a specific way. I'll spend four hours building something to avoid fifteen minutes of doing it by hand.</p>
+
+      <p>The thing I was avoiding was UAT.</p>
+
+      <figure class="figure-wide">
+        <picture>
+          <source media="(max-width: 600px)" type="image/webp" srcset="/images/uat-storyboard-mobile.webp" />
+          <source media="(max-width: 600px)" srcset="/images/uat-storyboard-mobile.png" />
+          <source type="image/webp" srcset="/images/uat-storyboard.webp" />
+          <img src="/images/uat-storyboard.png" alt="A six-panel comic: a self-documenting UAT agent walks the app in Chrome, screenshots every step, and turns the click-through into a reusable walkthrough that never goes stale — so UAT never has to be done by hand again." loading="lazy" />
+        </picture>
+      </figure>
+
+      <p>It's not the bugs &mdash; API and browser tests already catch those. It's the soft, subjective pass: does the copy land, does the spacing hold, does the flow feel right. So I handed the clicking to an agent that walks the journey and screenshots every step &mdash; and the record it left behind turned out to matter more than the watching.</p>
+
+      <h2 class="kicker">Self-documenting walkthroughs that never go stale</h2>
+
+      <p>Then the support questions started. Cashiers would ask things like:</p>
+
+      <div class="has-aside">
+        <blockquote>
+          <p>How do I cancel an incorrect money receipt?</p>
+        </blockquote>
+
+        <p>Before, I'd write the steps out or hop on a call myself. Now I just forward the question to the agent. It builds a walkthrough for that exact need &mdash; pulls the right screenshots, marks the buttons to press, and sends back something you click through instead of read.</p>
+
+        <figure class="margin-fig">
+          <video src="/images/cancel-receipt-walkthrough.mp4" poster="/images/cancel-receipt-poster.webp" width="480" height="852" autoplay loop muted playsinline preload="none" aria-label="A self-documenting walkthrough generated on demand: the UAT agent steps through cancelling an incorrect money receipt, screen by screen, highlighting the button to press at each step — built live against the current UI so it never goes stale."></video>
+          <figcaption>What comes back &mdash; click through, don't read.</figcaption>
+        </figure>
+      </div>
+
+      <p class="agency-lines">Most user docs are written once and quietly go stale the moment the UI moves. This is the opposite &mdash; built on the spot, always matching the app as it stands today, and shaped around the person who asked. <span class="highlight">A live walkthrough that's never out of date, because it's never written in advance.</span></p>
+
+      <p class="pullquote">I didn't set out to build a support tool. I was trying to get out of UAT.</p>
+
+      <h2 class="kicker">Why it barely costs a token to run</h2>
+
+      <p>People assume this costs a fortune in tokens. It doesn't &mdash; only the part that needs judgment runs on the pricey model; everything repeatable is pushed down to things that run for free:</p>
+
+        <pre class="ascii-flow">
+┌────────────────────────────────────────────────────────┐
+│ Claude · frontier · ONE-TIME                           │
+│ writes the test once, as plain intent                  │
+└────────────────────────────────────────────────────────┘
+                             │
+                             ▼ test spec
+┌────────────────────────────────────────────────────────┐
+│ Python · EVERY RUN — the runner                        │
+│ drives Chrome · screenshots · highlights · PASS/FAIL   │
+└────────────────────────────────────────────────────────┘
+                │                       ▲  the click to perform
+                ▼  here's the page      │
+┌────────────────────────────────────────────────────────┐
+│ <a href="https://huggingface.co/Qwen/Qwen3.5-35B-A3B" target="_blank" rel="noopener">Qwen 3.5 35B</a> · local · FREE — per-step decision        │
+│                                                        │
+│ TEXT   snapshot (DOM/buttons) → picks the click        │
+│ VISION (pixels) → for what text can't see:             │
+│        error box · canvas · toast · dead click ·       │
+│        stuck spinner · overlay over a button           │
+│                                                        │
+│ resolves known + visual surprises LOCALLY (free)       │
+└────────────────────────────────────────────────────────┘
+                             │
+                             ▼ novel surprise Qwen can't resolve
+┌────────────────────────────────────────────────────────┐
+│ Claude · ESCALATION ONLY (rare)                        │
+│ gets Qwen's 2-line text — NOT the image — decides,     │
+│ then hands the answer back to the run                  │
+└────────────────────────────────────────────────────────┘
+                             │
+                             ▼
+┌────────────────────────────────────────────────────────┐
+│ PASS / FAIL · deterministic backend check              │
+│ no model vote · no vision vote                         │
+└────────────────────────────────────────────────────────┘
+</pre>
+
+        <p>The expensive model runs once (plus the odd escalation); everything per-run is local or free &mdash; and PASS/FAIL stays a deterministic backend check, no model vote and no vision vote. A full job-card-to-payment walkthrough burns ~70,000 tokens on my own GPU, so re-run it a hundred times and the bill stays flat at zero.</p>
+
+      <div class="has-aside">
+        <p class="agency-lines">Which is when I noticed I'd rebuilt a corporate org chart. I delegate to Claude, Claude delegates to Qwen, Qwen delegates to Python. <span class="highlight">Best team I've ever run.</span></p>
+        <figure class="margin-fig">
+          <picture>
+            <source type="image/webp" srcset="/images/delegate-yoda.webp" />
+            <img src="/images/delegate-yoda.jpg" alt="Yoda meme about model cost-routing: &lsquo;Delegate to the cheapest model, you must. Middle management, this is.&rsquo; — the frontier model decides once, the free local model does the repeatable work." loading="lazy" />
+          </picture>
+          <figcaption>Middle management, this is.</figcaption>
+        </figure>
+      </div>
+
+      <h2 class="kicker">Straight answers, for humans and crawlers alike</h2>
+
+      <div class="faq">
+        <details class="faq-item">
+          <summary>Do self-documenting walkthroughs go stale when the UI changes?</summary>
+          <div class="faq-answer">
+            <p>No. Each walkthrough is generated on demand against the live app, so it matches the UI as it stands today. Nothing is written in advance, so there&rsquo;s nothing to fall out of date.</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>How much does it cost to run an AI agent for UAT testing?</summary>
+          <div class="faq-answer">
+            <p>Almost nothing. The frontier model writes the test once as plain intent; every run after that is a local model plus Python driving Chrome. A full job-card-to-payment walkthrough is ~70,000 tokens on a local GPU &mdash; re-run it a hundred times and the bill stays flat at zero.</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>Can a local LLM drive browser-based UAT?</summary>
+          <div class="faq-answer">
+            <p>Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snapshot, and reads pixels when text can&rsquo;t see an error box, toast, or stuck spinner. It escalates to a frontier model only for the rare novel surprise it can&rsquo;t resolve itself.</p>
+          </div>
+        </details>
+      </div>
+
+    </article>
