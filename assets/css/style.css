@@ -417,7 +417,123 @@ main,
   color: var(--ink);
 }
 
-.closing {
+/* ---- Dictionary entry (about) ----
+   The closing block takes "Agency, in every sense" at its word and sets it as a
+   lexicographic entry: headword, pronunciation, part of speech, three numbered
+   senses. The numbering is load-bearing — dictionaries number senses — so it is
+   an <ol>, not decoration. The headword is the studio's own (mis)spelling, so the
+   page closes by defining the name the essay opens by explaining. */
+.entry {
+  max-width: var(--measure);
+  margin: 3rem 0 0;
+  padding-top: 2.25rem;
+  border-top: 2px solid var(--ink);
+}
+
+.entry-headword {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 0 0 0.4rem;
+}
+
+.entry-word {
+  font-weight: 700;
+  font-size: clamp(2.2rem, 6vw, 3.1rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+/* The syllable break. Kept light so the headword reads as typeset, not typo'd. */
+.entry-sep {
+  font-weight: 400;
+  color: var(--grey-light);
+}
+
+.entry-pron,
+.entry-pos {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--grey);
+}
+
+.entry-etym {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--grey);
+}
+
+/* Selector carries .essay so it outranks `.essay p` on colour/margin. */
+.essay .entry-etym {
+  margin: 0 0 2rem;
+}
+
+.senses {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sense {
+  display: grid;
+  grid-template-columns: 1.75rem 1fr;
+  align-items: baseline;
+}
+
+.sense-n {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The sense label carries the growing underline as a *static* fill: it completes
+   across the three senses (40% → 70% → 100%) as the subject moves from the
+   machines to me. Same wash as the links, so it needs no new vocabulary. */
+.sense-label {
+  display: inline-block;
+  margin-bottom: 0.15rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--grey);
+  background-image: linear-gradient(var(--yellow-underline), var(--yellow-underline));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: var(--fill) 0.28em;
+}
+
+.sense:nth-child(1) .sense-label {
+  --fill: 40%;
+}
+
+.sense:nth-child(2) .sense-label {
+  --fill: 70%;
+}
+
+.sense:nth-child(3) .sense-label {
+  --fill: 100%;
+}
+
+.sense-def {
+  display: block;
+  font-weight: 500;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+/* Selector carries .essay so `margin-top` outranks `.essay p`'s `margin: 0 …`,
+   which would otherwise zero it and pull the rule up against the block above. */
+.essay p.closing {
   margin-top: 2.5em;
   padding-top: 2.5em;
   border-top: 1px solid var(--rule);
