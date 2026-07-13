@@ -10,23 +10,28 @@
   <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
-  <!-- Open Graph (Facebook, LinkedIn, Slack, WhatsApp, …) -->
+  <!-- Open Graph (Facebook, LinkedIn, Slack, WhatsApp, …). A page can carry its
+       own card via og_image (+ _width/_height/_alt) in front matter; the site-wide
+       image is the fallback. -->
+  {{ $ogImage := .Params.og_image | default site.Params.ogImage | absURL }}
+  {{ $ogImageAlt := .Params.og_image_alt | default site.Params.ogImageAlt }}
   <meta property="og:type" content="{{ .Params.og_type }}" />
   <meta property="og:site_name" content="Ajency.in" />
   <meta property="og:title" content="{{ .Params.og_title }}" />
   <meta property="og:description" content="{{ .Params.og_description }}" />
   <meta property="og:url" content="{{ .Permalink }}" />
-  <meta property="og:image" content="{{ site.Params.ogImage }}" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="{{ site.Params.ogImageAlt }}" />
+  <meta property="og:image" content="{{ $ogImage }}" />
+  <meta property="og:image:width" content="{{ .Params.og_image_width | default 1200 }}" />
+  <meta property="og:image:height" content="{{ .Params.og_image_height | default 630 }}" />
+  <meta property="og:image:alt" content="{{ $ogImageAlt }}" />
   <meta property="og:locale" content="en_US" />
 
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="{{ .Params.og_title }}" />
   <meta name="twitter:description" content="{{ .Params.og_description }}" />
-  <meta name="twitter:image" content="{{ site.Params.ogImage }}" />
+  <meta name="twitter:image" content="{{ $ogImage }}" />
+  <meta name="twitter:image:alt" content="{{ $ogImageAlt }}" />
 
   <!-- Fonts are self-hosted (@font-face lives in style.css), so there is no
        third-party stylesheet to fetch before first paint. Preload only the two

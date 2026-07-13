@@ -72,13 +72,18 @@ and products.
   - `_index.html` — **home** (`/`): hero → Writing section → full-width CTA.
   - `about.html` — **personal essay / story** (`/about/`; linked from home as
     "Read the story →"). Has a `← Back` link + the `<details>`-sync script.
-  - `self-documenting-uat-agent.html` — the **only live blog post**
+  - `self-documenting-uat-agent.html` — live blog post
     (`/self-documenting-uat-agent/`). Was `four-hours.html` → `/four-hours/` until
     2026-07-13; renamed for a keyword-bearing URL. No redirect exists, and none is
     needed — the old URL was never indexed.
-  - `whole-elephant.html` — **draft.** Its storyboard figure points at
-    `/images/cast-storyboard.png` (+ `-mobile`), neither of which exists — they 404'd
-    on the live site. Supply those images to publish it.
+  - `one-person-ai-team.html` — **live** (published 2026-07-13). "The whole
+    elephant": one person + AI agents delivering full projects end to end, proven
+    on the ERP delivery. Rewritten from scratch, replacing `whole-elephant.html`
+    (old URL never indexed, no redirect needed). The same copy runs as a LinkedIn
+    post; body text is deliberately identical between the two. One full-width
+    illustration (`management-pattern-01`) opens the essay; its 1200px JPEG
+    (`management-pattern-01-og.jpg`) is the page's own OG/Twitter card via the
+    per-page `og_image*` front-matter params supported by `head.html`.
   - `four-hours-v2.html` — **draft.** A longer rewrite of the same post that shared
     ~79% of its wording; both were live and in the sitemap, each canonicalising to
     itself, so Google was shown two near-identical competing pages. The shorter one
@@ -167,11 +172,11 @@ cleanup pass. Follow these so it stays that way:
 - Use `&mdash;` for em dashes. External links get `target="_blank" rel="noopener"`.
 
 ## Open TODOs
-- **The Writing list has only one entry.** `content/_index.html` used to carry three:
-  `self-documenting-uat-agent` (live), `whole-elephant` (now a draft — needs its missing
-  `cast-storyboard` images) and a "Buzzword compliant" placeholder that pointed at `#`
-  and had no page behind it. Both were removed from the list. Publishing a post =
-  restore its `<li>` there **and** drop `draft = true`.
+- ~~Restore the elephant post to the Writing list~~ — done: rewritten as
+  `one-person-ai-team.html` and published 2026-07-13; the list now carries it plus
+  `self-documenting-uat-agent`. (A "Buzzword compliant" placeholder that pointed at
+  `#` was removed earlier and has no page behind it.) Publishing a post = restore
+  its `<li>` in `content/_index.html` **and** drop `draft = true`.
 - **New posts** = a new `content/<slug>.html` with `schema = "blogposting"` + a `date`.
 - ~~Fingerprint `style.css`~~ — done: minified + content-hashed via Hugo Pipes,
   `/css/*` now cached for a year.

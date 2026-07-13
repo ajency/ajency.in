@@ -19,6 +19,9 @@
         "headline": "{{ .Params.og_title }}",
         "description": "{{ .Params.og_description }}",
         "url": "{{ .Permalink }}",
+        {{- with .Params.og_image }}
+        "image": "{{ . | absURL }}",
+        {{- end }}
         "datePublished": "{{ .Date.Format "2006-01-02" }}",
         "inLanguage": "en",
         "author": { "@id": "https://ajency.in/#person" },
