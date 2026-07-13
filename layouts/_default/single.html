@@ -1,8 +1,3 @@
 {{ define "main" }}
-  <main>
 {{ .Content }}
-{{ if eq .Params.schema "blogposting" }}
-{{ partial "cta.html" . }}
-{{ end }}
-  </main>
 {{ end }}
