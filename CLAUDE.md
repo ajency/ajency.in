@@ -72,14 +72,17 @@ and products.
   - `_index.html` — **home** (`/`): hero → Writing section → full-width CTA.
   - `about.html` — **personal essay / story** (`/about/`; linked from home as
     "Read the story →"). Has a `← Back` link + the `<details>`-sync script.
-  - `four-hours.html` — the **only live blog post** (`/four-hours/`).
+  - `self-documenting-uat-agent.html` — the **only live blog post**
+    (`/self-documenting-uat-agent/`). Was `four-hours.html` → `/four-hours/` until
+    2026-07-13; renamed for a keyword-bearing URL. No redirect exists, and none is
+    needed — the old URL was never indexed.
   - `whole-elephant.html` — **draft.** Its storyboard figure points at
     `/images/cast-storyboard.png` (+ `-mobile`), neither of which exists — they 404'd
     on the live site. Supply those images to publish it.
-  - `four-hours-v2.html` — **draft.** A longer rewrite of `four-hours.html` that
-    shared ~79% of its wording; both were live and in the sitemap, each canonicalising
-    to itself, so Google was shown two near-identical competing pages.
-    `four-hours.html` won. Kept as a draft because it is worth mining for material.
+  - `four-hours-v2.html` — **draft.** A longer rewrite of the same post that shared
+    ~79% of its wording; both were live and in the sitemap, each canonicalising to
+    itself, so Google was shown two near-identical competing pages. The shorter one
+    won. Kept as a draft because it is worth mining for material.
   - Front-matter vars drive the head: `title` (full `<title>`), `description` (meta),
     `og_type`/`og_title`/`og_description`, and `schema`
     (`website` | `blogposting` | `""`) which picks the per-page JSON-LD node.
@@ -165,7 +168,7 @@ cleanup pass. Follow these so it stays that way:
 
 ## Open TODOs
 - **The Writing list has only one entry.** `content/_index.html` used to carry three:
-  `four-hours` (live), `whole-elephant` (now a draft — needs its missing
+  `self-documenting-uat-agent` (live), `whole-elephant` (now a draft — needs its missing
   `cast-storyboard` images) and a "Buzzword compliant" placeholder that pointed at `#`
   and had no page behind it. Both were removed from the list. Publishing a post =
   restore its `<li>` there **and** drop `draft = true`.

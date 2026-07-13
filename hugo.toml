@@ -2,7 +2,7 @@ baseURL = "https://ajency.in/"
 locale = "en"
 title = "Ajency.in"
 
-# Pretty URLs: /about/, /four-hours/ (do not set uglyURLs).
+# Pretty URLs: /about/, /self-documenting-uat-agent/ (do not set uglyURLs).
 # Hugo auto-generates /sitemap.xml and /index.xml (RSS).
 enableInlineShortcodes = false
 disableKinds = ["taxonomy", "term"]

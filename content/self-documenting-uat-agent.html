@@ -1,6 +1,6 @@
 +++
 title = "A self-documenting UAT agent: walkthroughs that never go stale and barely cost tokens — Ajency.in"
-description = "A UAT agent that walks the app, documents itself, and answers support questions — building live walkthroughs that never go stale and cost almost nothing to run (~70k tokens at $0 on a local GPU)."
+description = "A UAT agent that walks the app, documents itself, and answers support questions — building live walkthroughs that never go stale and cost almost nothing to run (~70k tokens at $0 on a local Qwen 3.5 35B)."
 date = 2026-06-30
 [params]
 og_type = "article"
@@ -14,7 +14,7 @@ a = "No. Each walkthrough is generated on demand against the live app, so it mat
 
 [[params.faq]]
 q = "How much does it cost to run an AI agent for UAT testing?"
-a = "Almost nothing. The frontier model writes the test once as plain intent; every run after that is a local model plus Python driving Chrome. A full job-card-to-payment walkthrough is ~70,000 tokens on a local GPU — re-run it a hundred times and the bill stays flat at zero."
+a = "Almost nothing. The frontier model writes the test once as plain intent; every run after that is a local model plus Python driving Chrome. A full job-card-to-payment walkthrough is ~70,000 tokens through a local Qwen 3.5 35B on my own Mac Pro — re-run it a hundred times and the bill stays flat at zero."
 
 [[params.faq]]
 q = "Can a local LLM drive browser-based UAT?"
@@ -40,7 +40,7 @@ a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snap
         </picture>
       </figure>
 
-      <p>It's not the bugs &mdash; API and browser tests already catch those. It's the soft, subjective pass: does the copy land, does the spacing hold, does the flow feel right. So I handed the clicking to an agent that walks the journey and screenshots every step &mdash; and the record it left behind turned out to matter more than the watching.</p>
+      <p>It's not the bugs &mdash; API and browser tests already catch those. It's the soft, subjective pass: does the copy land, does the spacing hold, does the flow feel right. Which meant me, after every deploy, clicking through the whole journey by hand &mdash; job card, invoice, payment &mdash; just to look at it. So I handed the clicking to an agent that walks the journey and screenshots every step.</p>
 
       <h2 class="kicker">Self-documenting walkthroughs that never go stale</h2>
 
@@ -51,7 +51,7 @@ a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snap
           <p>How do I cancel an incorrect money receipt?</p>
         </blockquote>
 
-        <p>Before, I'd write the steps out or hop on a call myself. Now I just forward the question to the agent. It builds a walkthrough for that exact need &mdash; pulls the right screenshots, marks the buttons to press, and sends back something you click through instead of read.</p>
+        <p>Before, I'd write the steps out or hop on a call myself. Now I just forward the question to the agent. It builds a walkthrough for that exact need &mdash; pulls the right screenshots, marks the buttons to press, and sends back something you click through instead of read. It's the same walk it does for UAT &mdash; the click-through I built to get out of doing myself, now handed to whoever asked.</p>
 
         <figure class="margin-fig">
           <video src="/images/cancel-receipt-walkthrough.mp4" poster="/images/cancel-receipt-poster.webp" width="480" height="852" autoplay loop muted playsinline preload="none" aria-label="A self-documenting walkthrough generated on demand: the UAT agent steps through cancelling an incorrect money receipt, screen by screen, highlighting the button to press at each step — built live against the current UI so it never goes stale."></video>
@@ -105,10 +105,10 @@ a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snap
 └────────────────────────────────────────────────────────┘
 </pre>
 
-        <p>The expensive model runs once (plus the odd escalation); everything per-run is local or free &mdash; and PASS/FAIL stays a deterministic backend check, no model vote and no vision vote. A full job-card-to-payment walkthrough burns ~70,000 tokens on my own GPU, so re-run it a hundred times and the bill stays flat at zero.</p>
+        <p>The expensive model runs once (plus the odd escalation); everything per-run is local or free &mdash; and PASS/FAIL stays a deterministic backend check, no model vote and no vision vote. A full job-card-to-payment walkthrough burns ~70,000 tokens through <a href="https://huggingface.co/Qwen/Qwen3.5-35B-A3B" target="_blank" rel="noopener">Qwen 3.5 35B</a> on my Mac Pro, so re-run it a hundred times and the bill stays flat at zero.</p>
 
       <div class="has-aside">
-        <p class="agency-lines">Which is when I noticed I'd rebuilt a corporate org chart. I delegate to Claude, Claude delegates to Qwen, Qwen delegates to Python. <span class="highlight">Best team I've ever run.</span></p>
+        <p class="agency-lines">Look at that long enough and it's an org chart. I delegate to Claude, Claude delegates to Qwen, Qwen delegates to Python. <span class="highlight">Best team I've ever run.</span></p>
         <figure class="margin-fig">
           <picture>
             <source type="image/webp" srcset="/images/delegate-yoda.webp" />
@@ -130,7 +130,7 @@ a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snap
         <details class="faq-item">
           <summary>How much does it cost to run an AI agent for UAT testing?</summary>
           <div class="faq-answer">
-            <p>Almost nothing. The frontier model writes the test once as plain intent; every run after that is a local model plus Python driving Chrome. A full job-card-to-payment walkthrough is ~70,000 tokens on a local GPU &mdash; re-run it a hundred times and the bill stays flat at zero.</p>
+            <p>Almost nothing. The frontier model writes the test once as plain intent; every run after that is a local model plus Python driving Chrome. A full job-card-to-payment walkthrough is ~70,000 tokens through a local <a href="https://huggingface.co/Qwen/Qwen3.5-35B-A3B" target="_blank" rel="noopener">Qwen 3.5 35B</a> on my own Mac Pro &mdash; re-run it a hundred times and the bill stays flat at zero.</p>
           </div>
         </details>
         <details class="faq-item">
