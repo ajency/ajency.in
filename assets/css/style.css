@@ -460,6 +460,25 @@ main,
   color: var(--grey);
 }
 
+/* The word's actual meaning — the entry's one true sense, stated before any of
+   mine. Everything below it is a reading of *this*. */
+.entry-def {
+  font-weight: 500;
+  font-size: clamp(1.3rem, 2.6vw, 1.5rem);
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+/* Quiet hinge between the definition and the three domain readings of it. */
+.entry-sub {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--grey);
+}
+
+/* Etymology, in a dictionary's usual place: last. The reader meets the real
+   word and its meaning before being told the spelling on the door is wrong. */
 .entry-etym {
   font-family: var(--font-serif);
   font-style: italic;
@@ -468,9 +487,31 @@ main,
   color: var(--grey);
 }
 
-/* Selector carries .essay so it outranks `.essay p` on colour/margin. */
-.essay .entry-etym {
-  margin: 0 0 2rem;
+/* Small caps label, in the sans, matching the kicker's voice minus its tick. */
+.entry-origin {
+  margin-right: 0.5rem;
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+
+/* Selectors carry .essay so they outrank `.essay p`'s colour and margin. */
+.essay p.entry-def {
+  margin: 1.5rem 0 2rem;
+}
+
+.essay p.entry-sub {
+  margin: 0 0 1.5rem;
+}
+
+.essay p.entry-etym {
+  margin: 2.25rem 0 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule-soft);
 }
 
 .senses {
