@@ -17,6 +17,24 @@
   <!-- GoatCounter — privacy-first pageview counting (no cookies, ~3.5 KB, async,
        so it never competes with rendering). The one deliberate exception to the
        zero-third-party-requests rule; it ignores localhost by default, so dev
-       traffic is never counted. Dashboard: https://ajency.goatcounter.com -->
+       traffic is never counted. Dashboard: https://ajency.goatcounter.com
+
+       Own-view opt-out (per goatcounter.com/help/skip-dev): visit any page with
+       #toggle-goatcounter appended to the URL to flip counting off (or back on)
+       for that browser — the flag lives in localStorage, so do it once per
+       browser/device that shouldn't be counted. -->
+  <script>
+    if (window.location.hash === '#toggle-goatcounter') {
+      if (localStorage.getItem('skipgc') === 't') {
+        localStorage.removeItem('skipgc')
+        alert('GoatCounter is now ENABLED in this browser.')
+      } else {
+        localStorage.setItem('skipgc', 't')
+        alert('GoatCounter is now DISABLED in this browser.')
+      }
+    }
+    if (localStorage.getItem('skipgc') === 't')
+      window.goatcounter = {no_onload: true}
+  </script>
   <script data-goatcounter="https://ajency.goatcounter.com/count"
           async src="https://gc.zgo.at/count.js"></script>
