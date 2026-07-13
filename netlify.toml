@@ -1,11 +1,19 @@
 # Netlify build config.
 #
-# Netlify builds from source on every push, so `public/` is never uploaded by
-# hand and a `hugo server` artifact can't reach production.
+# Deploying is a PUBLISH DECISION, not a side effect of pushing. Netlify charges
+# credits per deploy (free tier: 300/month), so git pushes must never build:
+# the `ignore` script below exits 0, which tells Netlify to skip every
+# CI-triggered build. Publish explicitly instead:
+#
+#   rm -rf public && hugo --gc --minify && netlify deploy --prod --dir public
+#
+# (CLI deploys upload the local build directly and are unaffected by `ignore`.)
 
 [build]
   publish = "public"
   command = "hugo --gc --minify"
+  # Exit 0 = "nothing changed, skip this build" — applied to every push.
+  ignore = "exit 0"
 
 [build.environment]
   # Must be pinned — Netlify's default Hugo is far older and won't build this site.

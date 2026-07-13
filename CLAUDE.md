@@ -10,10 +10,18 @@ and products.
   chrome (head/header/footer) so it lives in **one place** instead of being copied
   onto every page.
 - **Git repo:** `ajency/ajency.in` on GitHub (public), default branch `main`.
-- **Hosting: Netlify**, deployed from that repo. **A push to `main` is a deploy** —
-  Netlify runs `hugo --gc --minify` itself (see `netlify.toml`, which pins
-  `HUGO_VERSION`; keep it in step with local `hugo version`). There is no manual
-  upload step and `public/` is **gitignored** — never deploy it by hand.
+- **Hosting: Netlify** — but **a push is NOT a deploy**. Netlify charges credits
+  per deploy (free tier: 300/month), so `netlify.toml` carries `ignore = "exit 0"`,
+  which makes Netlify skip every git-triggered build. **Deploying is an explicit
+  publish decision:**
+  - Commit freely; **batch pushes** (target: every 2–3 days, or when a piece of
+    work is done).
+  - **Publish** = `rm -rf public && hugo --gc --minify && netlify deploy --prod
+    --dir public` (the CLI is logged in and linked to the `ajency` project;
+    `rm -rf public` first because Hugo doesn't prune stale files).
+  - `netlify api listSiteDeploys …` shows deploy states if something looks off.
+  - `netlify.toml` pins `HUGO_VERSION`; keep it in step with local `hugo version`.
+  - `public/` is **gitignored**.
   - DreamHost serves **DNS only** (domain registered at GoDaddy). The apex `A`
     record points at Netlify (`75.2.60.5`); `www` is a CNAME to
     `ajency.netlify.app`.

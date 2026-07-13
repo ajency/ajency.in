@@ -16,3 +16,6 @@ resources/_gen/
 # Machine-local, per the convention in ~/.claude/CLAUDE.md
 .claude/settings.local.json
 .claude/CLAUDE.local.md
+
+# Local Netlify folder
+.netlify
