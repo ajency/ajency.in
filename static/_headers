@@ -16,13 +16,11 @@
 /images/*
   Cache-Control: public, max-age=2592000
 
-# style.css is deliberately short-lived. It is not content-hashed, so a long
-# cache would strand repeat visitors on a stale stylesheet. (DreamHost currently
-# serves it with max-age=2592000 — 30 days — which means a CSS change today would
-# not reach a returning visitor until August.) If this is ever fingerprinted via
-# Hugo's asset pipeline, raise it to a year and mark it immutable.
-/style.css
-  Cache-Control: public, max-age=3600
+# The stylesheet is content-hashed by Hugo (/css/style.min.<hash>.css), so a change
+# to it produces a different URL. That makes a stale hit impossible and lets this be
+# cached forever — the same reasoning as /fonts/* above.
+/css/*
+  Cache-Control: public, max-age=31536000, immutable
 
 /*
   X-Content-Type-Options: nosniff

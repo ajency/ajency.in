@@ -38,7 +38,7 @@ and products.
 ## Performance — decisions worth not re-litigating
 - **Fonts are self-hosted** in `static/fonts/` (12 woff2: Work Sans + Libre
   Baskerville, latin + latin-ext; vietnamese dropped). `@font-face` lives at the top
-  of `static/style.css`. Do **not** reintroduce the Google Fonts `<link>` — it put a
+  of `assets/css/style.css`. Do **not** reintroduce the Google Fonts `<link>` — it put a
   render-blocking `fonts.googleapis.com → fonts.gstatic.com` chain in front of first
   paint. The site now makes **zero third-party requests**. `head.html` preloads the
   two faces every page needs above the fold (Work Sans 400 + 700).
@@ -46,11 +46,21 @@ and products.
 - **The walkthrough is an MP4**, not a GIF: `<video autoplay loop muted playsinline
   preload="none">` with a WebP poster. 5.6 MB GIF → 465 KB H.264. The source GIF is
   archived in `originals/` (outside `static/`, so it is never published).
-- **`static/_headers`** sets cache policy on Netlify: `/fonts/*` immutable for a year
-  (filenames are stable), `/images/*` 30 days, and `style.css` only **1 hour** —
-  deliberately, because it is *not* content-hashed and a long cache would strand
-  repeat visitors on a stale stylesheet. Fingerprinting it via Hugo's asset pipeline
-  would let that go to a year.
+- **The stylesheet is minified + content-hashed** by Hugo Pipes. Source lives in
+  **`assets/css/style.css`** (*not* `static/`); `head.html` runs it through
+  `resources.Get | minify | fingerprint` and emits
+  `/css/style.min.<sha256>.css` with an SRI `integrity` attribute. 23.3 KB → 13.5 KB.
+  - ⚠️ **Edit the CSS in `assets/css/`.** A file dropped back into `static/style.css`
+    would be published but never linked — it would look like your edits do nothing.
+  - Why: the hash is in the filename, so a CSS change is a *new URL*. That makes a
+    stale hit impossible, which is what lets `/css/*` be cached for a year. Before
+    this, the HTML was revalidated on every load but the CSS was cached for an hour —
+    so a deploy touching both could serve **new HTML with old CSS** for up to an hour.
+- **`static/_headers`** sets cache policy on Netlify: `/fonts/*` and `/css/*` immutable
+  for a year (both are content-addressed — fonts by stable filename, CSS by hash),
+  `/images/*` 30 days. HTML needs no rule: Netlify edge-caches it and purges on deploy.
+- `font-weight: 600` is used in a few rules but no 600 face is loaded; the browser
+  synthesises it from 500/700. Pre-existing and intentional-by-omission.
 - `font-weight: 600` is used in a few rules but no 600 face is loaded; the browser
   synthesises it from 500/700. Pre-existing and intentional-by-omission.
 
@@ -78,11 +88,15 @@ and products.
   - `_default/single.html`, `index.html` — wrap `.Content` in `<main>`.
   - `partials/head.html`, `header.html`, `footer.html`, `schema.html` — **edit these
     to change the head/header/footer/structured-data on every page at once.**
-- `static/` — served at site root as-is: `style.css` (single stylesheet, tokens in
-  `:root`), `fonts/` (self-hosted woff2), `images/`, `favicon*`,
-  `apple-touch-icon.png`, `og-image.png`, `robots.txt`, `llms.txt`, and `_headers`
-  (Netlify cache/security headers). ⚠️ Reference these with **root-absolute** paths
-  (`/style.css`) — pages live at `/about/`, so relative paths would break.
+- `assets/` — **processed** by Hugo (not copied verbatim). Currently just
+  `css/style.css`, the single stylesheet (tokens in `:root`), which `head.html`
+  minifies + fingerprints into `/css/style.min.<hash>.css`. **This is where you edit
+  the CSS.**
+- `static/` — served at site root **as-is**: `fonts/` (self-hosted woff2), `images/`,
+  `favicon*`, `apple-touch-icon.png`, `og-image.png`, `robots.txt`, `llms.txt`, and
+  `_headers` (Netlify cache/security headers). ⚠️ Reference these with
+  **root-absolute** paths (`/fonts/…`) — pages live at `/about/`, so relative paths
+  would break.
 - `netlify.toml` — build command, publish dir, pinned `HUGO_VERSION`.
 - `originals/` — source assets deliberately kept **out of `static/`** so Hugo never
   publishes them (currently the 5.3 MB source GIF superseded by the MP4).
@@ -110,8 +124,12 @@ and products.
 - Minimal chrome, generous whitespace, left-aligned, one big headline per page.
 
 ## CSS conventions (keep the one stylesheet clean)
-All styling lives in **`static/style.css`** — the goal is to never need a cleanup pass.
-Follow these so it stays that way:
+All styling lives in **`assets/css/style.css`** (Hugo minifies + fingerprints it into
+`/css/style.min.<hash>.css` — never edit the built file, and never put CSS back in
+`static/`, where it would be published but not linked). The goal is to never need a
+cleanup pass. Follow these so it stays that way:
+- **Write it readable.** Do not hand-minify or strip comments — `minify` does that at
+  build time, and it only shrinks the *output*. Comments cost nothing in production.
 - **No inline `style=` and no `<style>` blocks**, ever — add a class and a rule instead.
   (The lone `<script>` in `about.html` syncs `<details>` open-state to the breakpoint;
   it does *not* style anything, and no styling should ever be done in JS.)
@@ -132,7 +150,7 @@ Follow these so it stays that way:
   `@media` block should contain just the declarations that actually differ at that
   breakpoint (the wide layout starts at `min-width: 1080px`).
 - After any CSS change: `hugo --gc --minify` must build clean, and a quick check that
-  `grep -rn 'style=' layouts content` and `grep -n '!important' static/style.css` both
+  `grep -rn 'style=' layouts content` and `grep -n '!important' assets/css/style.css` both
   come back empty.
 
 ## Copy voice
@@ -152,7 +170,7 @@ Follow these so it stays that way:
   and had no page behind it. Both were removed from the list. Publishing a post =
   restore its `<li>` there **and** drop `draft = true`.
 - **New posts** = a new `content/<slug>.html` with `schema = "blogposting"` + a `date`.
-- **Fingerprint `style.css`** via Hugo's asset pipeline, then raise its cache in
-  `static/_headers` from 1 hour to a year + `immutable`.
+- ~~Fingerprint `style.css`~~ — done: minified + content-hashed via Hugo Pipes,
+  `/css/*` now cached for a year.
 - ~~`sitemap.xml`~~ — auto-generated by Hugo, not a manual task.
 - ~~Deploy by SFTP~~ — replaced by push-to-deploy on Netlify.

@@ -35,7 +35,13 @@
   <link rel="preload" href="/fonts/work-sans-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/fonts/work-sans-700-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
 
-  <link rel="stylesheet" href="/style.css" />
+  <!-- The stylesheet is minified and content-hashed by Hugo (source lives in
+       assets/css/style.css, NOT static/). The hash is in the filename, so a CSS
+       change produces a new URL and can never be served stale — which is what lets
+       /css/* be cached for a year in static/_headers. Edit the file in assets/;
+       anything dropped back into static/ would be served but never linked. -->
+  {{ $css := resources.Get "css/style.css" | minify | fingerprint "sha256" }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" crossorigin="anonymous" />
 
   <!-- Structured data: helps search engines and AI agents resolve the entity. -->
   {{ partial "schema.html" . }}
