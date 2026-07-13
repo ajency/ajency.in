@@ -199,12 +199,15 @@ a {
 
 /* Highlighter mark — the link's yellow-underline wash, painted as a static band
    behind a phrase for emphasis. No hover, no link: a thicker band (not the link's
-   2px) keeps it clearly distinct from a clickable underline. */
-.essay .highlight {
+   2px) keeps it clearly distinct from a clickable underline.
+   Shared with the hero ledger's closing numeral; --band tunes the thickness per
+   use, since a band that reads right behind body text swallows a 3rem numeral. */
+.essay .highlight,
+.ledger-mark {
   background-image: linear-gradient(var(--yellow-underline), var(--yellow-underline));
   background-repeat: no-repeat;
   background-position: 0 100%;
-  background-size: 100% 0.32em;
+  background-size: 100% var(--band, 0.32em);
 }
 
 .back-link {
@@ -272,6 +275,78 @@ main,
   font-style: italic;
   font-size: clamp(1.25rem, 3vw, 1.75rem);
   color: var(--grey);
+}
+
+/* ---- Hero ledger (about) ----
+   Four figures under the hero that pay off the "Back to one." subhead: the
+   fifteen-year arc (2012 → 50 → 3 years inside → 1) readable before the essay
+   starts, so the prose below can be personal instead of expository.
+   Kept at the reading measure so it lines up with the essay beneath it.
+   Only the closing numeral takes the yellow — the accent is spent once. */
+.ledger {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  max-width: var(--measure);
+  margin: 2.75rem 0 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+.ledger-item {
+  display: flex;
+  flex-direction: column;
+  /* Clears the yellow band under the closing numeral, which hangs below its baseline. */
+  gap: 0.4rem;
+  padding: 1.25rem 1.25rem 1.35rem 0;
+}
+
+.ledger-item + .ledger-item {
+  padding-left: 1.25rem;
+  border-left: 1px solid var(--rule);
+}
+
+.ledger-num {
+  font-weight: 700;
+  font-size: clamp(2rem, 5vw, 2.9rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* "yrs" — a unit rides the numeral without competing with it. */
+.ledger-unit {
+  margin-left: 0.15em;
+  font-size: 0.4em;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--grey);
+}
+
+.ledger-mark {
+  --band: 0.2em; /* thinner than the essay's, or it swallows the numeral */
+}
+
+.ledger-label {
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--grey);
+}
+
+/* Two-up below ~620px: four columns would squeeze the labels to two words a line. */
+@media (max-width: 620px) {
+  .ledger {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ledger-item:nth-child(odd) {
+    padding-left: 0;
+    border-left: none;
+  }
+
+  .ledger-item:nth-child(n + 3) {
+    border-top: 1px solid var(--rule);
+  }
 }
 
 /* ---- Essay ---- */
