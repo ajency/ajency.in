@@ -35,9 +35,9 @@ a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snap
     </section>
 
     <article class="essay">
-      <p>UAT is a product person's chore: after a new feature ships, or an old one changes, log in, fill the forms, click through the whole flow (job card, invoice, payment) just to look at it. Not for bugs; API and browser tests already catch those. This is the subjective pass, the one only a human notices.</p>
+      <p>UAT is a product person's chore: after a new feature ships, or an old one changes, log in, fill the forms, click through the whole flow (job card, invoice, payment) just to look at it. Not for bugs, since API and browser tests already catch those, but for the subjective pass only a human notices.</p>
 
-      <p>And it gets skipped. I skipped it. The logging in, the form-filling, the clicking &mdash; the inertia wins more often than I'd like to admit. So I spent four hours building an agent to save myself the fifteen minutes.</p>
+      <p>And it gets skipped, by me more than anyone: the logging in, the form-filling, the clicking. The inertia wins more often than I'd like to admit, so I spent four hours building an agent to save myself the fifteen minutes.</p>
 
       <figure class="figure-wide">
         <picture>
@@ -50,7 +50,7 @@ a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snap
 
       <p>The plan was simple: the agent clicks, I watch the screen. In practice I was running Claude Code sessions in parallel, and &ldquo;watching&rdquo; meant glancing over after the moment had passed. I kept missing steps.</p>
 
-      <p>So the agent records. A screenshot at every step, stitched into a journey and handed to me at the end of the run. Now I review a filmstrip in two minutes instead of pretending to watch a screen for fifteen.</p>
+      <p>So I got the agent to record a screenshot at every step and stitch them into a journey it hands me at the end of the run. Now I review a filmstrip in two minutes instead of pretending to watch a screen for fifteen.</p>
 
       <h2 class="kicker">Self-documenting walkthroughs that never go stale</h2>
 
@@ -61,7 +61,7 @@ a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snap
           <p>How do I cancel an incorrect money receipt?</p>
         </blockquote>
 
-        <p>Earlier, I'd write the steps out or hop on a call myself. Now I just forward the question to the agent. It builds a walkthrough for that exact need: pulls the right screenshots, marks the buttons to press, and sends back something you click through instead of read. It's the same filmstrip it builds for UAT, pointed at whoever asked.</p>
+        <p>Earlier, I'd write the steps out or hop on a call myself; now I just forward the question to the agent. It builds a walkthrough for that exact need: pulls the right screenshots, marks the buttons to press, and sends back something you click through instead of read. It's the same filmstrip it builds for UAT, pointed at whoever asked.</p>
 
         <figure class="margin-fig">
           <video src="/images/cancel-receipt-walkthrough.mp4" poster="/images/cancel-receipt-poster.webp" width="480" height="852" autoplay loop muted playsinline preload="none" aria-label="A self-documenting walkthrough generated on demand: the UAT agent steps through cancelling an incorrect money receipt, screen by screen, highlighting the button to press at each step — built live against the current UI so it never goes stale."></video>
@@ -69,7 +69,7 @@ a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snap
         </figure>
       </div>
 
-      <p class="agency-lines">Most user docs are written once and go stale the moment the UI moves. These are built on the spot against the live app, and shaped around the person who asked. <span class="highlight">A live walkthrough that's never out of date, because it's never written in advance.</span></p>
+      <p class="agency-lines">Most user docs are written once and go stale the moment the UI moves. These are built on the spot against the live app, and shaped around the person who asked. The walkthrough is never out of date because it's never written in advance.</p>
 
       <p class="pullquote">The support tool was an accident. All I wanted was out of UAT.</p>
 
