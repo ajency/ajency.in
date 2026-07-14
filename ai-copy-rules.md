@@ -71,7 +71,7 @@ ordering:
 ## Tier 3 — Substance (the unfakeable layer; already house strength)
 
 12. **One detail per section only you could know.** Named clients, real
-    numbers, places, dates (₹1,000-crore, Jharkhand, 70k tokens, four months).
+    numbers, places, dates (₹600-crore, Jharkhand, 70k tokens, four months).
     This is the fastest humanizing move and the hardest to fake.
 13. **Take a position; don't hedge.** "Arguably", "worth noting", stacked
     qualifiers, false balance — cut. Make the claim or drop it.

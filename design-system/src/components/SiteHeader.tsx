@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Wordmark } from './Wordmark';
 
 export interface SiteHeaderProps {
   /** Wordmark text before the yellow dot. Default "ajency". */
@@ -25,11 +26,7 @@ export function SiteHeader({
 }: SiteHeaderProps) {
   return (
     <header className="site-header">
-      <a className="wordmark" href={href}>
-        {name}
-        <span className="dot">.</span>
-        {tld}
-      </a>
+      <Wordmark name={name} tld={tld} href={href} />
       {contact && (
         <a className="contact-link" href={contact.href}>
           {contact.label}

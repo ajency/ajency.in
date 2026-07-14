@@ -1,0 +1,18 @@
+{{ with .Params.faq }}
+  <!-- FAQ, rendered from the same [[params.faq]] entries that feed the FAQPage
+       JSON-LD — one source for both. Sits below the CTA as fine print: it exists
+       for search engines and AI assistants; a human who wants it can still read it. -->
+  <section class="faq-section">
+    <h2 class="kicker">Common questions</h2>
+    <div class="faq">
+      {{ range . }}
+      <details class="faq-item">
+        <summary>{{ .q }}</summary>
+        <div class="faq-answer">
+          <p>{{ .a }}</p>
+        </div>
+      </details>
+      {{ end }}
+    </div>
+  </section>
+{{ end }}

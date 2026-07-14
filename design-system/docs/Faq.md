@@ -1,7 +1,7 @@
 ---
-category: Essay
+category: Layout
 ---
-Ends every post: "Straight answers, for humans and crawlers alike." Questions phrased exactly as the target searches; concrete, numbers-bearing answers. Inside an Essay only.
+Fine print for search engines and AI assistants — rendered from the same data as the FAQPage JSON-LD, so the two never drift. Sits below the Cta band, after the conversion moment: small grey sans questions, hairline rules, yellow +/− toggles. Questions phrased exactly as the target searches; concrete, numbers-bearing answers.
 
 ```tsx
 <Faq

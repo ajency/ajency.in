@@ -27,11 +27,11 @@ a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snap
     <section class="hero">
       <p class="back-link"><a href="/">&larr; Back</a></p>
       <h1>UAT has an inertia problem.</h1>
-      <p class="subhead">An agent does the click-through I kept skipping. The recorded screenshots became on-the-fly documentation.</p>
+      <p class="subhead">An agent does the click-through I kept skipping. It screenshots every step, so the run is its own documentation.</p>
     </section>
 
     <article class="essay">
-      <p>UAT is a product person's chore: after a new feature ships, or an old one changes, log in, fill the forms, click through the whole journey &mdash; job card, invoice, payment &mdash; just to look at it. Not for bugs; API and browser tests already catch those. For the soft, subjective pass: does the copy land, does the spacing hold, does the flow feel right.</p>
+      <p>UAT is a product person's chore: after a new feature ships, or an old one changes, log in, fill the forms, click through the whole flow (job card, invoice, payment) just to look at it. Not for bugs; API and browser tests already catch those. This is the subjective pass, the one only a human notices.</p>
 
       <p>And it gets skipped. I skipped it. The logging in, the form-filling, the clicking &mdash; the inertia wins more often than I'd like to admit. So I spent four hours building an agent to save myself the fifteen minutes.</p>
 
@@ -73,48 +73,51 @@ a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snap
 
       <p>The obvious worry is the token bill. Only the part that needs judgment runs on the pricey model; everything repeatable is pushed down to things that run for free:</p>
 
-        <pre class="ascii-flow">
-┌────────────────────────────────────────────────────────┐
-│ Claude · frontier · ONE-TIME                           │
-│ writes the test once, as plain intent                  │
-└────────────────────────────────────────────────────────┘
-                             │
-                             ▼ test spec
-┌────────────────────────────────────────────────────────┐
-│ Python · EVERY RUN — the runner                        │
-│ drives Chrome · screenshots · highlights · PASS/FAIL   │
-└────────────────────────────────────────────────────────┘
-                │                       ▲  the click to perform
-                ▼  here's the page      │
-┌────────────────────────────────────────────────────────┐
-│ <a href="https://huggingface.co/Qwen/Qwen3.5-35B-A3B" target="_blank" rel="noopener">Qwen 3.5 35B</a> · local · FREE — per-step decision        │
-│                                                        │
-│ TEXT   snapshot (DOM/buttons) → picks the click        │
-│ VISION (pixels) → for what text can't see:             │
-│        error box · canvas · toast · dead click ·       │
-│        stuck spinner · overlay over a button           │
-│                                                        │
-│ resolves known + visual surprises LOCALLY (free)       │
-└────────────────────────────────────────────────────────┘
-                             │
-                             ▼ novel surprise Qwen can't resolve
-┌────────────────────────────────────────────────────────┐
-│ Claude · ESCALATION ONLY (rare)                        │
-│ gets Qwen's 2-line text — NOT the image — decides,     │
-│ then hands the answer back to the run                  │
-└────────────────────────────────────────────────────────┘
-                             │
-                             ▼
-┌────────────────────────────────────────────────────────┐
-│ PASS / FAIL · deterministic backend check              │
-│ no model vote · no vision vote                         │
-└────────────────────────────────────────────────────────┘
+      <div class="ascii-flow ascii-flow-split">
+<pre>
+┌──────────────────────────────────────────┐
+│ Claude · frontier · ONE-TIME             │
+│ writes the test once, as plain intent    │
+└──────────────────────────────────────────┘
+                    │
+                    ▼ test spec
+┌──────────────────────────────────────────┐
+│ Python · EVERY RUN — the runner          │
+│ drives Chrome · screenshots · PASS/FAIL  │
+└──────────────────────────────────────────┘
+         │                    ▲ the click
+         ▼ here's the page    │ to perform
+┌──────────────────────────────────────────┐
+│ <a href="https://huggingface.co/Qwen/Qwen3.5-35B-A3B" target="_blank" rel="noopener">Qwen 3.5 35B</a> · local · FREE              │
+│ per-step decision                        │
+│                                          │
+│ TEXT   snapshot (DOM) → picks the click  │
+│ VISION (pixels) → what text can't see:   │
+│        error box · canvas · toast ·      │
+│        dead click · stuck spinner ·      │
+│        overlay over a button             │
+│                                          │
+│ resolves surprises LOCALLY (free)        │
+└──────────────────────────────────────────┘
 </pre>
-
-        <p>The expensive model runs once, plus the odd escalation; everything per-run is local or free. A full job-card-to-payment walkthrough burns ~70,000 tokens through <a href="https://huggingface.co/Qwen/Qwen3.5-35B-A3B" target="_blank" rel="noopener">Qwen 3.5 35B</a> on my Mac Pro, so re-run it a hundred times and the bill stays flat at zero.</p>
+<p class="flow-jump"><span class="jump-across">──────────▶</span><span class="jump-down">▼</span> <span class="jump-label">novel surprise Qwen can't resolve</span></p>
+<pre>
+┌──────────────────────────────────────────┐
+│ Claude · ESCALATION ONLY (rare)          │
+│ gets Qwen's 2-line text — NOT the image  │
+│ — decides, hands the answer back         │
+└──────────────────────────────────────────┘
+                    │
+                    ▼
+┌──────────────────────────────────────────┐
+│ PASS / FAIL · deterministic check        │
+│ no model vote · no vision vote           │
+└──────────────────────────────────────────┘
+</pre>
+      </div>
 
       <div class="has-aside">
-        <p class="agency-lines">Look at that long enough and it's an org chart. I delegate to Claude, Claude delegates to Qwen, Qwen delegates to Python. <span class="highlight">Best team I've ever run.</span></p>
+        <p>The expensive model runs once, plus the odd escalation; everything per-run is local or free. A full job-card-to-payment walkthrough burns ~70,000 tokens through <a href="https://huggingface.co/Qwen/Qwen3.5-35B-A3B" target="_blank" rel="noopener">Qwen 3.5 35B</a> on my Mac Pro, so re-run it a hundred times and the bill stays flat at zero.</p>
         <figure class="margin-fig">
           <picture>
             <source type="image/webp" srcset="/images/delegate-yoda.webp" />
@@ -122,35 +125,10 @@ a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snap
           </picture>
           <figcaption>Middle management, this is.</figcaption>
         </figure>
+        <p class="agency-lines">I delegate to Claude, Claude delegates to Qwen, Qwen delegates to Python. <span class="highlight">Best team I've ever run.</span></p>
       </div>
 
-      <h2 class="kicker">Straight answers, for humans and crawlers alike</h2>
+      {{< subscribe >}}
 
-      <div class="faq">
-        <details class="faq-item">
-          <summary>Can an AI agent do UAT click-throughs instead of a product manager?</summary>
-          <div class="faq-answer">
-            <p>Yes. The agent logs in, fills the forms, and clicks through the whole journey, screenshotting every step. The human judgment doesn&rsquo;t go away &mdash; it moves from doing the clicking to reviewing the stitched journey at the end of the run, which takes two minutes instead of fifteen.</p>
-          </div>
-        </details>
-        <details class="faq-item">
-          <summary>Do self-documenting walkthroughs go stale when the UI changes?</summary>
-          <div class="faq-answer">
-            <p>No. Each walkthrough is generated on demand against the live app, so it matches the UI as it stands today. Nothing is written in advance, so there&rsquo;s nothing to fall out of date.</p>
-          </div>
-        </details>
-        <details class="faq-item">
-          <summary>How much does it cost to run an AI agent for UAT testing?</summary>
-          <div class="faq-answer">
-            <p>Almost nothing. The frontier model writes the test once as plain intent; every run after that is a local model plus Python driving Chrome. A full job-card-to-payment walkthrough is ~70,000 tokens through a local <a href="https://huggingface.co/Qwen/Qwen3.5-35B-A3B" target="_blank" rel="noopener">Qwen 3.5 35B</a> on my own Mac Pro &mdash; re-run it a hundred times and the bill stays flat at zero.</p>
-          </div>
-        </details>
-        <details class="faq-item">
-          <summary>Can a local LLM drive browser-based UAT?</summary>
-          <div class="faq-answer">
-            <p>Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snapshot, and reads pixels when text can&rsquo;t see an error box, toast, or stuck spinner. It escalates to a frontier model only for the rare novel surprise it can&rsquo;t resolve itself.</p>
-          </div>
-        </details>
-      </div>
 
     </article>

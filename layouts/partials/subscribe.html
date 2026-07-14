@@ -1,0 +1,13 @@
+{{ if eq .Params.schema "blogposting" }}
+  <section class="subscribe">
+    <h2 class="subscribe-title">Get the next post by email.</h2>
+    <p class="subscribe-line">I publish slowly. You&rsquo;ll get an email when something new is up.</p>
+    <form class="subscribe-form" method="post" action="https://eocampaign1.com/form/d23fbb24-7f69-11f1-b759-d9a069653617">
+      <input class="subscribe-email" type="email" name="field_0" required placeholder="Email address" aria-label="Email address">
+      <button class="subscribe-btn" type="submit">Subscribe</button>
+      <!-- Honeypot: hidden from humans, bots that fill it are rejected server-side. -->
+      <input class="subscribe-hp" type="text" name="hpc4b27b6e-eb38-11e9-be00-06b4694bee2a" tabindex="-1" autocomplete="off" aria-hidden="true">
+    </form>
+    <p class="subscribe-msg" role="status" aria-live="polite" hidden></p>
+  </section>
+{{ end }}

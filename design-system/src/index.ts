@@ -1,3 +1,4 @@
+export { Wordmark, type WordmarkProps } from './components/Wordmark';
 export { SiteHeader, type SiteHeaderProps } from './components/SiteHeader';
 export { SiteFooter, type SiteFooterProps, type FooterItem } from './components/SiteFooter';
 export { Hero, type HeroProps } from './components/Hero';
@@ -15,6 +16,7 @@ export { Digression, type DigressionProps } from './components/Digression';
 export { MarginFig, type MarginFigProps } from './components/MarginFig';
 export { FigureWide, type FigureWideProps } from './components/FigureWide';
 export { Faq, type FaqProps, type FaqItem } from './components/Faq';
+export { Subscribe, type SubscribeProps } from './components/Subscribe';
 export {
   DictionaryEntry,
   type DictionaryEntryProps,

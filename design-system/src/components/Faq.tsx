@@ -11,25 +11,31 @@ export interface FaqItem {
 
 export interface FaqProps {
   items: FaqItem[];
+  /** Section heading. Default "Common questions". */
+  heading?: ReactNode;
 }
 
 /**
- * FAQ accordion: serif questions split by hairline rules, each with a yellow
- * +/− toggle — the "Straight answers, for humans and crawlers alike" block
- * that ends every post. Stays in the reading column; no JS. Must sit inside
- * an Essay.
+ * FAQ as fine print: small grey sans questions split by hairline rules, each
+ * with a yellow +/− toggle. It exists for search engines and AI assistants
+ * (the site renders it from the same data as its FAQPage JSON-LD), so it sits
+ * below the Cta band as an appendix — after the conversion moment, not
+ * competing with the post.
  */
-export function Faq({ items }: FaqProps) {
+export function Faq({ items, heading = 'Common questions' }: FaqProps) {
   return (
-    <div className="faq">
-      {items.map((item, i) => (
-        <details className="faq-item" key={i} open={item.open}>
-          <summary>{item.question}</summary>
-          <div className="faq-answer">
-            {typeof item.answer === 'string' ? <p>{item.answer}</p> : item.answer}
-          </div>
-        </details>
-      ))}
-    </div>
+    <section className="faq-section">
+      <h2 className="kicker">{heading}</h2>
+      <div className="faq">
+        {items.map((item, i) => (
+          <details className="faq-item" key={i} open={item.open}>
+            <summary>{item.question}</summary>
+            <div className="faq-answer">
+              {typeof item.answer === 'string' ? <p>{item.answer}</p> : item.answer}
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
   );
 }

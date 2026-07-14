@@ -152,33 +152,5 @@ a = "No. Each walkthrough is generated on demand against the live app, so it mat
 
       <p class="pullquote">I didn't set out to build any of this. I was trying to get out of UAT.</p>
 
-      <h2 class="kicker">Straight answers, for humans and crawlers alike</h2>
-
-      <div class="faq">
-        <details class="faq-item">
-          <summary>What happens to the tests when the UI changes?</summary>
-          <div class="faq-answer">
-            <p>They heal themselves. Each passing run records a trace; the next run replays it in seconds. If the UI moved, the replay diverges at that step and a free local model picks up mid-step from the plain-language goal, finishes the flow, and re-records the trace. No selector rot, no rewrite.</p>
-          </div>
-        </details>
-        <details class="faq-item">
-          <summary>How much does it cost to run an AI agent for browser testing?</summary>
-          <div class="faq-answer">
-            <p>On the happy path: nothing. The frontier model writes the test once as plain intent. Every run after that is deterministic trace replay &mdash; about 90 seconds and zero model tokens. Only when the UI actually changes does a local model spend ~70,000 free tokens on my own GPU to heal the trace.</p>
-          </div>
-        </details>
-        <details class="faq-item">
-          <summary>How do you know the AI didn&rsquo;t fake the pass?</summary>
-          <div class="faq-answer">
-            <p>It can&rsquo;t. The model&rsquo;s job ends when the clicking ends. PASS or FAIL is a deterministic backend check against the database &mdash; each record&rsquo;s actual values, not a green toast on screen. No model vote, no vision vote.</p>
-          </div>
-        </details>
-        <details class="faq-item">
-          <summary>Do the self-documenting walkthroughs go stale when the UI changes?</summary>
-          <div class="faq-answer">
-            <p>No. Each walkthrough is generated on demand against the live app, so it matches the UI as it stands today. Nothing is written in advance, so there&rsquo;s nothing to fall out of date.</p>
-          </div>
-        </details>
-      </div>
 
     </article>
