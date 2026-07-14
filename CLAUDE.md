@@ -42,8 +42,27 @@ and products.
   publishing one means the reverse (drop `draft = true` **and** add the `<li>`).
 - **Analytics: GoatCounter** (dashboard: https://ajency.goatcounter.com), loaded
   from the shared footer. No cookies, ignores localhost. Own views are excluded per
-  browser by visiting any page with `#toggle-goatcounter` appended (localStorage
-  flag; the same URL toggles it back).
+  browser by visiting any page with `#goatcounter-off` appended; `#goatcounter-on`
+  resumes counting (localStorage flag, one browser/device at a time). Both hashes
+  are idempotent and self-clearing — a *toggle* silently cancelled itself whenever
+  the browser ran the page twice (address-bar prerender), so don't reintroduce one.
+- **Events = intent to talk, nothing else.** Only the actions that could start a
+  conversation are counted, via `data-goatcounter-click="<name>"` on the link (no JS).
+  GoatCounter cannot record *which page* an event fired on, so the page is baked into
+  the name:
+  - `cta-book-call-<slug>` / `cta-email-<slug>` — the two CTA links. `cta.html` derives
+    `<slug>` from the page itself (`home`, `about`, `one-person-ai-team`, …), so a new
+    post gets its own conversion counters with **no extra work** — and you can see which
+    post actually converts.
+  - ⚠️ Home has **two** CTAs — the `.rail-cta` in `_index.html` (desktop) and the shared
+    `.cta` band (mobile; CSS hides one or the other). They deliberately carry the **same**
+    event names, since only one is ever visible and the split is a breakpoint, not a
+    decision. Edit one, edit the other.
+  - `header-email`, `header-whatsapp`, `header-linkedin` — chrome, so deliberately flat
+    (not per-page): the question is only "which channel do people reach for".
+  - **Don't count curiosity** — no events on `<details>` digressions, videos, or internal
+    nav, and no scroll-depth (it would mean adding page JS for a number nobody acts on).
+    A pageview already says "they read it".
 - Page JS is deliberately minimal: the `<details>`-sync script and the
   GoatCounter snippet, both in `footer.html` (the sync script no-ops on pages
   without digressions). No styling in JS, ever.

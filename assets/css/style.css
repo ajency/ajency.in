@@ -172,13 +172,13 @@ a {
   text-decoration: none;
 }
 
-/* Shared by body/footer/back links and the hero + CTA action links. */
+/* Shared by body/back links and the hero + CTA action links. */
 .essay a,
-.footer-col a,
 .back-link a,
 .contact-link,
 .hero-actions a,
-.cta-actions a {
+.cta-actions a,
+.rail-cta-actions a {
   color: var(--ink);
   background-image: linear-gradient(var(--yellow-underline), var(--yellow-underline));
   background-repeat: no-repeat;
@@ -189,11 +189,11 @@ a {
 }
 
 .essay a:hover,
-.footer-col a:hover,
 .back-link a:hover,
 .contact-link:hover,
 .hero-actions a:hover,
-.cta-actions a:hover {
+.cta-actions a:hover,
+.rail-cta-actions a:hover {
   background-size: 100% 100%;
 }
 
@@ -250,6 +250,33 @@ main,
 .contact-link {
   font-weight: 500;
   font-size: 1rem;
+}
+
+/* Right-hand header cluster: place, email, WhatsApp + LinkedIn icons.
+   The header replaced the old contact-columns footer, so these are the
+   site-wide contact points now. */
+.header-meta {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+}
+
+.header-loc {
+  font-size: 0.95rem;
+  color: var(--grey);
+}
+
+.icon-link {
+  display: inline-flex;
+  align-items: center;
+  color: var(--ink);
+}
+
+/* On narrow screens the location cedes its space to the contact links. */
+@media (max-width: 620px) {
+  .header-loc {
+    display: none;
+  }
 }
 
 /* ---- Hero ---- */
@@ -698,6 +725,13 @@ main,
   border: 1px solid var(--rule);
 }
 
+/* Cutout variant — transparent artwork (no photo/screenshot edges), so no
+   frame around it. */
+.margin-fig.cutout img {
+  border: none;
+  border-radius: 0;
+}
+
 /* Caption — quiet serif italic, matching the digression eyebrow voice. */
 .figure-wide figcaption,
 .margin-fig figcaption {
@@ -938,8 +972,84 @@ main,
 
 /* ---- Recent writing ---- */
 .writing {
-  max-width: var(--measure);
   padding-bottom: clamp(1rem, 4vw, 2rem);
+}
+
+/* Post list keeps the reading measure; on wide screens the row splits into
+   list + margin rail (same wide breakpoint as the essay's .has-aside). */
+.post-list {
+  max-width: var(--measure);
+}
+
+.home-rail {
+  display: none;
+}
+
+@media (min-width: 1080px) {
+  .writing-row {
+    display: grid;
+    grid-template-columns: minmax(0, var(--measure)) var(--aside-col);
+    justify-content: space-between;
+    column-gap: var(--aside-gap);
+    align-items: start;
+  }
+
+  .home-rail {
+    display: block;
+  }
+
+  /* The rail IS the home CTA on desktop — the full-width closing band
+     would say the same thing twice. (Pre-:has() browsers show both;
+     harmless.) */
+  main:has(.home-rail) .cta {
+    display: none;
+  }
+}
+
+/* Compact CTA in the rail — set in the digression voice (serif title,
+   grey body, soft left rule) so it converses with the post list instead
+   of competing with its titles. Its top aligns with the list's first
+   hairline because both sit at the top of the same grid row. */
+.rail-cta {
+  padding-left: 1.3rem;
+  border-left: 2px solid var(--rule-soft);
+}
+
+.rail-cta-title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 1.28rem;
+  line-height: 1.3;
+  color: var(--ink-soft);
+}
+
+.rail-cta-line {
+  margin: 0.85rem 0 0;
+  font-size: 0.97rem;
+  line-height: 1.6;
+  color: var(--grey);
+}
+
+.rail-cta-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin: 1.25rem 0 0;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.rail-cta .cta-primary {
+  font-size: 1.05rem;
+}
+
+.rail-cta-human {
+  margin: 1.25rem 0 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--grey);
 }
 
 .post-list {
@@ -1052,38 +1162,16 @@ main,
   color: var(--grey);
 }
 
-/* ---- Footer ---- */
+/* ---- Footer ----
+   Just the copyright line: contact moved into the header, and the rule-less
+   quiet close lets the content's own hairlines end the page. */
 .site-footer {
   padding-top: clamp(2.5rem, 6vw, 4rem);
   padding-bottom: clamp(2.5rem, 6vw, 4rem);
-  border-top: 1px solid var(--rule);
-}
-
-.footer-inner {
-  display: flex;
-  flex-wrap: wrap;
-  gap: clamp(1.5rem, 5vw, 4rem);
-}
-
-.footer-col {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  font-size: 1rem;
-}
-
-.footer-col .muted {
-  color: var(--grey);
-}
-
-/* Inline glyph (WhatsApp) sitting before the phone number. */
-.footer-icon {
-  vertical-align: -2px;
-  margin-right: 4px;
 }
 
 .copyright {
-  margin: clamp(2rem, 5vw, 3rem) 0 0;
+  margin: 0;
   font-size: 0.875rem;
   color: var(--grey-light);
 }

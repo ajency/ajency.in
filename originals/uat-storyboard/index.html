@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>UAT storyboard — source</title>
+<style>
+  /* Rendered at 1536×1024 and screenshotted. Not part of the site build. */
+  @font-face {
+    font-family: 'Work Sans';
+    font-style: normal; font-weight: 400; font-display: block;
+    src: url('../../static/fonts/work-sans-400-normal-latin.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Work Sans';
+    font-style: italic; font-weight: 400; font-display: block;
+    src: url('../../static/fonts/work-sans-400-italic-latin.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Work Sans';
+    font-style: normal; font-weight: 500; font-display: block;
+    src: url('../../static/fonts/work-sans-500-normal-latin.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Work Sans';
+    font-style: normal; font-weight: 700; font-display: block;
+    src: url('../../static/fonts/work-sans-700-normal-latin.woff2') format('woff2');
+  }
+  @font-face {
+    font-family: 'Libre Baskerville';
+    font-style: italic; font-weight: 400; font-display: block;
+    src: url('../../static/fonts/libre-baskerville-400-italic-latin.woff2') format('woff2');
+  }
+
+  :root {
+    --paper: #f8f5ef;
+    --ink: #1b1c1e;
+    --ink-soft: #3a3c40;
+    --grey: #707279;
+    --grey-light: #9a9ca1;
+    --rule: rgba(27, 28, 30, 0.22);
+    --rule-soft: rgba(27, 28, 30, 0.12);
+    --red: #c2401f;
+    --mono: 'SF Mono', 'Menlo', 'Consolas', monospace;
+    --sans: 'Work Sans', sans-serif;
+    --serif: 'Libre Baskerville', Georgia, serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #ddd; }
+
+  .sheet {
+    width: 1536px; height: 1024px;
+    background: var(--paper);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    padding: 20px;
+    gap: 0;
+    color: var(--ink);
+    font-family: var(--sans);
+  }
+
+  .panel {
+    position: relative;
+    padding: 26px 30px 22px;
+    display: flex;
+    flex-direction: column;
+  }
+  /* hairline dividers, not boxes */
+  .panel:nth-child(2), .panel:nth-child(5) { border-left: 1px solid var(--rule-soft); border-right: 1px solid var(--rule-soft); }
+  .panel:nth-child(n+4) { border-top: 1px solid var(--rule-soft); }
+
+  /* mobile export: 2×3 portrait grid, toggled by adding .mobile to body.
+     Rendered at 864px and viewed at ~350px on a phone, so deks are dropped
+     and headings sized to survive the ~0.4× display scale. */
+  body.mobile .sheet {
+    width: 864px; height: auto;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: none;
+  }
+  body.mobile .panel { border: none !important; padding: 30px 28px 26px; }
+  body.mobile .panel:nth-child(even) { border-left: 1px solid var(--rule-soft) !important; }
+  body.mobile .panel:nth-child(n+3) { border-top: 1px solid var(--rule-soft) !important; }
+  body.mobile .no { font-size: 17px; }
+  body.mobile h2 { font-size: 30px; }
+  body.mobile .dek { display: none; }
+  body.mobile .art { margin-top: 20px; }
+  body.mobile .art svg { width: 100%; height: auto; }
+
+  .no { font-family: var(--mono); font-size: 15px; color: var(--grey); letter-spacing: 0.08em; }
+  .no .sep { color: var(--grey-light); }
+  h2 { font-size: 25px; font-weight: 700; letter-spacing: -0.01em; margin-top: 6px; line-height: 1.2; }
+  .dek { font-size: 16.5px; color: var(--ink-soft); margin-top: 6px; line-height: 1.45; max-width: 40ch; }
+  .dek em { font-family: var(--serif); font-style: italic; }
+  .art { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; margin-top: 8px; }
+  svg { display: block; overflow: visible; }
+  svg text { font-family: var(--mono); fill: var(--grey); }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- ================= 01 — the chore ================= -->
+  <section class="panel">
+    <div class="no">01<span class="sep"> / 06</span></div>
+    <h2>Deployed. Now the chore.</h2>
+    <p class="dek">Login. Forms. A long trail of clicks before <em>&ldquo;looks fine.&rdquo;</em></p>
+    <div class="art">
+      <svg width="420" height="250" viewBox="0 0 420 250" fill="none" stroke="#1b1c1e" stroke-width="1.5">
+        <!-- browser: login screen -->
+        <rect x="14" y="12" width="200" height="150" rx="5"/>
+        <line x1="14" y1="38" x2="214" y2="38"/>
+        <circle cx="30" cy="25" r="3.5" stroke-width="1.2"/>
+        <circle cx="44" cy="25" r="3.5" stroke-width="1.2"/>
+        <rect x="60" y="18.5" width="120" height="13" rx="3" stroke="rgba(27,28,30,0.35)" stroke-width="1"/>
+        <!-- form -->
+        <rect x="48" y="62" width="132" height="18" rx="3" stroke-width="1.2"/>
+        <rect x="48" y="90" width="132" height="18" rx="3" stroke-width="1.2"/>
+        <rect x="48" y="120" width="60" height="19" rx="3" fill="#1b1c1e"/>
+        <text x="52" y="75" font-size="10" stroke="none">email</text>
+        <text x="52" y="103" font-size="10" stroke="none">••••••••</text>
+        <text x="61" y="133" font-size="10" stroke="none" fill="#f8f5ef">sign in</text>
+        <!-- the trail ahead: dotted path with click points, off the edge -->
+        <path d="M 108 139 C 150 180, 200 195, 250 190 S 340 160, 380 175 S 420 205, 445 200"
+              stroke-dasharray="2.5 6" stroke-width="1.6"/>
+        <g fill="#f8f5ef" stroke-width="1.5">
+          <circle cx="199" cy="191" r="4.5"/>
+          <circle cx="250" cy="190" r="4.5"/>
+          <circle cx="299" cy="178" r="4.5"/>
+          <circle cx="351" cy="170" r="4.5"/>
+          <circle cx="396" cy="189" r="4.5"/>
+        </g>
+        <text x="284" y="226" font-size="12" stroke="none">step 1 of 41</text>
+        <!-- presence implied: coffee, poured for the long haul -->
+        <g stroke-width="1.5">
+          <path d="M 288 68 L 293 104 L 321 104 L 326 68 Z"/>
+          <path d="M 325 76 Q 340 78 335 90 Q 332 98 320 96" stroke-width="1.3"/>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ================= 02 — the skip ================= -->
+  <section class="panel">
+    <div class="no">02<span class="sep"> / 06</span></div>
+    <h2>&ldquo;Next deploy, I promise.&rdquo;</h2>
+    <p class="dek">The tab stays open. Untested.</p>
+    <div class="art">
+      <svg width="420" height="250" viewBox="0 0 420 250" fill="none" stroke="#1b1c1e" stroke-width="1.5">
+        <!-- untested browser peeking behind, dimmed -->
+        <g stroke="rgba(27,28,30,0.35)">
+          <rect x="30" y="16" width="220" height="158" rx="5"/>
+          <line x1="30" y1="42" x2="250" y2="42"/>
+          <circle cx="46" cy="29" r="3.5" stroke-width="1.2"/>
+          <circle cx="60" cy="29" r="3.5" stroke-width="1.2"/>
+          <rect x="62" y="66" width="132" height="16" rx="3" stroke-width="1.2"/>
+          <rect x="62" y="92" width="132" height="16" rx="3" stroke-width="1.2"/>
+        </g>
+        <text x="176" y="34" font-size="10" stroke="none" fill="rgba(112,114,121,0.75)">untested</text>
+        <!-- terminal dragged over it -->
+        <rect x="120" y="78" width="240" height="110" rx="5" fill="#f8f5ef"/>
+        <rect x="120" y="78" width="240" height="110" rx="5"/>
+        <line x1="120" y1="100" x2="360" y2="100"/>
+        <circle cx="135" cy="89" r="3.5" stroke-width="1.2"/>
+        <circle cx="149" cy="89" r="3.5" stroke-width="1.2"/>
+        <g font-size="11.5" stroke="none">
+          <text x="134" y="122" fill="#3a3c40">$ git push</text>
+          <text x="134" y="142" fill="#3a3c40">deploy: live ✓</text>
+          <text x="134" y="162" fill="#3a3c40">$ _</text>
+        </g>
+        <!-- sticky note, plain paper, handwritten promise -->
+        <g transform="translate(300 30) rotate(4)">
+          <rect x="0" y="0" width="96" height="76" fill="#f8f5ef" stroke="#1b1c1e" stroke-width="1.3"/>
+          <text x="12" y="30" font-size="12" stroke="none" fill="#1b1c1e" font-style="italic" font-family="'Libre Baskerville', serif">next</text>
+          <text x="12" y="48" font-size="12" stroke="none" fill="#1b1c1e" font-style="italic" font-family="'Libre Baskerville', serif">deploy,</text>
+          <text x="12" y="66" font-size="12" stroke="none" fill="#1b1c1e" font-style="italic" font-family="'Libre Baskerville', serif">promise</text>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ================= 03 — the handoff ================= -->
+  <section class="panel">
+    <div class="no">03<span class="sep"> / 06</span></div>
+    <h2>So I handed over the clicking.</h2>
+    <p class="dek">The agent walks the same journey in Chrome.</p>
+    <div class="art">
+      <svg width="420" height="250" viewBox="0 0 420 250" fill="none" stroke="#1b1c1e" stroke-width="1.5">
+        <!-- browser being operated -->
+        <rect x="60" y="14" width="250" height="176" rx="5"/>
+        <line x1="60" y1="40" x2="310" y2="40"/>
+        <circle cx="76" cy="27" r="3.5" stroke-width="1.2"/>
+        <circle cx="90" cy="27" r="3.5" stroke-width="1.2"/>
+        <!-- live state -->
+        <circle cx="286" cy="27" r="3.5" fill="#c2401f" stroke="none"/>
+        <text x="252" y="31" font-size="10" stroke="none" fill="#c2401f">live</text>
+        <!-- form elements the cursor moves through -->
+        <rect x="86" y="60" width="140" height="17" rx="3" stroke-width="1.2"/>
+        <rect x="86" y="88" width="140" height="17" rx="3" stroke-width="1.2"/>
+        <rect x="86" y="118" width="64" height="19" rx="3" stroke-width="1.2"/>
+        <rect x="86" y="150" width="200" height="17" rx="3" stroke="rgba(27,28,30,0.35)" stroke-width="1"/>
+        <!-- autonomous cursor with red trail: entered field 1, filled field 2, heading for the button -->
+        <path d="M 96 46 C 140 50, 200 56, 216 68 C 240 86, 150 84, 132 96 C 112 104, 130 116, 116 127"
+              stroke="#c2401f" stroke-dasharray="2.5 5" stroke-width="1.6"/>
+        <g fill="#f8f5ef" stroke="#c2401f" stroke-width="1.4">
+          <circle cx="180" cy="65" r="4"/>
+          <circle cx="150" cy="93" r="4"/>
+        </g>
+        <path d="M 116 127 l 0 14 l 4 -4 l 3 7 l 3.5 -1.8 l -3 -6.8 l 5.8 -0.6 z"
+              fill="#c2401f" stroke="none"/>
+        <!-- presence implied: the mouse, untouched -->
+        <g stroke-width="1.5">
+          <rect x="346" y="210" width="26" height="38" rx="13"/>
+          <line x1="359" y1="210" x2="359" y2="224"/>
+        </g>
+        <text x="264" y="234" font-size="10" stroke="none">(untouched)</text>
+        <!-- agent as terminal block, wired to the browser -->
+        <rect x="8" y="210" width="126" height="40" rx="4"/>
+        <text x="22" y="228" font-size="11" stroke="none" fill="#1b1c1e">AGENT</text>
+        <text x="22" y="242" font-size="10" stroke="none">walking journey…</text>
+        <path d="M 134 228 C 170 226, 180 210, 186 192" stroke-dasharray="2.5 5" stroke-width="1.3"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ================= 04 — the honest panel ================= -->
+  <section class="panel">
+    <div class="no">04<span class="sep"> / 06</span></div>
+    <h2>I &ldquo;watch.&rdquo;</h2>
+    <p class="dek">Three terminals deep. A step sails past unseen.</p>
+    <div class="art">
+      <svg width="420" height="250" viewBox="0 0 420 250" fill="none" stroke="#1b1c1e" stroke-width="1.5">
+        <!-- three parallel terminals, person facing them -->
+        <g>
+          <rect x="14" y="16" width="150" height="104" rx="4" fill="#f8f5ef"/>
+          <rect x="14" y="16" width="150" height="104" rx="4"/>
+          <line x1="14" y1="34" x2="164" y2="34"/>
+          <text x="24" y="29" font-size="9" stroke="none">claude — erp</text>
+          <g stroke="rgba(27,28,30,0.4)" stroke-width="1.1">
+            <line x1="26" y1="50" x2="120" y2="50"/><line x1="26" y1="64" x2="140" y2="64"/>
+            <line x1="26" y1="78" x2="104" y2="78"/><line x1="26" y1="92" x2="130" y2="92"/>
+          </g>
+        </g>
+        <g transform="translate(36 42)">
+          <rect x="14" y="16" width="150" height="104" rx="4" fill="#f8f5ef"/>
+          <rect x="14" y="16" width="150" height="104" rx="4"/>
+          <line x1="14" y1="34" x2="164" y2="34"/>
+          <text x="24" y="29" font-size="9" stroke="none">claude — importer</text>
+          <g stroke="rgba(27,28,30,0.4)" stroke-width="1.1">
+            <line x1="26" y1="50" x2="132" y2="50"/><line x1="26" y1="64" x2="96" y2="64"/>
+            <line x1="26" y1="78" x2="140" y2="78"/><line x1="26" y1="92" x2="112" y2="92"/>
+          </g>
+        </g>
+        <g transform="translate(72 84)">
+          <rect x="14" y="16" width="150" height="104" rx="4" fill="#f8f5ef"/>
+          <rect x="14" y="16" width="150" height="104" rx="4"/>
+          <line x1="14" y1="34" x2="164" y2="34"/>
+          <text x="24" y="29" font-size="9" stroke="none">claude — site</text>
+          <g stroke="rgba(27,28,30,0.4)" stroke-width="1.1">
+            <line x1="26" y1="50" x2="124" y2="50"/><line x1="26" y1="64" x2="136" y2="64"/>
+            <line x1="26" y1="78" x2="88" y2="78"/>
+          </g>
+        </g>
+        <!-- attention is here: cursor active in the front terminal -->
+        <path d="M 208 186 l 0 12 l 3.6 -3.6 l 2.6 6.2 l 3 -1.5 l -2.6 -6 l 5 -0.5 z"
+              fill="#1b1c1e" stroke="none"/>
+        <!-- the browser at the edge of vision: a step completes unseen -->
+        <g stroke="rgba(27,28,30,0.45)">
+          <rect x="300" y="30" width="112" height="86" rx="4"/>
+          <line x1="300" y1="46" x2="412" y2="46"/>
+          <rect x="312" y="58" width="66" height="11" rx="2" stroke-width="1"/>
+          <rect x="312" y="76" width="66" height="11" rx="2" stroke-width="1"/>
+        </g>
+        <path d="M 378 82 l 0 11 l 3.2 -3.2 l 2.4 5.6 l 2.8 -1.4 l -2.4 -5.5 l 4.6 -0.5 z"
+              fill="#c2401f" stroke="none"/>
+        <text x="308" y="136" font-size="11" stroke="none" fill="#c2401f">step 14 ✓</text>
+        <text x="308" y="153" font-size="10" stroke="none">(nobody saw it)</text>
+        <!-- the mouse, still untouched -->
+        <g stroke-width="1.5">
+          <rect x="330" y="186" width="26" height="38" rx="13"/>
+          <line x1="343" y1="186" x2="343" y2="200"/>
+        </g>
+        <path d="M 320 196 q -14 6 -10 20" stroke="rgba(27,28,30,0.3)" stroke-width="1.2" stroke-dasharray="1.5 4"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ================= 05 — the evidence ================= -->
+  <section class="panel">
+    <div class="no">05<span class="sep"> / 06</span></div>
+    <h2>It keeps the evidence.</h2>
+    <p class="dek">One screenshot per step. The run arrives as a filmstrip.</p>
+    <div class="art">
+      <svg width="420" height="250" viewBox="0 0 420 250" fill="none" stroke="#1b1c1e" stroke-width="1.5">
+        <!-- steps raining into the strip -->
+        <g stroke-dasharray="2 5" stroke-width="1.2" stroke="rgba(27,28,30,0.5)">
+          <path d="M 70 18 L 70 62"/><path d="M 170 18 L 170 62"/>
+          <path d="M 270 18 L 270 62"/><path d="M 350 18 L 350 62"/>
+        </g>
+        <text x="30" y="14" font-size="10" stroke="none">click</text>
+        <text x="132" y="14" font-size="10" stroke="none">fill</text>
+        <text x="230" y="14" font-size="10" stroke="none">submit</text>
+        <text x="316" y="14" font-size="10" stroke="none">verify</text>
+        <!-- the filmstrip: sprocket band with frames -->
+        <g transform="translate(12 66)">
+          <rect x="0" y="0" width="396" height="86" rx="3"/>
+          <!-- sprocket holes -->
+          <g stroke-width="1" stroke="rgba(27,28,30,0.5)">
+            <rect x="10" y="5" width="7" height="5" rx="1"/><rect x="42" y="5" width="7" height="5" rx="1"/>
+            <rect x="74" y="5" width="7" height="5" rx="1"/><rect x="106" y="5" width="7" height="5" rx="1"/>
+            <rect x="138" y="5" width="7" height="5" rx="1"/><rect x="170" y="5" width="7" height="5" rx="1"/>
+            <rect x="202" y="5" width="7" height="5" rx="1"/><rect x="234" y="5" width="7" height="5" rx="1"/>
+            <rect x="266" y="5" width="7" height="5" rx="1"/><rect x="298" y="5" width="7" height="5" rx="1"/>
+            <rect x="330" y="5" width="7" height="5" rx="1"/><rect x="362" y="5" width="7" height="5" rx="1"/>
+            <rect x="10" y="76" width="7" height="5" rx="1"/><rect x="42" y="76" width="7" height="5" rx="1"/>
+            <rect x="74" y="76" width="7" height="5" rx="1"/><rect x="106" y="76" width="7" height="5" rx="1"/>
+            <rect x="138" y="76" width="7" height="5" rx="1"/><rect x="170" y="76" width="7" height="5" rx="1"/>
+            <rect x="202" y="76" width="7" height="5" rx="1"/><rect x="234" y="76" width="7" height="5" rx="1"/>
+            <rect x="266" y="76" width="7" height="5" rx="1"/><rect x="298" y="76" width="7" height="5" rx="1"/>
+            <rect x="330" y="76" width="7" height="5" rx="1"/><rect x="362" y="76" width="7" height="5" rx="1"/>
+          </g>
+          <!-- frames -->
+          <g stroke-width="1.2">
+            <rect x="12" y="16" width="56" height="54" rx="2"/>
+            <rect x="76" y="16" width="56" height="54" rx="2"/>
+            <rect x="140" y="16" width="56" height="54" rx="2"/>
+            <rect x="204" y="16" width="56" height="54" rx="2" stroke="#c2401f" stroke-width="2"/>
+            <rect x="268" y="16" width="56" height="54" rx="2"/>
+            <rect x="332" y="16" width="56" height="54" rx="2"/>
+          </g>
+          <!-- tiny screen content in frames -->
+          <g stroke="rgba(27,28,30,0.4)" stroke-width="1">
+            <line x1="20" y1="30" x2="58" y2="30"/><line x1="20" y1="42" x2="48" y2="42"/><rect x="20" y="52" width="18" height="8" rx="1"/>
+            <line x1="84" y1="30" x2="122" y2="30"/><line x1="84" y1="42" x2="112" y2="42"/><rect x="84" y="52" width="18" height="8" rx="1"/>
+            <line x1="148" y1="30" x2="186" y2="30"/><line x1="148" y1="42" x2="176" y2="42"/><rect x="148" y="52" width="18" height="8" rx="1"/>
+            <line x1="212" y1="30" x2="250" y2="30"/><line x1="212" y1="42" x2="240" y2="42"/><rect x="212" y="52" width="18" height="8" rx="1"/>
+            <line x1="276" y1="30" x2="314" y2="30"/><line x1="276" y1="42" x2="304" y2="42"/><rect x="276" y="52" width="18" height="8" rx="1"/>
+            <line x1="340" y1="30" x2="378" y2="30"/><line x1="340" y1="42" x2="368" y2="42"/><rect x="340" y="52" width="18" height="8" rx="1"/>
+          </g>
+          <g font-size="9" stroke="none">
+            <text x="36" y="66">01</text><text x="100" y="66">02</text><text x="164" y="66">03</text>
+            <text x="228" y="66" fill="#c2401f">14</text><text x="292" y="66">…</text><text x="356" y="66">41</text>
+          </g>
+        </g>
+        <!-- notification + review time -->
+        <g transform="translate(12 176)">
+          <rect x="0" y="0" width="176" height="30" rx="15"/>
+          <circle cx="18" cy="15" r="4" fill="#c2401f" stroke="none"/>
+          <text x="32" y="19" font-size="11.5" stroke="none" fill="#1b1c1e">walkthrough ready</text>
+        </g>
+        <text x="208" y="196" font-size="11.5" stroke="none">reviewed in 2 minutes</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ================= 06 — the aha ================= -->
+  <section class="panel">
+    <div class="no">06<span class="sep"> / 06</span></div>
+    <h2>&ldquo;How do I cancel a receipt?&rdquo;</h2>
+    <p class="dek">Same filmstrip. The click-through <em>is</em> the documentation.</p>
+    <div class="art">
+      <svg width="420" height="250" viewBox="0 0 420 250" fill="none" stroke="#1b1c1e" stroke-width="1.5">
+        <!-- question from off-panel: speech bubble entering from left -->
+        <g>
+          <path d="M -10 30 L 150 30 Q 158 30 158 38 L 158 66 Q 158 74 150 74 L 60 74 L 46 88 L 48 74 L -10 74"/>
+          <text x="10" y="50" font-size="12" stroke="none" fill="#1b1c1e" font-family="'Work Sans', sans-serif">the cashier,</text>
+          <text x="10" y="66" font-size="12" stroke="none" fill="#1b1c1e" font-family="'Work Sans', sans-serif">on WhatsApp</text>
+        </g>
+        <!-- the same filmstrip handed across -->
+        <g transform="translate(120 110) rotate(-3)">
+          <rect x="0" y="0" width="240" height="58" rx="3"/>
+          <g stroke-width="1" stroke="rgba(27,28,30,0.5)">
+            <rect x="8" y="4" width="6" height="4" rx="1"/><rect x="36" y="4" width="6" height="4" rx="1"/>
+            <rect x="64" y="4" width="6" height="4" rx="1"/><rect x="92" y="4" width="6" height="4" rx="1"/>
+            <rect x="120" y="4" width="6" height="4" rx="1"/><rect x="148" y="4" width="6" height="4" rx="1"/>
+            <rect x="176" y="4" width="6" height="4" rx="1"/><rect x="204" y="4" width="6" height="4" rx="1"/>
+            <rect x="8" y="50" width="6" height="4" rx="1"/><rect x="36" y="50" width="6" height="4" rx="1"/>
+            <rect x="64" y="50" width="6" height="4" rx="1"/><rect x="92" y="50" width="6" height="4" rx="1"/>
+            <rect x="120" y="50" width="6" height="4" rx="1"/><rect x="148" y="50" width="6" height="4" rx="1"/>
+            <rect x="176" y="50" width="6" height="4" rx="1"/><rect x="204" y="50" width="6" height="4" rx="1"/>
+          </g>
+          <g stroke-width="1.1">
+            <rect x="10" y="11" width="40" height="36" rx="2"/>
+            <rect x="56" y="11" width="40" height="36" rx="2"/>
+            <rect x="102" y="11" width="40" height="36" rx="2"/>
+            <rect x="148" y="11" width="40" height="36" rx="2"/>
+            <rect x="194" y="11" width="36" height="36" rx="2"/>
+          </g>
+          <text x="12" y="-8" font-size="10" stroke="none" fill="#c2401f">cancel-receipt walkthrough — unchanged</text>
+        </g>
+        <!-- the reply: the strip goes straight back -->
+        <path d="M 106 168 C 80 156, 62 132, 54 104" stroke="#c2401f" stroke-dasharray="2.5 5" stroke-width="1.5"/>
+        <path d="M 54 104 l 0 12 l 5.5 -6 z" fill="#c2401f" stroke="none"/>
+        <text x="30" y="196" font-size="10" stroke="none">sent as-is</text>
+        <!-- background detail: the agent is already on the next run -->
+        <g stroke="rgba(27,28,30,0.45)">
+          <rect x="316" y="196" width="96" height="34" rx="4"/>
+        </g>
+        <text x="328" y="211" font-size="9.5" stroke="none">AGENT</text>
+        <text x="328" y="224" font-size="9.5" stroke="none">run 18 · in progress</text>
+      </svg>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

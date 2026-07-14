@@ -1,9 +1,10 @@
+{{ $slug := cond .IsHome "home" (path.Base .RelPermalink) }}
     <section class="cta">
-      <h2 class="cta-title">Let's build something with intention.</h2>
+      <h2 class="cta-title">Let's build something together.</h2>
       <p class="cta-line">I've done this before &mdash; for early-stage startups, a publicly listed enterprise, and most stages in between. If it overlaps with what you're working through, I'm glad to share what I learned.</p>
       <p class="cta-actions">
-        <a class="cta-primary" href="https://calendar.app.google/wibfA7H9xZdb3Zaq7" target="_blank" rel="noopener">Grab 30 minutes &rarr;</a>
-        <a href="mailto:talktous@ajency.in">Or email me</a>
+        <a class="cta-primary" href="https://calendar.app.google/wibfA7H9xZdb3Zaq7" target="_blank" rel="noopener" data-goatcounter-click="cta-book-call-{{ $slug }}">Grab 30 minutes &rarr;</a>
+        <a href="mailto:talktous@ajency.in" data-goatcounter-click="cta-email-{{ $slug }}">Or email me</a>
       </p>
       <p class="cta-human">I take these calls because I genuinely enjoy them &mdash; comparing notes with founders is how I keep learning, and the best conversations usually drift into motorcycles or cocktails anyway.</p>
     </section>

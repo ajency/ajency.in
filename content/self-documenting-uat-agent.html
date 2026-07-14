@@ -1,12 +1,16 @@
 +++
-title = "A self-documenting UAT agent: walkthroughs that never go stale and barely cost tokens — Ajency.in"
-description = "A UAT agent that walks the app, documents itself, and answers support questions — building live walkthroughs that never go stale and cost almost nothing to run (~70k tokens at $0 on a local Qwen 3.5 35B)."
+title = "UAT has an inertia problem: a self-documenting UAT agent whose walkthroughs never go stale — Ajency.in"
+description = "Every product person skips the UAT click-through — the inertia of logging in, filling forms, clicking. I gave it to an agent that screenshots every step, and the click-through became user documentation generated on the fly, never out of date, for ~70k tokens at $0 on a local Qwen 3.5 35B."
 date = 2026-06-30
 [params]
 og_type = "article"
-og_title = "Four hours to save fifteen minutes."
-og_description = "I was only trying to get out of UAT. It became a self-documenting UAT agent whose walkthroughs never go stale — and barely cost a token to run."
+og_title = "UAT has an inertia problem."
+og_description = "An agent does the click-through I kept skipping. The recorded screenshots became on-the-fly documentation — never out of date, at almost zero token cost."
 schema = "blogposting"
+
+[[params.faq]]
+q = "Can an AI agent do UAT click-throughs instead of a product manager?"
+a = "Yes. The agent logs in, fills the forms, and clicks through the whole journey, screenshotting every step. The human judgment doesn't go away — it moves from doing the clicking to reviewing the stitched journey at the end of the run, which takes two minutes instead of fifteen."
 
 [[params.faq]]
 q = "Do self-documenting walkthroughs go stale when the UI changes?"
@@ -22,36 +26,38 @@ a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snap
 +++
     <section class="hero">
       <p class="back-link"><a href="/">&larr; Back</a></p>
-      <h1>Four hours to save fifteen minutes.</h1>
-      <p class="subhead">I was only trying to get out of UAT.</p>
+      <h1>UAT has an inertia problem.</h1>
+      <p class="subhead">An agent does the click-through I kept skipping. The recorded screenshots became on-the-fly documentation.</p>
     </section>
 
     <article class="essay">
-      <p>I'm lazy in a specific way. I'll spend four hours building something to avoid fifteen minutes of doing it by hand.</p>
+      <p>UAT is a product person's chore: after a new feature ships, or an old one changes, log in, fill the forms, click through the whole journey &mdash; job card, invoice, payment &mdash; just to look at it. Not for bugs; API and browser tests already catch those. For the soft, subjective pass: does the copy land, does the spacing hold, does the flow feel right.</p>
 
-      <p>The thing I was avoiding was UAT.</p>
+      <p>And it gets skipped. I skipped it. The logging in, the form-filling, the clicking &mdash; the inertia wins more often than I'd like to admit. So I spent four hours building an agent to save myself the fifteen minutes.</p>
 
       <figure class="figure-wide">
         <picture>
           <source media="(max-width: 600px)" type="image/webp" srcset="/images/uat-storyboard-mobile.webp" />
           <source media="(max-width: 600px)" srcset="/images/uat-storyboard-mobile.png" />
           <source type="image/webp" srcset="/images/uat-storyboard.webp" />
-          <img src="/images/uat-storyboard.png" alt="A six-panel comic: a self-documenting UAT agent walks the app in Chrome, screenshots every step, and turns the click-through into a reusable walkthrough that never goes stale — so UAT never has to be done by hand again." loading="lazy" />
+          <img src="/images/uat-storyboard.png" alt="A six-panel storyboard: after a deploy, the UAT click-through gets skipped — 'next deploy, I promise'. An agent takes over the clicking in Chrome while the human is three terminals deep, screenshots every step into a filmstrip reviewed in two minutes, and when a cashier asks how to cancel a receipt, the same filmstrip is the documentation." loading="lazy" />
         </picture>
       </figure>
 
-      <p>It's not the bugs &mdash; API and browser tests already catch those. It's the soft, subjective pass: does the copy land, does the spacing hold, does the flow feel right. Which meant me, after every deploy, clicking through the whole journey by hand &mdash; job card, invoice, payment &mdash; just to look at it. So I handed the clicking to an agent that walks the journey and screenshots every step.</p>
+      <p>The plan was simple: the agent clicks, I watch the screen. In practice I was running Claude Code sessions in parallel, and &ldquo;watching&rdquo; meant glancing over after the moment had passed. I kept missing steps.</p>
+
+      <p>So the agent records. A screenshot at every step, stitched into a journey and handed to me at the end of the run. Now I review a filmstrip in two minutes instead of pretending to watch a screen for fifteen.</p>
 
       <h2 class="kicker">Self-documenting walkthroughs that never go stale</h2>
 
-      <p>Then the support questions started. Cashiers would ask things like:</p>
+      <p>Then the cashiers started asking:</p>
 
       <div class="has-aside">
         <blockquote>
           <p>How do I cancel an incorrect money receipt?</p>
         </blockquote>
 
-        <p>Before, I'd write the steps out or hop on a call myself. Now I just forward the question to the agent. It builds a walkthrough for that exact need &mdash; pulls the right screenshots, marks the buttons to press, and sends back something you click through instead of read. It's the same walk it does for UAT &mdash; the click-through I built to get out of doing myself, now handed to whoever asked.</p>
+        <p>Earlier, I'd write the steps out or hop on a call myself. Now I just forward the question to the agent. It builds a walkthrough for that exact need &mdash; pulls the right screenshots, marks the buttons to press, and sends back something you click through instead of read. It's the same filmstrip it builds for UAT, pointed at whoever asked.</p>
 
         <figure class="margin-fig">
           <video src="/images/cancel-receipt-walkthrough.mp4" poster="/images/cancel-receipt-poster.webp" width="480" height="852" autoplay loop muted playsinline preload="none" aria-label="A self-documenting walkthrough generated on demand: the UAT agent steps through cancelling an incorrect money receipt, screen by screen, highlighting the button to press at each step — built live against the current UI so it never goes stale."></video>
@@ -61,11 +67,11 @@ a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snap
 
       <p class="agency-lines">Most user docs are written once and quietly go stale the moment the UI moves. This is the opposite &mdash; built on the spot, always matching the app as it stands today, and shaped around the person who asked. <span class="highlight">A live walkthrough that's never out of date, because it's never written in advance.</span></p>
 
-      <p class="pullquote">I didn't set out to build a support tool. I was trying to get out of UAT.</p>
+      <p class="pullquote">The support tool was an accident. All I wanted was out of UAT.</p>
 
       <h2 class="kicker">Why it barely costs a token to run</h2>
 
-      <p>People assume this costs a fortune in tokens. It doesn't &mdash; only the part that needs judgment runs on the pricey model; everything repeatable is pushed down to things that run for free:</p>
+      <p>The obvious worry is the token bill. Only the part that needs judgment runs on the pricey model; everything repeatable is pushed down to things that run for free:</p>
 
         <pre class="ascii-flow">
 ┌────────────────────────────────────────────────────────┐
@@ -121,6 +127,12 @@ a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snap
       <h2 class="kicker">Straight answers, for humans and crawlers alike</h2>
 
       <div class="faq">
+        <details class="faq-item">
+          <summary>Can an AI agent do UAT click-throughs instead of a product manager?</summary>
+          <div class="faq-answer">
+            <p>Yes. The agent logs in, fills the forms, and clicks through the whole journey, screenshotting every step. The human judgment doesn&rsquo;t go away &mdash; it moves from doing the clicking to reviewing the stitched journey at the end of the run, which takes two minutes instead of fifteen.</p>
+          </div>
+        </details>
         <details class="faq-item">
           <summary>Do self-documenting walkthroughs go stale when the UI changes?</summary>
           <div class="faq-answer">
