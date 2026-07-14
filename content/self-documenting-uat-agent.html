@@ -22,7 +22,7 @@ a = "No. Each walkthrough is generated on demand against the live app, so it mat
 
 [[params.faq]]
 q = "How much does it cost to run an AI agent for UAT testing?"
-a = "Almost nothing. The frontier model writes the test once as plain intent; every run after that is a local model plus Python driving Chrome. A full job-card-to-payment walkthrough is ~70,000 tokens through a local Qwen 3.5 35B on my own Mac Pro — re-run it a hundred times and the bill stays flat at zero."
+a = "Almost nothing. The frontier model writes the test once as plain intent; every run after that is a local model plus Python driving Chrome. A full job-card-to-payment walkthrough is ~70,000 tokens through a local Qwen 3.5 35B on my own MacBook — re-run it a hundred times and the bill stays flat at zero."
 
 [[params.faq]]
 q = "Can a local LLM drive browser-based UAT?"
@@ -41,10 +41,10 @@ a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snap
 
       <figure class="figure-wide">
         <picture>
-          <source media="(max-width: 600px)" type="image/webp" srcset="/images/uat-storyboard-mobile.webp" />
-          <source media="(max-width: 600px)" srcset="/images/uat-storyboard-mobile.png" />
+          <source media="(max-width: 600px)" type="image/webp" srcset="/images/uat-storyboard-mobile.webp" width="864" height="1199" />
+          <source media="(max-width: 600px)" srcset="/images/uat-storyboard-mobile.jpg" width="864" height="1199" />
           <source type="image/webp" srcset="/images/uat-storyboard.webp" />
-          <img src="/images/uat-storyboard.png" width="1536" height="1024" alt="A six-panel storyboard: after a deploy, the UAT click-through gets skipped — 'next deploy, I promise'. An agent takes over the clicking in Chrome while the human is three terminals deep, screenshots every step into a filmstrip reviewed in two minutes, and when a cashier asks how to cancel a receipt, the same filmstrip is the documentation." fetchpriority="high" />
+          <img src="/images/uat-storyboard.jpg" width="1280" height="853" alt="A six-panel storyboard: after a deploy, the UAT click-through gets skipped — 'next deploy, I promise'. An agent takes over the clicking in Chrome while the human is three terminals deep, screenshots every step into a filmstrip reviewed in two minutes, and when a cashier asks how to cancel a receipt, the same filmstrip is the documentation." fetchpriority="high" />
         </picture>
       </figure>
 
@@ -121,7 +121,7 @@ a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snap
       </div>
 
       <div class="has-aside">
-        <p>The expensive model runs once, plus the odd escalation; everything per-run is local or free. A full job-card-to-payment walkthrough burns ~70,000 tokens through <a href="https://huggingface.co/Qwen/Qwen3.5-35B-A3B" target="_blank" rel="noopener">Qwen 3.5 35B</a> on my Mac Pro, so re-run it a hundred times and the bill stays flat at zero.</p>
+        <p>The expensive model runs once, plus the odd escalation; everything per-run is local or free. A full job-card-to-payment walkthrough burns ~70,000 tokens through <a href="https://huggingface.co/Qwen/Qwen3.5-35B-A3B" target="_blank" rel="noopener">Qwen 3.5 35B</a> on my MacBook, so re-run it a hundred times and the bill stays flat at zero.</p>
         <figure class="margin-fig">
           <picture>
             <source type="image/webp" srcset="/images/delegate-yoda.webp" />

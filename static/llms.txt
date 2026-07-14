@@ -10,10 +10,11 @@
 ## Pages
 - [Home](https://ajency.in/): Who Anuj is and what he does — helping small teams deliver what a much larger team would, with AI agents and rethought workflows.
 - [About](https://ajency.in/about/): The story, 2012 to now — studio, acquisition, and the return to working solo. "It was always about agency."
+- [Privacy](https://ajency.in/privacy/): No cookies, cookieless analytics (GoatCounter), and an email list (EmailOctopus) used only to send new posts.
 
 ## Writing
-- [Why ERP fails at the Indian dealership counter](https://ajency.in/why-erp-fails-indian-smb/): Field notes from a ₹600-crore auto dealership's cash counters in Jharkhand — why ERP adoption dies at the counter in week one, and how to design for the world as you find it.
-- [One person delivering a full software project with AI agents](https://ajency.in/one-person-ai-team/): Product, design, dev, and QA in one head — proven on a four-month ERP delivery for a ₹600-crore automobile dealer.
+- [Why ERP fails at the Indian dealership counter](https://ajency.in/why-erp-fails-indian-smb/): Field notes from a ₹500-crore-plus auto dealership's cash counters — why ERP adoption dies at the counter in week one, and how to design for the world as you find it.
+- [One person delivering a full software project with AI agents](https://ajency.in/one-person-ai-team/): Product, design, dev, and QA in one head — proven on a four-month ERP delivery for a ₹500-crore-plus automobile dealer.
 - [A self-documenting UAT agent](https://ajency.in/self-documenting-uat-agent/): An agent does the UAT click-through and screenshots every step — walkthroughs that never go stale, for ~70k tokens at $0 on a local Qwen 3.5 35B.
 
 ## Contact

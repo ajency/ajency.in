@@ -8,7 +8,8 @@
 
   <main>
 {{ block "main" . }}{{ end }}
-{{ partial "cta.html" . }}
+{{/* No CTA band on the 404 — a lost visitor isn't a lead. */}}
+{{ if ne .Kind "404" }}{{ partial "cta.html" . }}{{ end }}
 {{ partial "faq.html" . }}
   </main>
 

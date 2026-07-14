@@ -258,6 +258,7 @@ a {
 .essay a,
 .back-link a,
 .contact-link,
+.hero-lead a,
 .hero-actions a,
 .cta-actions a,
 .rail-cta-actions a {
@@ -273,6 +274,7 @@ a {
 .essay a:hover,
 .back-link a:hover,
 .contact-link:hover,
+.hero-lead a:hover,
 .hero-actions a:hover,
 .cta-actions a:hover,
 .rail-cta-actions a:hover {
@@ -470,7 +472,7 @@ main,
    the subscribe block closes the post it is dead space instead: the CTA already
    brings its own margin-top and a heavy padding-top, so the three stack into a
    void under the email field. */
-.essay:has(> .subscribe:last-child) {
+.essay:has(> .subscribe-row:last-child) {
   padding-bottom: 0;
 }
 
@@ -505,7 +507,8 @@ main,
    section that wants one must be added here (.writing is the home Writing list). */
 .essay .kicker,
 .faq-section .kicker,
-.writing .kicker {
+.writing .kicker,
+.more-writing .kicker {
   display: flex;
   align-items: center;
   gap: var(--space-3);
@@ -522,7 +525,8 @@ main,
 
 .essay .kicker::before,
 .faq-section .kicker::before,
-.writing .kicker::before {
+.writing .kicker::before,
+.more-writing .kicker::before {
   content: "";
   width: 1.7rem;
   height: 2px;
@@ -1335,6 +1339,57 @@ main,
   color: var(--grey);
 }
 
+/* ---- More writing (end of each post) ----
+   A miniature of the home Writing list: meta + title only, no dek,
+   tighter rows, smaller titles. Lives in .subscribe-row: stacked under
+   the subscribe block, or beside it in the margin column on wide. */
+.more-writing {
+  max-width: var(--measure);
+  margin-top: var(--band);
+}
+
+.more-writing .kicker {
+  margin-top: 0;
+}
+
+.post-list-mini .post > a {
+  padding: var(--space-4) 0;
+  /* The list sits inside .essay, whose `.essay a` paints the yellow
+     link-underline (and a full wash on hover) across the whole row link.
+     The hover affordance here is the title's own growing underline. */
+  background-image: none;
+}
+
+.post-list-mini .post-title {
+  font-size: var(--text-xl);
+}
+
+@media (min-width: 67.5rem) { /* bp-wide */
+  .subscribe-row {
+    display: grid;
+    /* Equal halves (not the measure/rail split): the two blocks are peers,
+       not text + aside. Capped at the wide-figure width. */
+    grid-template-columns: minmax(0, 1fr) var(--aside-gap) minmax(0, 1fr);
+    align-items: start;
+    max-width: var(--essay-wide);
+    margin-top: var(--band);
+  }
+
+  .subscribe-row .subscribe {
+    grid-column: 1;
+    margin-top: 0;
+  }
+
+  .subscribe-row .more-writing {
+    grid-column: 3;
+    margin-top: 0;
+    /* Same rule + cushion as .subscribe, so the two columns share one
+       visual top line. */
+    padding-top: var(--band-sm);
+    border-top: 1px solid var(--rule);
+  }
+}
+
 /* ---- Subscribe (end of each post) ----
    Quieter than the CTA band below it: a hairline rule and the reading measure,
    so it reads as the article's sign-off rather than a second closing band.
@@ -1477,7 +1532,9 @@ main,
 .copyright {
   margin: 0;
   font-size: var(--text-sm);
-  color: var(--grey-light);
+  /* --grey, not --grey-light: at 14px on white, --grey-light is 2.7:1 —
+     below the 4.5:1 WCAG AA floor. --grey clears it at 4.9:1. */
+  color: var(--grey);
 }
 
 /* ---- Focus visibility for keyboard users ---- */

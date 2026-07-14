@@ -1,0 +1,23 @@
+{{ if eq .Params.schema "blogposting" }}
+{{/* Miniature of the home Writing list, on every post: the other posts
+     (never itself), newest first. Meta is the post date; the title comes
+     from og_title (the short display title — front-matter `title` is the
+     long SEO string). A new post appears here with no extra work. */}}
+{{ $posts := where site.RegularPages "Params.schema" "blogposting" }}
+{{ $others := where $posts "RelPermalink" "ne" .RelPermalink }}
+{{ with first 3 $others.ByDate.Reverse }}
+    <aside class="more-writing">
+      <h2 class="kicker">More writing</h2>
+      <ul class="post-list post-list-mini">
+        {{ range . }}
+        <li class="post">
+          <a href="{{ .RelPermalink }}">
+            <span class="post-meta">{{ .Date.Format "January 2006" }}</span>
+            <span class="post-title">{{ strings.TrimSuffix "." .Params.og_title }}</span>
+          </a>
+        </li>
+        {{ end }}
+      </ul>
+    </aside>
+{{ end }}
+{{ end }}

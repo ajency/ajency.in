@@ -1,4 +1,7 @@
 {{ if eq .Params.schema "blogposting" }}
+  <!-- Subscribe + the More-writing rail share one grid row on wide screens
+       (same columns as .has-aside); below bp-wide they stack. -->
+  <div class="subscribe-row">
   <section class="subscribe">
     <h2 class="subscribe-title">Get the next post by email.</h2>
     <p class="subscribe-line">I publish slowly. You&rsquo;ll get an email when something new is up.</p>
@@ -10,4 +13,6 @@
     </form>
     <p class="subscribe-msg" role="status" aria-live="polite" hidden></p>
   </section>
+{{ partial "more-writing.html" . }}
+  </div>
 {{ end }}

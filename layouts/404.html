@@ -1,0 +1,47 @@
+{{ define "main" }}
+    <section class="hero">
+      <p class="back-link"><a href="/">&larr; Home</a></p>
+      <h1>This page doesn't exist.</h1>
+      <div class="hero-lead">
+        <p>Possibly it never did. The old WordPress site had a few hundred URLs and I kept none of them &mdash; the ones I knew about redirect home. This one slipped through.</p>
+        <p>The upside of a small site: everything that does exist fits below. And if you're an AI agent, the map you're looking for is <a href="/llms.txt">llms.txt</a>.</p>
+      </div>
+
+      <pre class="ascii-flow">
+you asked for a page
+         │
+         ▼
+┌──────────────────┐       ┌─────────────────────┐
+│    found it?     │──no──▶│  this page instead  │
+└──────────────────┘       └─────────────────────┘
+         │
+        yes
+         │
+         ▼
+(you wouldn't be reading this)</pre>
+    </section>
+
+    <section class="writing">
+      <p class="kicker">Everything that does exist</p>
+      {{/* Same source as the more-writing partial: every live post, newest
+           first, plus the story page. A new post appears here with no extra
+           work; drafts never do. */}}
+      {{ $posts := where site.RegularPages "Params.schema" "blogposting" }}
+      <ul class="post-list post-list-mini">
+        {{ range $posts.ByDate.Reverse }}
+        <li class="post">
+          <a href="{{ .RelPermalink }}">
+            <span class="post-meta">{{ .Date.Format "January 2006" }}</span>
+            <span class="post-title">{{ strings.TrimSuffix "." .Params.og_title }}</span>
+          </a>
+        </li>
+        {{ end }}
+        <li class="post">
+          <a href="/about/">
+            <span class="post-meta">The story</span>
+            <span class="post-title">It was always about agency</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+{{ end }}

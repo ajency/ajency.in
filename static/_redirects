@@ -1,0 +1,94 @@
+# Netlify redirects. Served from static/, so Hugo copies this to the site
+# root verbatim.
+#
+# The pre-2026 WordPress site (archived in ajency/, gitignored) lived at
+# these root-level slugs. Every old page 301s to home; the old RSS feeds
+# 301 to the new feed. Rules are non-forced: a URL that matches a real
+# file on the current site is served, never redirected — so these can
+# never shadow a live page.
+
+# Old WordPress feeds -> the new RSS feed
+/feed             /index.xml   301
+/feed/*           /index.xml   301
+/comments/feed    /index.xml   301
+/comments/feed/*  /index.xml   301
+
+# Old WordPress pages, posts, and infrastructure -> home
+/adding-custom-fields-to-products-in-shopify  /  301
+/adding-custom-fields-to-products-in-shopify/*  /  301
+/blog  /  301
+/blog/*  /  301
+/campus-recruitment-at-padre-conceicao-college-of-engineering-verna-goa  /  301
+/campus-recruitment-at-padre-conceicao-college-of-engineering-verna-goa/*  /  301
+/cdn-cgi  /  301
+/cdn-cgi/*  /  301
+/countdown-offer-timers-that-create-urgency  /  301
+/countdown-offer-timers-that-create-urgency/*  /  301
+/creating-visual-product-description-using-html-editor  /  301
+/creating-visual-product-description-using-html-editor/*  /  301
+/current-openings-at-ajency-in  /  301
+/current-openings-at-ajency-in/*  /  301
+/digital-dwarves-private-ltd  /  301
+/digital-dwarves-private-ltd/*  /  301
+/display-estimated-delivery-date-on-shopify-store  /  301
+/display-estimated-delivery-date-on-shopify-store/*  /  301
+/diwali-celebration-workplace-goa-india  /  301
+/diwali-celebration-workplace-goa-india/*  /  301
+/ecommerce-website-development  /  301
+/ecommerce-website-development/*  /  301
+/gender-diversity-workplace-goa-india  /  301
+/gender-diversity-workplace-goa-india/*  /  301
+/goa-engineering-college-campus-hiring-fresher  /  301
+/goa-engineering-college-campus-hiring-fresher/*  /  301
+/leave-policy-software-company-goa-india  /  301
+/leave-policy-software-company-goa-india/*  /  301
+/meetup-technology-design-workshops-goa-india  /  301
+/meetup-technology-design-workshops-goa-india/*  /  301
+/our-blogs  /  301
+/our-blogs/*  /  301
+/product-user-interface-design  /  301
+/product-user-interface-design/*  /  301
+/software-development-engineering  /  301
+/software-development-engineering/*  /  301
+/stock-availability-inquiry-on-products  /  301
+/stock-availability-inquiry-on-products/*  /  301
+/tag  /  301
+/tag/*  /  301
+/task-for-backend-developer-java  /  301
+/task-for-backend-developer-java/*  /  301
+/task-for-backend-developer-nodejs  /  301
+/task-for-backend-developer-nodejs/*  /  301
+/task-for-digital-marketing-position  /  301
+/task-for-digital-marketing-position/*  /  301
+/task-for-frontend-css-developer-position  /  301
+/task-for-frontend-css-developer-position/*  /  301
+/task-for-full-stack-developer-position  /  301
+/task-for-full-stack-developer-position/*  /  301
+/task-for-product-manager-position  /  301
+/task-for-product-manager-position/*  /  301
+/task-for-software-tester-position  /  301
+/task-for-software-tester-position/*  /  301
+/task-for-the-full-stack-developer-position  /  301
+/task-for-the-full-stack-developer-position/*  /  301
+/task-for-ui-designer-position  /  301
+/task-for-ui-designer-position/*  /  301
+/task-for-web-associate-position  /  301
+/task-for-web-associate-position/*  /  301
+/theme-customization-and-custom-theme-development  /  301
+/theme-customization-and-custom-theme-development/*  /  301
+/tuckshop-dilbert  /  301
+/tuckshop-dilbert/*  /  301
+/view-all-discount-offers-on-cart-page  /  301
+/view-all-discount-offers-on-cart-page/*  /  301
+/web-apps-dilbert-tuckshop  /  301
+/web-apps-dilbert-tuckshop/*  /  301
+/website-design  /  301
+/website-design/*  /  301
+/website-speed-optimization  /  301
+/website-speed-optimization/*  /  301
+/wp-content  /  301
+/wp-content/*  /  301
+/wp-includes  /  301
+/wp-includes/*  /  301
+/wp-json  /  301
+/wp-json/*  /  301

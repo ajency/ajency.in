@@ -223,8 +223,10 @@ and products.
   `css/style.css`, the single stylesheet (tokens in `:root`). **This is where you
   edit the CSS.**
 - `static/` — served at site root **as-is**: `fonts/`, `images/`, `favicon*`,
-  `apple-touch-icon.png`, `og-image.png`, `robots.txt`, `llms.txt`, and `_headers`
-  (Netlify cache/security headers). ⚠️ Reference these with **root-absolute** paths
+  `apple-touch-icon.png`, `og-image.png`, `robots.txt`, `llms.txt`, `_headers`
+  (Netlify cache/security headers), and `_redirects` (301s: every old-WordPress
+  URL → home, old feeds → `/index.xml`; non-forced, so they can never shadow a
+  live page). ⚠️ Reference these with **root-absolute** paths
   (`/fonts/…`) — pages live at `/about/`, so relative paths would break.
 - `netlify.toml` — build command, publish dir, pinned `HUGO_VERSION`.
 - `originals/` — source assets deliberately kept **out of `static/`** so Hugo never
@@ -275,9 +277,13 @@ and products.
   One idea per sentence.
 - **Humor is self-deprecating and light** (seagull management, "I'm lazy in a
   specific way"). Metaphor budget: ~2 per post, never re-explained once landed.
-- **Specifics earn credibility**: ₹600-crore dealer, four months, 70k tokens,
+- **Specifics earn credibility**: ₹500-crore-plus dealer, four months, 70k tokens,
   named models with links. Avoid startup-landing clichés ("worst case / best
   case", "no pitch, no funnel", "optional but encouraged").
+- ⚠️ **The ERP client is anonymized in all public copy** (site, llms.txt, alt
+  text, OG images, illustrations): "₹500-crore-plus", no Jharkhand/Koderma, no
+  Maruti ("the carmaker"). The illustrations use fictional geography (Patna,
+  Bhagalpur). Never "correct" copy back to the real specifics.
 - First person, calm, curiosity-led. Personal warmth (motorcycles & cocktails) is
   welcome but must feel genuine, not bolted on.
 - Home CTA audience = founders (early-stage → listed enterprise). Lead with proof

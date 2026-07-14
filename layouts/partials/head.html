@@ -1,9 +1,19 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>{{ .Title }}</title>
-  <meta name="description" content="{{ .Description }}" />
+  {{/* The 404 has no content file, so its head values live here: a real
+       title/description instead of Hugo's defaults, noindex, and no
+       canonical (a not-found page has no canonical URL). */}}
+  {{ $is404 := eq .Kind "404" }}
+  {{ $title := cond $is404 "Page not found — Ajency.in" .Title }}
+  {{ $desc := cond $is404 "This page doesn't exist on ajency.in. Everything that does is one click away." .Description }}
+  <title>{{ $title }}</title>
+  <meta name="description" content="{{ $desc }}" />
+  {{ if $is404 }}
+  <meta name="robots" content="noindex" />
+  {{ else }}
   <link rel="canonical" href="{{ .Permalink }}" />
+  {{ end }}
 
   <!-- Favicons -->
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -15,10 +25,10 @@
        image is the fallback. -->
   {{ $ogImage := .Params.og_image | default site.Params.ogImage | absURL }}
   {{ $ogImageAlt := .Params.og_image_alt | default site.Params.ogImageAlt }}
-  <meta property="og:type" content="{{ .Params.og_type }}" />
+  <meta property="og:type" content="{{ .Params.og_type | default "website" }}" />
   <meta property="og:site_name" content="Ajency.in" />
-  <meta property="og:title" content="{{ .Params.og_title }}" />
-  <meta property="og:description" content="{{ .Params.og_description }}" />
+  <meta property="og:title" content="{{ .Params.og_title | default $title }}" />
+  <meta property="og:description" content="{{ .Params.og_description | default $desc }}" />
   <meta property="og:url" content="{{ .Permalink }}" />
   <meta property="og:image" content="{{ $ogImage }}" />
   <meta property="og:image:width" content="{{ .Params.og_image_width | default 1200 }}" />
@@ -28,8 +38,8 @@
 
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="{{ .Params.og_title }}" />
-  <meta name="twitter:description" content="{{ .Params.og_description }}" />
+  <meta name="twitter:title" content="{{ .Params.og_title | default $title }}" />
+  <meta name="twitter:description" content="{{ .Params.og_description | default $desc }}" />
   <meta name="twitter:image" content="{{ $ogImage }}" />
   <meta name="twitter:image:alt" content="{{ $ogImageAlt }}" />
 
