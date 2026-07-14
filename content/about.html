@@ -101,19 +101,3 @@ schema = ""
         <p class="entry-etym"><span class="entry-origin">Origin</span> a misspelling, kept on purpose &mdash; fifteen years and counting.</p>
       </div>
     </article>
-
-    <script>
-      // Digressions live in the right margin on wide screens (always open) and
-      // collapse to tap-to-expand <details> on narrow screens (start closed).
-      // <details> can't be force-opened with pure CSS across browsers yet, so we
-      // sync the `open` state to the breakpoint here — the site's only script.
-      (function () {
-        var mq = window.matchMedia('(min-width: 1080px)');
-        function sync() {
-          var nodes = document.querySelectorAll('details.digression');
-          for (var i = 0; i < nodes.length; i++) nodes[i].open = mq.matches;
-        }
-        mq.addEventListener('change', sync);
-        sync();
-      })();
-    </script>

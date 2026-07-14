@@ -14,6 +14,23 @@
     <p class="copyright">&copy; 2026 Ajency.in &middot; Digital Dwarves Pvt Ltd</p>
   </footer>
 
+  <script>
+    // Digressions live in the right margin on wide screens (always open) and
+    // collapse to tap-to-expand <details> on narrow screens (start closed).
+    // <details> can't be force-opened with pure CSS across browsers yet, so we
+    // sync the `open` state to the breakpoint here. Shared by every page that
+    // has a digression; no-ops (empty NodeList) everywhere else.
+    (function () {
+      var mq = window.matchMedia('(min-width: 1080px)');
+      function sync() {
+        var nodes = document.querySelectorAll('details.digression');
+        for (var i = 0; i < nodes.length; i++) nodes[i].open = mq.matches;
+      }
+      mq.addEventListener('change', sync);
+      sync();
+    })();
+  </script>
+
   <!-- GoatCounter — privacy-first pageview counting (no cookies, ~3.5 KB, async,
        so it never competes with rendering). The one deliberate exception to the
        zero-third-party-requests rule; it ignores localhost by default, so dev

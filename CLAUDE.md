@@ -44,9 +44,9 @@ and products.
   from the shared footer. No cookies, ignores localhost. Own views are excluded per
   browser by visiting any page with `#toggle-goatcounter` appended (localStorage
   flag; the same URL toggles it back).
-- Page JS is deliberately minimal: the `<details>`-sync script in
-  `content/about.html` and the GoatCounter snippet in `footer.html`. No styling in
-  JS, ever.
+- Page JS is deliberately minimal: the `<details>`-sync script and the
+  GoatCounter snippet, both in `footer.html` (the sync script no-ops on pages
+  without digressions). No styling in JS, ever.
 
 ## Performance — decisions worth not re-litigating
 - **Fonts are self-hosted** in `static/fonts/` (12 woff2: Work Sans + Libre
@@ -85,8 +85,7 @@ and products.
 - `content/` — **one file per page**, each = TOML front matter + the page's `<main>`
   inner HTML (passed through verbatim — not Markdown):
   - `_index.html` — **home** (`/`): hero → Writing section → full-width CTA.
-  - `about.html` — **personal essay / story** (`/about/`). `← Back` link + the
-    `<details>`-sync script.
+  - `about.html` — **personal essay / story** (`/about/`).
   - `self-documenting-uat-agent.html` — live post: the UAT agent that documents
     itself.
   - `one-person-ai-team.html` — live post: "The whole elephant" — one person + AI
