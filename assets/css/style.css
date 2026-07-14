@@ -500,9 +500,12 @@ main,
 
 /* ---- Essay rhythm: section kicker, pull quote ---- */
 
-/* Section kicker: a small uppercase label with a yellow tick. */
+/* Section kicker: a small uppercase label with a yellow tick.
+   Deliberately scoped to its containers — a bare .kicker would leak. A new
+   section that wants one must be added here (.writing is the home Writing list). */
 .essay .kicker,
-.faq-section .kicker {
+.faq-section .kicker,
+.writing .kicker {
   display: flex;
   align-items: center;
   gap: var(--space-3);
@@ -518,7 +521,8 @@ main,
 }
 
 .essay .kicker::before,
-.faq-section .kicker::before {
+.faq-section .kicker::before,
+.writing .kicker::before {
   content: "";
   width: 1.7rem;
   height: 2px;
@@ -551,7 +555,9 @@ main,
   border-top: 2px solid var(--ink);
 }
 
-.entry-headword {
+/* Carries .essay so the margin outranks `.essay p` (0-1-1) — same reason as
+   .entry-def/.entry-sub/.entry-etym below. */
+.essay p.entry-headword {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
@@ -662,7 +668,7 @@ main,
    machines to me. Same wash as the links, so it needs no new vocabulary. */
 .sense-label {
   display: inline-block;
-  margin-bottom: 0.15rem;
+  margin-bottom: 0.15rem; /* optical nudge: seats the label on the underline; off the scale on purpose */
   font-family: var(--font-serif);
   font-style: italic;
   font-size: var(--text-md);
@@ -670,7 +676,10 @@ main,
   background-image: linear-gradient(var(--yellow-underline), var(--yellow-underline));
   background-repeat: no-repeat;
   background-position: 0 100%;
-  background-size: var(--fill) 0.28em;
+  /* 0% fallback: a fourth .sense without its own --fill must render no wash —
+     an unset --fill would otherwise make the declaration invalid and paint a
+     solid slab (background-size falls back to auto). */
+  background-size: var(--fill, 0%) 0.28em;
 }
 
 .sense:nth-child(1) .sense-label {
@@ -724,7 +733,7 @@ main,
 
 .essay > ul li {
   margin: 0 0 0.85em;
-  padding-left: 0.3rem;
+  padding-left: 0.3rem; /* optical nudge: air between marker and text; off the scale on purpose */
   line-height: var(--leading-body);
 }
 
@@ -967,7 +976,7 @@ main,
   cursor: pointer;
   display: block;
   position: relative;
-  padding-right: 1.75rem;
+  padding-right: 1.75rem; /* chevron gutter: clears the +/− glyph pinned top-right; off the scale on purpose */
   font-family: var(--font-serif);
   font-weight: 400;
   font-size: var(--text-2xl);
@@ -1007,7 +1016,7 @@ main,
   color: var(--yellow);
   font-size: 1.6rem;
   font-weight: 400;
-  line-height: 1;
+  line-height: var(--leading-none);
 }
 
 .digression[open] > summary::after,
@@ -1024,20 +1033,6 @@ main,
   margin: 0 0 0.7em;
   font-size: var(--text-md);
   color: var(--grey);
-}
-
-.digression-img {
-  display: block;
-  width: 100%;
-  height: auto;
-  margin: 0 0 var(--space-3);
-  border-radius: var(--radius-sm);
-}
-
-.digression-link {
-  font-weight: 500;
-  font-size: var(--text-sm);
-  white-space: nowrap;
 }
 
 /* FAQ accordion — borrows the digression's serif question + yellow +/− toggle
@@ -1119,6 +1114,12 @@ main,
     /* Optical: nudges the figure's cap-height onto the first line of body text. */
     margin: 0.35rem 0 0;
     max-width: 11rem;
+  }
+
+  /* Full-rail variant — a figure whose detail (an in-image caption, a gag)
+     needs the whole aside column, not the modest 11rem cap. */
+  .margin-fig.rail-full {
+    max-width: none;
   }
 
   .margin-fig figcaption {

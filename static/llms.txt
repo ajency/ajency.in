@@ -1,21 +1,24 @@
 # Ajency.in
 
-> Ajency.in 2.0 is the solo practice of Anuj Khurana — a Goa (India) based studio doing
-> curiosity-led work on AI agents, products, and design. The original studio was founded
-> in 2012, grew to ~50 people, and was acquired by Turtlemint in 2022. Anuj has since
-> stepped out of full-time work and builds solo again.
-
-Anuj takes on work he genuinely wants to think about — AI agents, technology, products,
-and design. The site is a single long-form essay plus a short studio history. There is no
-product, login, or API here; it is a personal/professional site.
+> Ajency.in is the personal site of Anuj Khurana — an independent builder based in
+> Goa, India, working with early-stage startups through listed enterprises on AI
+> agents, automation, and products. He founded the Ajency.in studio in 2012, grew it
+> to ~50 people, and it was acquired by Turtlemint in 2022; he now works solo,
+> delivering full projects with a bench of AI agents. There is no product, login,
+> or API here; it is a personal/professional site.
 
 ## Pages
-- [Home](https://ajency.in/): The story — "It was always about agency."
-- [About the studio](https://ajency.in/about.html): History of Ajency.in (2012–2022), clients, and the nature of the work.
+- [Home](https://ajency.in/): Who Anuj is and what he does — helping small teams deliver what a much larger team would, with AI agents and rethought workflows.
+- [About](https://ajency.in/about/): The story, 2012 to now — studio, acquisition, and the return to working solo. "It was always about agency."
+
+## Writing
+- [Why ERP fails at the Indian dealership counter](https://ajency.in/why-erp-fails-indian-smb/): Field notes from a ₹600-crore auto dealership's cash counters in Jharkhand — why ERP adoption dies at the counter in week one, and how to design for the world as you find it.
+- [One person delivering a full software project with AI agents](https://ajency.in/one-person-ai-team/): Product, design, dev, and QA in one head — proven on a four-month ERP delivery for a ₹600-crore automobile dealer.
+- [A self-documenting UAT agent](https://ajency.in/self-documenting-uat-agent/): An agent does the UAT click-through and screenshots every step — walkthroughs that never go stale, for ~70k tokens at $0 on a local Qwen 3.5 35B.
 
 ## Contact
 - Email (best): talktous@ajency.in
-- LinkedIn: https://www.linkedin.com/company/ajency-in
+- LinkedIn: https://www.linkedin.com/in/anujkhurana/
 - Location: Panjim, Goa, India
 
 ## For agents

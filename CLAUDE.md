@@ -38,8 +38,11 @@ and products.
   something was renamed or removed).
 - **Drafts:** `draft = true` in front matter keeps a page out of the build, the
   sitemap *and* RSS. Used to retire a page without deleting it. Retiring a page also
-  means removing its `<li>` from the Writing list in `content/_index.html`;
-  publishing one means the reverse (drop `draft = true` **and** add the `<li>`).
+  means removing its `<li>` from the Writing list in `content/_index.html` **and its
+  entry in `static/llms.txt`**; publishing one means the reverse (drop `draft = true`,
+  add the `<li>`, add the llms.txt entry). llms.txt went a full redesign stale once —
+  it kept describing the old single-essay site while three posts shipped, and pointed
+  AI crawlers (its whole audience) at a 404.
 - **Analytics: GoatCounter** (dashboard: https://ajency.goatcounter.com), loaded
   from the shared footer. No cookies, ignores localhost. Own views are excluded per
   browser by visiting any page with `#goatcounter-off` appended; `#goatcounter-on`
@@ -70,16 +73,33 @@ and products.
 ## Performance — decisions worth not re-litigating
 - **Fonts are self-hosted** in `static/fonts/` (12 woff2: Work Sans + Libre
   Baskerville, latin + latin-ext; vietnamese dropped). `@font-face` lives at the top
-  of `assets/css/style.css`. Do **not** reintroduce the Google Fonts `<link>` — it put a
+  of `assets/css/style.css`.
+  - **₹ stays ₹.** U+20B9 lives in the latin-ext subset, so any page with a rupee
+    amount pulls one extra ~36 KB woff2. Deliberate: correct typography over the
+    one-time fetch (the file is cached immutable for a year). Don't "fix" it by
+    rewriting copy to "Rs". Do **not** reintroduce the Google Fonts `<link>` — it put a
   render-blocking `fonts.googleapis.com → fonts.gstatic.com` chain in front of first
   paint. `head.html` preloads the two faces every page needs above the fold
   (Work Sans 400 + 700).
 - **Zero third-party requests**, with one deliberate exception: the async
   GoatCounter script. Anything else third-party needs a very good reason.
-- **Images are WebP** with the original PNG/JPG kept as a `<picture>` fallback.
+- **Images are WebP** with a PNG/JPG `<picture>` fallback.
   Size sources to the rendered slot: margin figures render at 176px wide on
   desktop / 352px on mobile, so ~704px source width covers retina; full-measure
-  figures (~640px slot) warrant the full-resolution source.
+  figures (~640px slot) warrant ~1280px.
+  - **Every `<img>` carries its intrinsic `width`/`height`** (CSS still scales it;
+    the attributes are what let the browser reserve the box — no CLS). Below-fold
+    images get `loading="lazy"`; a post's above-fold hero figure gets
+    `fetchpriority="high"` instead, never lazy.
+  - **Encode with `magick` (JPEG) / `cwebp` (WebP), not `sips`** — sips compresses
+    ~2× worse at the same quality. q72–78 is the sweet spot for the illustrations.
+  - **Check the WebP is actually smaller than its fallback** before shipping the
+    pair: a lossy-encoded flat illustration once shipped a 23 KB WebP next to a
+    5.5 KB PNG (lossless `cwebp` got it to 4.5 KB). And the fallback must be
+    slot-sized too — one `<picture>` carried a 2.84 MB full-res PNG behind a
+    238 KB WebP.
+  - Giant source exports (ChatGPT/originals) stay out of `static/` — resize on the
+    way in; the original lives in `originals/` or just in Downloads.
 - **Video over GIF**: `<video autoplay loop muted playsinline preload="none">` with
   a WebP poster (a 5.6 MB GIF became a 465 KB H.264). Source GIFs are archived in
   `originals/` (outside `static/`, so never published).
@@ -132,6 +152,12 @@ and products.
   dropped** — the CSS comment described an offset the browser never applied.
   Scope such rules (`.ascii-flow .flow-jump`) rather than reaching for
   `!important`. Same trap for any new `.essay p.foo`.
+- **⚠ `.kicker` (and similar) are scoped, not global.** The rules read
+  `.essay .kicker, .faq-section .kicker, .writing .kicker` — using the class in a
+  new section renders **unstyled with no error** until the section is added to the
+  selector list (the home "Writing" label shipped as a default paragraph this way).
+  When markup uses an existing class in a new container, check the selector's scope
+  actually reaches it.
 - **Inherited `white-space: pre` doesn't wrap.** `.ascii-flow` sets it, so any
   prose inside a flow diagram must opt back out (`white-space: normal`) or it
   runs as one unbroken line — `max-width` won't save it.
@@ -182,8 +208,12 @@ and products.
   - Front-matter vars drive the head: `title` (full `<title>`), `description` (meta),
     `og_type`/`og_title`/`og_description`, optional per-page
     `og_image`/`og_image_width`/`og_image_height`/`og_image_alt`, `schema`
-    (`website` | `blogposting` | `""`) which picks the JSON-LD node, and `[[params.faq]]`
-    entries that render as FAQPage JSON-LD.
+    (`website` | `blogposting` | `aboutpage` | `""`) which picks the JSON-LD node, and
+    `[[params.faq]]` entries that render as FAQPage JSON-LD (via `faq.html`) — one
+    source feeds both the on-page block and the structured data.
+    ⚠️ Without `og_image`, a post falls back to the generic site card **and** its
+    BlogPosting JSON-LD ships without an `image` — `schema.html` only emits it
+    when the param is set. Every post sets one.
 - `layouts/` — **the shared chrome, defined once:**
   - `_default/baseof.html` — page skeleton (doctype → head → header → main → footer).
   - `_default/single.html`, `index.html` — wrap `.Content` in `<main>`.
@@ -199,8 +229,11 @@ and products.
 - `netlify.toml` — build command, publish dir, pinned `HUGO_VERSION`.
 - `originals/` — source assets deliberately kept **out of `static/`** so Hugo never
   publishes them.
-- `sitemap.xml` + RSS (`index.xml`) are **auto-generated by Hugo**. Drafts are
-  excluded from both.
+- `sitemap.xml` is auto-generated by Hugo; RSS (`index.xml`) uses the **custom
+  template `layouts/_default/rss.xml`** — posts only (`schema = "blogposting"`),
+  item descriptions from front-matter `description`. Hugo's default template was
+  shipping the full page HTML as each item ("← Back" as the first line in feed
+  readers). Drafts are excluded from both.
 - ⚠️ **`ajency/` (+ `ajency.tar`) is an archive of the OLD WordPress site.** Ignore it
   entirely — Hugo doesn't read it. It is ~7.4 GB and **gitignored**: `ajency.tar`
   alone is 2.2 GB, far over GitHub's 100 MB file limit, so it must never be committed.
@@ -277,9 +310,30 @@ and products.
   and crawlers alike" — with the questions phrased exactly as the target searches,
   duplicated in `[[params.faq]]` front matter so `schema.html` emits FAQPage
   JSON-LD. Numbers-bearing, concrete answers get quoted by assistants.
+- **Titles ≤60 visible chars, keyword phrase first** — Google truncates around
+  there. The metaphor lives in the h1/og_title; the `<title>` leads with the
+  search phrase ("Why ERP fails at the Indian dealership counter: Mama ji…", not
+  the other way round). **Meta descriptions ≤160 chars**, the number-bearing
+  specifics up front — the first cut of every description here ran 200–290 and
+  truncated before its hook.
+- **Posts cross-link.** Every post links at least one other post where the
+  material genuinely overlaps (the ERP post → the delivery story it came from).
+  A post with zero internal links is an orphan to crawlers.
+- **Posts show a human-visible date** — the `<time>` at the end of the hero
+  subhead. `datePublished` in JSON-LD alone isn't enough; assistants and
+  freshness heuristics want it on the page.
+- **One or two h2s phrased as the target question** ("Where does ERP adoption
+  actually die?") — the collapsed FAQ satisfies the letter, but question-phrased
+  headings over extractable answers are what get lifted into AI answers. Don't
+  force it on every heading.
 - **New post checklist:** `content/<keyword-slug>.html` with `schema =
-  "blogposting"`, a `date`, `description`/OG params, its own `og_image` (a ~1200px
-  JPEG of the post's illustration), alt text that carries the target topic, FAQ
-  params, and the `<li>` on the home Writing list.
+  "blogposting"`, a `date`, `description`/OG params (lengths above), its own
+  `og_image` (a ~1200px JPEG of the post's illustration), alt text that carries
+  the target topic, FAQ params, a cross-link to a related post, `width`/`height`
+  on every `<img>`, the `<li>` on the home Writing list, **and an entry in
+  `static/llms.txt`**.
 - One canonical page per idea — never two near-identical pages live at once.
 - `llms.txt` and `robots.txt` exist in `static/` for crawlers and AI agents.
+  llms.txt lists every live page with pretty URLs (`/about/`, never `/about.html`)
+  and a number-bearing one-liner each — it is the file written *for* the AI-citation
+  audience, so it goes stale loudest. Verify its URLs against a build when touching it.

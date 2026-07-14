@@ -23,9 +23,21 @@
         "image": "{{ . | absURL }}",
         {{- end }}
         "datePublished": "{{ .Date.Format "2006-01-02" }}",
+        "dateModified": "{{ .Lastmod.Format "2006-01-02" }}",
+        "mainEntityOfPage": "{{ .Permalink }}",
         "inLanguage": "en",
         "author": { "@id": "https://ajency.in/#person" },
         "publisher": { "@id": "https://ajency.in/#org" }
+      },
+      {{- else if eq .Params.schema "aboutpage" }}
+      {
+        "@type": "AboutPage",
+        "@id": "{{ .Permalink }}#page",
+        "url": "{{ .Permalink }}",
+        "name": "{{ .Params.og_title }}",
+        "description": "{{ .Params.og_description }}",
+        "inLanguage": "en",
+        "mainEntity": { "@id": "https://ajency.in/#person" }
       },
       {{- end }}
       {{- with .Params.faq }}
@@ -52,6 +64,9 @@
         "jobTitle": "Founder",
         "description": "Solo product and AI-agent builder. Founded Ajency.in (2012), acquired by Turtlemint (2022); now working solo again.",
         "knowsAbout": ["AI agents", "Product management", "UX/UI design", "Software development", "Automation"],
+        "sameAs": [
+          "https://www.linkedin.com/in/anujkhurana/"
+        ],
         "worksFor": { "@id": "https://ajency.in/#org" }
       },
       {

@@ -174,15 +174,19 @@ column. Everything else should match, and today doesn't.
 ## 5. Deliberately left alone
 
 - **Paragraph rhythm in `em`** — `.essay p` `1.5em`, `.hero-lead p` `1.1em`,
-  `.essay > ul li` `0.85em`, `.faq-answer p` `0.7em`, `.essay p.closing` `2.5em`.
-  These scale with their own font-size, which is the point. A rem token would
-  break that.
+  `.essay > ul li` `0.85em`, `.faq-answer p` `0.7em`, `.essay p.closing` `2.5em`,
+  `.has-aside` `margin-bottom: 1.5em` + `.has-aside > p` `0.75em`, `.ledger-unit`
+  `margin-left: 0.15em`. These scale with their own font-size, which is the
+  point. A rem token would break that.
 - **The ASCII grid** — `.flow-jump` `margin-top: 20.25em`, `padding-left: 1ch`,
   `2ch`. These are monospace-row and character units; they must stay on that grid.
-- **Optical one-offs** — `.essay code` `0.12em 0.36em`, `.post-title`
-  `padding-bottom: 1px`, `.sense-label` `0.15rem`, `.essay > ul li`
-  `padding-left: 0.3rem`, `.faq-item > summary` `padding-right: 1.75rem` (clears
-  the chevron). Snapping these to a scale would be worse, not better.
+- **Optical one-offs** — `.essay code` `0.12em 0.36em`, the shared link rule's
+  `padding-bottom: 1px` (`.essay a`, `.back-link a`, `.post-title`, CTA links —
+  seats the underline wash), `.sense-label` `0.15rem`, `.essay > ul li`
+  `padding-left: 0.3rem`, `.digression > summary, .faq-item > summary`
+  `padding-right: 1.75rem` (clears the chevron). Snapping these to a scale would
+  be worse, not better. Each carries an "off the scale on purpose" comment at
+  the rule.
 - **Existing layout tokens** — `--gutter`, `--aside-gap`, `--measure`. Already
   centralized and correct.
 
@@ -199,6 +203,5 @@ Order, smallest blast radius first:
 
 Verify each stage at **1400px and 390px** on: `/`, `/about/`,
 `/self-documenting-uat-agent/`, `/one-person-ai-team/`, `/why-erp-fails-indian-smb/`.
-The last one is still a draft and won't build without `--buildDrafts`.
 
 Roughly 45 rules change. About half move pixels, none by more than 24.

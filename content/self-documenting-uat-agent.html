@@ -1,11 +1,15 @@
 +++
-title = "UAT has an inertia problem: a self-documenting UAT agent whose walkthroughs never go stale — Ajency.in"
-description = "Every product person skips the UAT click-through — the inertia of logging in, filling forms, clicking. I gave it to an agent that screenshots every step, and the click-through became user documentation generated on the fly, never out of date, for ~70k tokens at $0 on a local Qwen 3.5 35B."
+title = "A self-documenting UAT agent: walkthroughs that never go stale — Ajency.in"
+description = "An agent does the UAT click-through, screenshotting every step — walkthroughs that never go stale, for ~70k tokens at $0 on a local Qwen 3.5 35B."
 date = 2026-06-30
 [params]
 og_type = "article"
 og_title = "UAT has an inertia problem."
 og_description = "An agent does the click-through I kept skipping. The recorded screenshots became on-the-fly documentation — never out of date, at almost zero token cost."
+og_image = "/images/self-documenting-uat-agent-og.jpg"
+og_image_width = 1200
+og_image_height = 800
+og_image_alt = "A six-panel storyboard of a self-documenting UAT agent: the click-through gets skipped, an agent takes over the clicking in Chrome, screenshots every step into a filmstrip — and the same filmstrip answers a cashier's support question."
 schema = "blogposting"
 
 [[params.faq]]
@@ -27,7 +31,7 @@ a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snap
     <section class="hero">
       <p class="back-link"><a href="/">&larr; Back</a></p>
       <h1>UAT has an inertia problem.</h1>
-      <p class="subhead">An agent does the click-through I kept skipping. It screenshots every step, so the run is its own documentation.</p>
+      <p class="subhead">An agent does the click-through I kept skipping. It screenshots every step, so the run is its own documentation. &middot; <time datetime="2026-06-30">June 2026</time></p>
     </section>
 
     <article class="essay">
@@ -40,7 +44,7 @@ a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snap
           <source media="(max-width: 600px)" type="image/webp" srcset="/images/uat-storyboard-mobile.webp" />
           <source media="(max-width: 600px)" srcset="/images/uat-storyboard-mobile.png" />
           <source type="image/webp" srcset="/images/uat-storyboard.webp" />
-          <img src="/images/uat-storyboard.png" alt="A six-panel storyboard: after a deploy, the UAT click-through gets skipped — 'next deploy, I promise'. An agent takes over the clicking in Chrome while the human is three terminals deep, screenshots every step into a filmstrip reviewed in two minutes, and when a cashier asks how to cancel a receipt, the same filmstrip is the documentation." loading="lazy" />
+          <img src="/images/uat-storyboard.png" width="1536" height="1024" alt="A six-panel storyboard: after a deploy, the UAT click-through gets skipped — 'next deploy, I promise'. An agent takes over the clicking in Chrome while the human is three terminals deep, screenshots every step into a filmstrip reviewed in two minutes, and when a cashier asks how to cancel a receipt, the same filmstrip is the documentation." fetchpriority="high" />
         </picture>
       </figure>
 
@@ -69,7 +73,7 @@ a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snap
 
       <p class="pullquote">The support tool was an accident. All I wanted was out of UAT.</p>
 
-      <h2 class="kicker">Why it barely costs a token to run</h2>
+      <h2 class="kicker">How much does it cost to run?</h2>
 
       <p>The obvious worry is the token bill. Only the part that needs judgment runs on the pricey model; everything repeatable is pushed down to things that run for free:</p>
 
@@ -121,7 +125,7 @@ a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snap
         <figure class="margin-fig">
           <picture>
             <source type="image/webp" srcset="/images/delegate-yoda.webp" />
-            <img src="/images/delegate-yoda.jpg" alt="Yoda meme about model cost-routing: &lsquo;Delegate to the cheapest model, you must. Middle management, this is.&rsquo; — the frontier model decides once, the free local model does the repeatable work." loading="lazy" />
+            <img src="/images/delegate-yoda.jpg" width="500" height="576" alt="Yoda meme about model cost-routing: &lsquo;Delegate to the cheapest model, you must. Middle management, this is.&rsquo; — the frontier model decides once, the free local model does the repeatable work." loading="lazy" />
           </picture>
           <figcaption>Middle management, this is.</figcaption>
         </figure>

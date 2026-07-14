@@ -1,0 +1,29 @@
+{{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+{{- /* Custom RSS: Hugo's default stuffs each item's <description> with the full
+     page HTML (so feed readers render "← Back" as the first line) and doubles
+     the channel title ("… on Ajency.in"). Items here use the front-matter
+     `description` — the same text as the meta description — and posts only
+     (schema = "blogposting"), newest first. */ -}}
+{{- $pages := where .Site.RegularPages "Params.schema" "blogposting" -}}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ .Site.Title }}</title>
+    <link>{{ .Permalink }}</link>
+    <description>Writing by Anuj Khurana — an independent builder in pursuit of agency. AI agents, automation, and products.</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    {{- with $pages }}
+    <lastBuildDate>{{ (index . 0).Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</lastBuildDate>
+    {{- end }}
+    <atom:link href="{{ .Permalink }}index.xml" rel="self" type="application/rss+xml" />
+    {{- range $pages }}
+    <item>
+      <title>{{ .Params.og_title | default .Title }}</title>
+      <link>{{ .Permalink }}</link>
+      <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>
+      <guid>{{ .Permalink }}</guid>
+      <description>{{ .Description | transform.XMLEscape | safeHTML }}</description>
+    </item>
+    {{- end }}
+  </channel>
+</rss>
