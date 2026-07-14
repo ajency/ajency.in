@@ -4,6 +4,18 @@
    - Work Sans (body + headline), Libre Baskerville italic (accent)
    - Brand yellow #f9bc23, greener underline #f2cd05
    - Lots of whitespace, one big headline, minimal chrome
+
+   BREAKPOINTS — the three, and only three, in the file:
+
+     bp-narrow   max-width: 38.75rem  (620px)  header sheds the location
+     bp-stack    max-width: 46rem     (736px)  two-column ASCII flow stacks
+     bp-wide     min-width: 67.5rem   (1080px) margin column appears (asides, home rail)
+
+   All in rem, so a reader's font-size setting moves every breakpoint together —
+   a px breakpoint would sit still while the type around it grew.
+   These CANNOT be custom properties: `@media (min-width: var(--bp))` is invalid
+   CSS and fails silently. Each @media carries its name as a comment; this block
+   is the index. Adding a fourth breakpoint should feel like a decision.
    =========================================================== */
 
 /* -----------------------------------------------------------
@@ -137,10 +149,80 @@
   --page-max: 72rem;
   --gutter: clamp(1.25rem, 5vw, 4rem);
 
+  /* ---- Spacing scale ----
+     Every margin/padding/gap comes from here. A rule that needs a number not on
+     this list is either optical (see below) or wrong.
+
+     Fixed steps: component internals. */
+  --space-1: 0.25rem;  /*  4px */
+  --space-2: 0.5rem;   /*  8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.5rem;   /* 24px */
+  --space-6: 2rem;     /* 32px */
+  --space-7: 3rem;     /* 48px */
+
+  /* Fluid steps: separation between the page's bands. Three, where there used to
+     be nine ad-hoc clamps. --band is the default boundary — it's the value the
+     footer, FAQ and subscribe already agreed on, so the outliers moved to it. */
+  --band-lg: clamp(3rem, 8vw, 6rem);    /* 48 → 96  deep band padding (CTA, essay end) */
+  --band: clamp(2.5rem, 6vw, 4rem);     /* 40 → 64  the default band boundary */
+  --band-sm: clamp(2rem, 5vw, 3rem);    /* 32 → 48  blocks inside a band */
+
+  /* Text hanging off a vertical rule (blockquote, digression, rail CTA). */
+  --rule-inset: 1.5rem;
+
+  /* Exempt from the scale, on purpose: rhythm set in `em` (paragraph margins —
+     it must scale with its own font-size), the ASCII flow's `ch`/`em` monospace
+     grid, and a few optical values (code padding, the FAQ chevron gutter). */
+
   /* Margin digressions (asides) */
   --aside-col: 19rem;     /* width of the right margin column on wide screens */
   --aside-gap: 2.5rem;    /* gap between reading column and margin column */
   --essay-wide: 61.5rem;  /* measure + gap + aside-col, so asides have room */
+
+  /* ---- Type scale ----
+     Same rule as the spacing scale: a font-size not from this list is either
+     relative-by-design (`em`, so it tracks its parent) or wrong. See
+     docs/css-audit.md. */
+  --text-xs: 0.75rem;    /* 12px — uppercase kickers, meta, labels */
+  --text-sm: 0.875rem;   /* 14px — captions, footnotes, copyright */
+  --text-md: 0.95rem;    /* 15px — secondary / grey prose */
+  --text-base: 1rem;     /* 16px — UI, controls, digression body */
+  --text-lg: 1.125rem;   /* 18px — body copy (the <body> default) */
+  --text-xl: 1.2rem;     /* 19px — lead-ins: blockquote, CTA line, closing */
+  --text-2xl: 1.28rem;   /* 20px — serif titles: FAQ summary, rail CTA title */
+
+  /* Fluid display sizes. Six, where there used to be eleven one-off clamps. */
+  --display-1: clamp(2.5rem, 8vw, 5.5rem);    /* hero h1 */
+  --display-2: clamp(2.2rem, 6vw, 3.1rem);    /* entry word, ledger numeral */
+  --display-3: clamp(1.8rem, 4.5vw, 2.6rem);  /* CTA title */
+  --display-4: clamp(1.6rem, 4vw, 2.3rem);    /* pull quote */
+  --display-5: clamp(1.4rem, 3vw, 1.75rem);   /* section headings, subhead, subscribe title */
+  --lead: clamp(1.15rem, 2.2vw, 1.3rem);      /* hero lead, entry definition */
+
+  --leading-none: 1;        /* the ledger numeral */
+  --leading-display: 1.05;  /* hero h1, entry word */
+  --leading-heading: 1.2;   /* h2, post title, CTA title, pull quote */
+  --leading-snug: 1.3;      /* serif titles */
+  --leading-normal: 1.5;    /* captions, secondary prose */
+  --leading-body: 1.65;     /* body copy */
+  --leading-loose: 1.85;    /* .agency-lines — deliberately airy */
+
+  /* Negative tracking scales with size — the bigger the type, the tighter it sets. */
+  --track-heading: -0.01em;  /* h2, post title, CTA title, pull quote, wordmark */
+  --track-display: -0.02em;  /* hero h1, entry word */
+  --track-numeral: -0.03em;  /* the ledger numeral, the largest thing on the page */
+  --track-label: 0.15em;     /* uppercase labels */
+
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  /* ⚠ The ASCII flow's size and leading are LOAD-BEARING, not style: .flow-jump
+     positions its connector at `margin-top: 20.25em` = 15 rows × 1.35em, and the
+     two 44-char columns are sized to fit the measure at 0.74rem. Changing either
+     shifts the flowchart's arrow off the box it points at. They stay off the
+     scale, deliberately. */
+  --text-mono: 0.74rem;
+  --leading-mono: 1.35;
 }
 
 *,
@@ -160,8 +242,8 @@ body {
   color: var(--ink);
   font-family: var(--font-sans);
   font-weight: 400;
-  font-size: 1.125rem;
-  line-height: 1.65;
+  font-size: var(--text-lg);
+  line-height: var(--leading-body);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -200,19 +282,20 @@ a {
 /* Highlighter mark — the link's yellow-underline wash, painted as a static band
    behind a phrase for emphasis. No hover, no link: a thicker band (not the link's
    2px) keeps it clearly distinct from a clickable underline.
-   Shared with the hero ledger's closing numeral; --band tunes the thickness per
-   use, since a band that reads right behind body text swallows a 3rem numeral. */
+   Shared with the hero ledger's closing numeral; --hl-band tunes the thickness per
+   use, since a band that reads right behind body text swallows a 3rem numeral.
+   (Named --hl-band, not --band: the spacing scale owns that name.) */
 .essay .highlight,
 .ledger-mark {
   background-image: linear-gradient(var(--yellow-underline), var(--yellow-underline));
   background-repeat: no-repeat;
   background-position: 0 100%;
-  background-size: 100% var(--band, 0.32em);
+  background-size: 100% var(--hl-band, 0.32em);
 }
 
 .back-link {
-  margin: 0 0 1.5rem;
-  font-size: 0.95rem;
+  margin: 0 0 var(--space-5);
+  font-size: var(--text-md);
   color: var(--grey);
 }
 
@@ -231,15 +314,16 @@ main,
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 1rem;
-  padding-top: clamp(1.5rem, 4vw, 2.75rem);
-  padding-bottom: clamp(1.5rem, 4vw, 2.75rem);
+  gap: var(--space-4);
+  /* Chrome sits tighter than a content band, deliberately. */
+  padding-top: var(--band-sm);
+  padding-bottom: var(--band-sm);
 }
 
 .wordmark {
   font-weight: 700;
-  font-size: 1.3rem;
-  letter-spacing: -0.01em;
+  font-size: var(--text-2xl);
+  letter-spacing: var(--track-heading);
   color: var(--ink);
 }
 
@@ -249,7 +333,7 @@ main,
 
 .contact-link {
   font-weight: 500;
-  font-size: 1rem;
+  font-size: var(--text-base);
 }
 
 /* Right-hand header cluster: place, email, WhatsApp + LinkedIn icons.
@@ -258,11 +342,11 @@ main,
 .header-meta {
   display: flex;
   align-items: center;
-  gap: 1.4rem;
+  gap: var(--space-5);
 }
 
 .header-loc {
-  font-size: 0.95rem;
+  font-size: var(--text-md);
   color: var(--grey);
 }
 
@@ -273,7 +357,7 @@ main,
 }
 
 /* On narrow screens the location cedes its space to the contact links. */
-@media (max-width: 620px) {
+@media (max-width: 38.75rem) { /* bp-narrow */
   .header-loc {
     display: none;
   }
@@ -281,26 +365,24 @@ main,
 
 /* ---- Hero ---- */
 .hero {
-  /* Smaller upper bound trims the desktop gap below the header; the 3rem floor
-     keeps the (already fine) mobile spacing unchanged. */
-  padding-top: clamp(3rem, 6vw, 4.5rem);
-  padding-bottom: clamp(2rem, 6vw, 4rem);
+  padding-top: var(--band);
+  padding-bottom: var(--band);
 }
 
 .hero h1 {
   margin: 0;
   font-weight: 700;
-  font-size: clamp(2.5rem, 8vw, 5.5rem);
-  line-height: 1.04;
-  letter-spacing: -0.02em;
+  font-size: var(--display-1);
+  line-height: var(--leading-display);
+  letter-spacing: var(--track-display);
   max-width: 16ch;
 }
 
 .subhead {
-  margin: clamp(1rem, 2.5vw, 1.75rem) 0 0;
+  margin: var(--space-5) 0 0;
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-size: var(--display-5);
   color: var(--grey);
 }
 
@@ -314,7 +396,7 @@ main,
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   max-width: var(--measure);
-  margin: 2.75rem 0 0;
+  margin: var(--space-7) 0 0;
   border-top: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
 }
@@ -323,20 +405,20 @@ main,
   display: flex;
   flex-direction: column;
   /* Clears the yellow band under the closing numeral, which hangs below its baseline. */
-  gap: 0.4rem;
-  padding: 1.25rem 1.25rem 1.35rem 0;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-4) var(--space-4) 0;
 }
 
 .ledger-item + .ledger-item {
-  padding-left: 1.25rem;
+  padding-left: var(--space-4);
   border-left: 1px solid var(--rule);
 }
 
 .ledger-num {
   font-weight: 700;
-  font-size: clamp(2rem, 5vw, 2.9rem);
-  line-height: 1;
-  letter-spacing: -0.03em;
+  font-size: var(--display-2);
+  line-height: var(--leading-none);
+  letter-spacing: var(--track-numeral);
   color: var(--ink);
   font-variant-numeric: tabular-nums;
 }
@@ -351,17 +433,17 @@ main,
 }
 
 .ledger-mark {
-  --band: 0.2em; /* thinner than the essay's, or it swallows the numeral */
+  --hl-band: 0.2em; /* thinner than the essay's, or it swallows the numeral */
 }
 
 .ledger-label {
-  font-size: 0.78rem;
-  line-height: 1.4;
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
   color: var(--grey);
 }
 
 /* Two-up below ~620px: four columns would squeeze the labels to two words a line. */
-@media (max-width: 620px) {
+@media (max-width: 38.75rem) { /* bp-narrow */
   .ledger {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -381,7 +463,15 @@ main,
   /* Wide enough to host the right margin column; the reading line itself
      stays capped at --measure via .essay > p below. */
   max-width: var(--essay-wide);
-  padding-bottom: clamp(3rem, 8vw, 6rem);
+  padding-bottom: var(--band-lg);
+}
+
+/* That bottom padding is there to hold the CTA band off the last paragraph. When
+   the subscribe block closes the post it is dead space instead: the CTA already
+   brings its own margin-top and a heavy padding-top, so the three stack into a
+   void under the email field. */
+.essay:has(> .subscribe:last-child) {
+  padding-bottom: 0;
 }
 
 .essay p {
@@ -403,28 +493,32 @@ main,
 /* Selector carries .essay so it outranks `.essay p` without !important. */
 .essay p.agency-lines {
   font-weight: 500;
-  font-size: 1.2rem;
+  font-size: var(--text-xl);
   color: var(--ink);
-  line-height: 1.85;
+  line-height: var(--leading-loose);
 }
 
 /* ---- Essay rhythm: section kicker, pull quote ---- */
 
 /* Section kicker: a small uppercase label with a yellow tick. */
-.essay .kicker {
+.essay .kicker,
+.faq-section .kicker {
   display: flex;
   align-items: center;
-  gap: 0.7rem;
-  margin: 3rem 0 1.1rem;
+  gap: var(--space-3);
+  margin: var(--space-7) 0 var(--space-4);
   font-family: var(--font-sans);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.15em;
+  font-size: var(--text-xs);
+  /* 500, not 600: no 600 face is loaded, so 600 gets synthesised. Three weights,
+     three font files — see the note in CLAUDE.md. */
+  font-weight: 500;
+  letter-spacing: var(--track-label);
   text-transform: uppercase;
   color: var(--grey);
 }
 
-.essay .kicker::before {
+.essay .kicker::before,
+.faq-section .kicker::before {
   content: "";
   width: 1.7rem;
   height: 2px;
@@ -435,12 +529,12 @@ main,
    into digressions too (.has-aside), so it's a descendant match, not a child. */
 .essay p.pullquote {
   max-width: 24ch;
-  margin: 2.75rem 0;
+  margin: var(--space-7) 0;
   font-family: var(--font-sans);
   font-weight: 700;
-  font-size: clamp(1.6rem, 4vw, 2.3rem);
-  line-height: 1.18;
-  letter-spacing: -0.01em;
+  font-size: var(--display-4);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--track-heading);
   color: var(--ink);
 }
 
@@ -452,8 +546,8 @@ main,
    page closes by defining the name the essay opens by explaining. */
 .entry {
   max-width: var(--measure);
-  margin: 3rem 0 0;
-  padding-top: 2.25rem;
+  margin: var(--space-7) 0 0;
+  padding-top: var(--space-6);
   border-top: 2px solid var(--ink);
 }
 
@@ -461,15 +555,15 @@ main,
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: 0.75rem;
-  margin: 0 0 0.4rem;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-2);
 }
 
 .entry-word {
   font-weight: 700;
-  font-size: clamp(2.2rem, 6vw, 3.1rem);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+  font-size: var(--display-2);
+  line-height: var(--leading-display);
+  letter-spacing: var(--track-display);
   color: var(--ink);
 }
 
@@ -483,7 +577,7 @@ main,
 .entry-pos {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 1rem;
+  font-size: var(--text-base);
   color: var(--grey);
 }
 
@@ -491,8 +585,8 @@ main,
    mine. Everything below it is a reading of *this*. */
 .entry-def {
   font-weight: 500;
-  font-size: clamp(1.3rem, 2.6vw, 1.5rem);
-  line-height: 1.45;
+  font-size: var(--lead);
+  line-height: var(--leading-normal);
   color: var(--ink);
 }
 
@@ -500,7 +594,7 @@ main,
 .entry-sub {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 0.95rem;
+  font-size: var(--text-md);
   color: var(--grey);
 }
 
@@ -509,42 +603,42 @@ main,
 .entry-etym {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 0.95rem;
-  line-height: 1.5;
+  font-size: var(--text-md);
+  line-height: var(--leading-normal);
   color: var(--grey);
 }
 
 /* Small caps label, in the sans, matching the kicker's voice minus its tick. */
 .entry-origin {
-  margin-right: 0.5rem;
+  margin-right: var(--space-2);
   font-family: var(--font-sans);
   font-style: normal;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.15em;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
   text-transform: uppercase;
   color: var(--grey);
 }
 
 /* Selectors carry .essay so they outrank `.essay p`'s colour and margin. */
 .essay p.entry-def {
-  margin: 1.5rem 0 2rem;
+  margin: var(--space-5) 0 var(--space-6);
 }
 
 .essay p.entry-sub {
-  margin: 0 0 1.5rem;
+  margin: 0 0 var(--space-5);
 }
 
 .essay p.entry-etym {
-  margin: 2.25rem 0 0;
-  padding-top: 1.5rem;
+  margin: var(--space-6) 0 0;
+  padding-top: var(--space-5);
   border-top: 1px solid var(--rule-soft);
 }
 
 .senses {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: var(--space-5);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -558,7 +652,7 @@ main,
 
 .sense-n {
   font-weight: 700;
-  font-size: 1rem;
+  font-size: var(--text-base);
   color: var(--ink);
   font-variant-numeric: tabular-nums;
 }
@@ -571,7 +665,7 @@ main,
   margin-bottom: 0.15rem;
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 0.95rem;
+  font-size: var(--text-md);
   color: var(--grey);
   background-image: linear-gradient(var(--yellow-underline), var(--yellow-underline));
   background-repeat: no-repeat;
@@ -594,8 +688,8 @@ main,
 .sense-def {
   display: block;
   font-weight: 500;
-  font-size: 1.2rem;
-  line-height: 1.5;
+  font-size: var(--text-xl);
+  line-height: var(--leading-normal);
   color: var(--ink);
 }
 
@@ -605,33 +699,33 @@ main,
   margin-top: 2.5em;
   padding-top: 2.5em;
   border-top: 1px solid var(--rule);
-  font-size: 1.2rem;
+  font-size: var(--text-xl);
 }
 
 /* Section heading inside a post — bigger than a kicker, smaller than the page
    h1. Sits at the reading measure with generous space above. */
 .essay > h2 {
   max-width: var(--measure);
-  margin: 3.25rem 0 1.1rem;
+  margin: var(--space-7) 0 var(--space-4);
   font-weight: 700;
-  font-size: clamp(1.4rem, 3vw, 1.75rem);
-  line-height: 1.2;
-  letter-spacing: -0.01em;
+  font-size: var(--display-5);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--track-heading);
   color: var(--ink);
 }
 
 /* Post lists — kept at the reading measure, matching body colour/rhythm. */
 .essay > ul {
   max-width: var(--measure);
-  margin: 0 0 1.5em;
-  padding-left: 1.2rem;
+  margin: 0 0 1.5em; /* em: matches the paragraph rhythm it sits in */
+  padding-left: var(--space-5);
   color: var(--ink-soft);
 }
 
 .essay > ul li {
   margin: 0 0 0.85em;
   padding-left: 0.3rem;
-  line-height: 1.6;
+  line-height: var(--leading-body);
 }
 
 .essay > ul li::marker {
@@ -640,7 +734,7 @@ main,
 
 /* Inline code — monospace, faint tint, for selectors and snippets. */
 .essay code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: var(--font-mono);
   font-size: 0.86em;
   background: var(--tint);
   padding: 0.12em 0.36em;
@@ -654,18 +748,116 @@ main,
    (fit-content) instead of stretching the full column, but still caps at 100%
    so it scrolls rather than overflows when the viewport is narrower than the art. */
 .ascii-flow {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.74rem;
-  line-height: 1.35;
+  font-family: var(--font-mono);
+  font-size: var(--text-mono);
+  line-height: var(--leading-mono);
   white-space: pre;
   width: fit-content;
   max-width: 100%;
   overflow-x: auto;
-  margin: 1.75rem 0;
-  padding: 1rem 1.1rem;
+  margin: var(--space-6) 0;
+  padding: var(--space-4);
   background: var(--tint);
   border-radius: var(--radius-sm);
   color: var(--ink-soft);
+}
+
+/* Two-column variant: the chain is cut after Qwen and continued in a second
+   column, to stop a 5-box flow running the height of the viewport. The columns
+   are separate <pre> blocks (not columns baked into one <pre>) so each stays
+   independently editable. Stacks back to one column on narrow screens — two
+   44-char columns cannot fit a phone at a legible size. */
+/* Bottom-aligned, deliberately. The chain leaves column 1 from the Qwen box,
+   which sits at the BOTTOM of that column; column 2's chain is much shorter.
+   Top-aligning them would put the ESCALATION box up beside the ONE-TIME box —
+   and the connecting arrow would then appear to leave the box that starts the
+   flow, not the one that escalates. Aligning the bottoms floats column 2 down
+   until ESCALATION sits beside Qwen, which is where the arrow actually goes. */
+.ascii-flow-split {
+  display: flex;
+  /* No gap: the jump column IS the gap, so its arrow can run edge-to-edge and
+     actually touch both boxes. */
+  gap: 0;
+  align-items: flex-end;
+}
+
+.ascii-flow-split pre {
+  margin: 0;
+  font: inherit;
+}
+
+/* The jump from column 1 to column 2. It is a real element, not characters
+   inside the <pre>, because the connector has to change direction: it points
+   right between the columns, and down once they stack. A ──▶ baked into the
+   ASCII would still be pointing right at nothing on a phone. */
+/* Scoped to .ascii-flow so it outweighs `.essay p { margin: 0 0 1.5em }` — a bare
+   .flow-jump loses that specificity fight and every margin here is dropped. */
+.ascii-flow .flow-jump {
+  margin: 0;
+  /* Anchored from the TOP, not the bottom: the arrow sits on this block's first
+     line, so only a top offset keeps it on a fixed row no matter how many lines
+     the label wraps to. The columns are bottom-aligned, so column 2 starts 13
+     rows down and the ESCALATION box spans rows 14–18 — its middle is row 16,
+     i.e. 15 rows of clearance. 1.35em = one row of the monospace grid. */
+  align-self: flex-start;
+  margin-top: 20.25em;
+  /* Matches the arrow's character count, so the arrow spans the column exactly,
+     edge to edge. Wide enough that the longest label word clears both borders. */
+  width: 11ch;
+  /* .ascii-flow is white-space: pre — the label has to opt back out of it or it
+     never wraps and runs straight across column 2. The arrow keeps its own row. */
+  white-space: normal;
+  font: inherit;
+  color: var(--ink-soft);
+}
+
+.jump-across,
+.jump-down {
+  white-space: pre;
+}
+
+/* The arrow starts flush against the box edge; the label under it must not — it
+   would sit on the border. Padded as a block of its own so the arrow is unmoved. */
+.jump-label {
+  display: block;
+  padding-left: 1ch;
+}
+
+.jump-down {
+  display: none;
+}
+
+@media (max-width: 46rem) { /* bp-stack */
+  /* Stacked, "bottom" becomes "right" — so the cross-axis alignment that makes
+     the two columns meet on desktop has to be undone here. */
+  .ascii-flow-split {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  /* Stacked, the two columns are one vertical chain again — the jump sits in
+     the flow between them, indented to sit under the boxes' arrow channel. */
+  .ascii-flow .flow-jump {
+    align-self: flex-start;
+    margin-top: 0;
+    width: auto;
+    padding-left: 2ch;
+  }
+
+  .jump-across {
+    display: none;
+  }
+
+  .jump-down {
+    display: inline;
+  }
+
+  /* Stacked, the label sits beside the ▼ on one line, not under it. */
+  .jump-label {
+    display: inline;
+    padding-left: 0;
+  }
 }
 
 /* Quoted voice (e.g. a message from a user) — serif italic, stepped out of the
@@ -673,13 +865,13 @@ main,
    also styles a quote sitting inside a digression (.has-aside). */
 .essay blockquote {
   max-width: var(--measure);
-  margin: 2rem 0;
-  padding-left: 1.3rem;
+  margin: var(--space-6) 0;
+  padding-left: var(--rule-inset);
   border-left: 2px solid var(--yellow);
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 1.2rem;
-  line-height: 1.5;
+  font-size: var(--text-xl);
+  line-height: var(--leading-normal);
   color: var(--ink-soft);
 }
 
@@ -697,7 +889,7 @@ main,
 /* Wide inline figure — sits past the 40rem reading line so storyboards
    and screenshots have room for their detail. */
 .figure-wide {
-  margin: 2.75rem 0;
+  margin: var(--space-7) 0;
   max-width: var(--essay-wide);
 }
 
@@ -712,7 +904,7 @@ main,
 /* Margin figure — inline (capped) on narrow screens; the wide breakpoint
    below lifts it into the right margin column. */
 .margin-fig {
-  margin: 2rem 0;
+  margin: var(--space-6) 0;
   max-width: 22rem;
 }
 
@@ -735,11 +927,11 @@ main,
 /* Caption — quiet serif italic, matching the digression eyebrow voice. */
 .figure-wide figcaption,
 .margin-fig figcaption {
-  margin-top: 0.6rem;
+  margin-top: var(--space-2);
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 0.92rem;
-  line-height: 1.45;
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
   color: var(--grey);
 }
 
@@ -761,11 +953,11 @@ main,
    thin grey rule, set in the serif face with a grey italic eyebrow, and given
    generous whitespace so it reads as stepped-out-of-the-flow, not main content. */
 .digression {
-  margin: 3.5rem 0;
-  padding-left: 1.3rem;
+  margin: var(--space-7) 0;
+  padding-left: var(--rule-inset);
   border-left: 2px solid var(--rule-soft);
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
   color: var(--grey);
 }
 
@@ -778,8 +970,8 @@ main,
   padding-right: 1.75rem;
   font-family: var(--font-serif);
   font-weight: 400;
-  font-size: 1.28rem;
-  line-height: 1.3;
+  font-size: var(--text-2xl);
+  line-height: var(--leading-snug);
   letter-spacing: 0;
   color: var(--ink-soft);
 }
@@ -793,17 +985,19 @@ main,
 .digression > summary::before {
   content: "a side note";
   display: block;
-  margin-bottom: 0.45rem;
+  margin-bottom: var(--space-2);
   font-family: var(--font-serif);
   font-style: italic;
   font-weight: 400;
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   letter-spacing: 0;
   text-transform: lowercase;
   color: var(--grey);
 }
 
-/* Expand/collapse affordance, pinned to the top-right corner. */
+/* Expand/collapse affordance, pinned to the top-right corner.
+   Off the type scale on purpose: the +/− is an icon drawn with a glyph, sized to
+   the affordance, not to a step in the text hierarchy. */
 .digression > summary::after,
 .faq-item > summary::after {
   content: "+";
@@ -822,13 +1016,13 @@ main,
 }
 
 .digression-body {
-  margin-top: 0.85rem;
+  margin-top: var(--space-3);
 }
 
 .digression-body p,
 .faq-answer p {
   margin: 0 0 0.7em;
-  font-size: 0.97rem;
+  font-size: var(--text-md);
   color: var(--grey);
 }
 
@@ -836,13 +1030,13 @@ main,
   display: block;
   width: 100%;
   height: auto;
-  margin: 0 0 0.7rem;
+  margin: 0 0 var(--space-3);
   border-radius: var(--radius-sm);
 }
 
 .digression-link {
   font-weight: 500;
-  font-size: 0.92rem;
+  font-size: var(--text-sm);
   white-space: nowrap;
 }
 
@@ -851,21 +1045,47 @@ main,
    column: no margin migration, no JS, items split by hairline rules. */
 .faq {
   max-width: var(--measure);
-  margin: 0 0 1.5em;
+  margin: 0 0 1.5em; /* em: matches the paragraph rhythm it sits in */
   border-top: 1px solid var(--rule-soft);
 }
 
 .faq-item {
   border-bottom: 1px solid var(--rule-soft);
-  padding: 1.1rem 0;
+  padding: var(--space-3) 0;
 }
 
 .faq-answer {
-  margin-top: 0.85rem;
+  margin-top: var(--space-2);
+}
+
+/* The FAQ is for search engines and AI assistants; humans get it as an
+   appendix below the CTA band. So it whispers: small sans questions, tight
+   rows — fine print, not a content section. */
+.faq-section {
+  margin-bottom: var(--band);
+}
+
+.faq-section .kicker {
+  margin-top: 0;
+}
+
+.faq-section .faq-item > summary {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--grey);
+}
+
+.faq-section .faq-item > summary::after {
+  font-size: var(--text-xl);
+  top: 0;
+}
+
+.faq-section .faq-answer p {
+  font-size: var(--text-sm);
 }
 
 /* ---- Wide screens: aside moves into the right margin ---- */
-@media (min-width: 1080px) {
+@media (min-width: 67.5rem) { /* bp-wide */
   .has-aside {
     display: grid;
     grid-template-columns: minmax(0, var(--measure)) var(--aside-gap) var(--aside-col);
@@ -884,8 +1104,8 @@ main,
     margin: 0;
     padding-left: 0;
     border-left: none;
-    font-size: 0.875rem;
-    line-height: 1.5;
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
   }
 
   /* The margin figure rides the right-hand column. It spans both paragraph
@@ -896,12 +1116,13 @@ main,
     grid-column: 3;
     grid-row: 1 / span 2;
     align-self: start;
+    /* Optical: nudges the figure's cap-height onto the first line of body text. */
     margin: 0.35rem 0 0;
     max-width: 11rem;
   }
 
   .margin-fig figcaption {
-    font-size: 0.82rem;
+    font-size: var(--text-sm);
   }
 
   /* Forced open via JS on wide screens: summary reads as a small label in
@@ -912,8 +1133,8 @@ main,
     padding-right: 0;
     font-family: var(--font-sans);
     font-weight: 400;
-    font-size: 0.78rem;
-    line-height: 1.2;
+    font-size: var(--text-xs);
+    line-height: var(--leading-heading);
     color: var(--grey);
   }
 
@@ -923,8 +1144,8 @@ main,
   }
 
   .digression-body {
-    margin-top: 0.5rem;
-    padding-left: 0.9rem;
+    margin-top: var(--space-2);
+    padding-left: var(--space-4);
     border-left: 2px solid var(--yellow);
   }
 
@@ -943,13 +1164,13 @@ main,
    (the serif-italic .subhead is for a single line, not paragraphs). */
 .hero-lead {
   max-width: var(--measure-wide);
-  margin: clamp(1.5rem, 3vw, 2.25rem) 0 0;
+  margin: var(--space-6) 0 0;
 }
 
 .hero-lead p {
   margin: 0 0 1.1em;
-  font-size: clamp(1.15rem, 2.2vw, 1.3rem);
-  line-height: 1.6;
+  font-size: var(--lead);
+  line-height: var(--leading-body);
   color: var(--ink-soft);
 }
 
@@ -965,14 +1186,14 @@ main,
 
 /* "Read the story →" sits just under the hero lead. */
 .hero-actions {
-  margin: clamp(1.5rem, 3vw, 2.25rem) 0 0;
+  margin: var(--space-6) 0 0;
   font-weight: 500;
-  font-size: 1.05rem;
+  font-size: var(--text-base);
 }
 
 /* ---- Recent writing ---- */
 .writing {
-  padding-bottom: clamp(1rem, 4vw, 2rem);
+  padding-bottom: var(--space-6);
 }
 
 /* Post list keeps the reading measure; on wide screens the row splits into
@@ -985,7 +1206,7 @@ main,
   display: none;
 }
 
-@media (min-width: 1080px) {
+@media (min-width: 67.5rem) { /* bp-wide */
   .writing-row {
     display: grid;
     grid-template-columns: minmax(0, var(--measure)) var(--aside-col);
@@ -1011,7 +1232,7 @@ main,
    of competing with its titles. Its top aligns with the list's first
    hairline because both sit at the top of the same grid row. */
 .rail-cta {
-  padding-left: 1.3rem;
+  padding-left: var(--rule-inset);
   border-left: 2px solid var(--rule-soft);
 }
 
@@ -1019,36 +1240,39 @@ main,
   margin: 0;
   font-family: var(--font-serif);
   font-weight: 400;
-  font-size: 1.28rem;
-  line-height: 1.3;
+  font-size: var(--text-2xl);
+  line-height: var(--leading-snug);
   color: var(--ink-soft);
 }
 
 .rail-cta-line {
-  margin: 0.85rem 0 0;
-  font-size: 0.97rem;
-  line-height: 1.6;
+  margin: var(--space-4) 0 0;
+  font-size: var(--text-md);
+  line-height: var(--leading-body);
   color: var(--grey);
 }
 
+/* Same spacing as the .cta band below — they are one decision at two
+   breakpoints (see CLAUDE.md), and only the actions gap may differ: the band
+   lays its two links side by side, the rail stacks them in a 19rem column. */
 .rail-cta-actions {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.65rem;
-  margin: 1.25rem 0 0;
+  gap: var(--space-3);
+  margin: var(--space-5) 0 0;
   font-weight: 500;
-  font-size: 1rem;
+  font-size: var(--text-base);
 }
 
 .rail-cta .cta-primary {
-  font-size: 1.05rem;
+  font-size: var(--text-base);
 }
 
 .rail-cta-human {
-  margin: 1.25rem 0 0;
-  font-size: 0.88rem;
-  line-height: 1.55;
+  margin: var(--space-4) 0 0;
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
   color: var(--grey);
 }
 
@@ -1069,16 +1293,16 @@ main,
 /* Whole row is the link; the title carries the growing-underline on hover. */
 .post > a {
   display: block;
-  padding: 1.5rem 0;
+  padding: var(--space-5) 0;
   color: var(--ink);
 }
 
 .post-meta {
   display: block;
-  margin-bottom: 0.5rem;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  margin-bottom: var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
   text-transform: uppercase;
   color: var(--grey);
 }
@@ -1086,9 +1310,9 @@ main,
 .post-title {
   display: inline;
   font-weight: 700;
-  font-size: clamp(1.3rem, 3vw, 1.6rem);
-  line-height: 1.2;
-  letter-spacing: -0.01em;
+  font-size: var(--display-5);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--track-heading);
   background-image: linear-gradient(var(--yellow-underline), var(--yellow-underline));
   background-repeat: no-repeat;
   background-position: 0 100%;
@@ -1104,10 +1328,87 @@ main,
 
 .post-dek {
   display: block;
-  margin-top: 0.55rem;
-  font-size: 1rem;
-  line-height: 1.55;
+  margin-top: var(--space-2);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
   color: var(--grey);
+}
+
+/* ---- Subscribe (end of each post) ----
+   Quieter than the CTA band below it: a hairline rule and the reading measure,
+   so it reads as the article's sign-off rather than a second closing band.
+   The honeypot input lives off-screen — humans never see it, bots that fill
+   it are rejected by EmailOctopus server-side. */
+.subscribe {
+  max-width: var(--measure);
+  margin-top: var(--band);
+  padding-top: var(--band-sm);
+  border-top: 1px solid var(--rule);
+}
+
+.subscribe-title {
+  margin: 0;
+  font-weight: 700;
+  font-size: var(--display-5);
+}
+
+.subscribe-line {
+  margin: var(--space-2) 0 var(--space-5);
+  color: var(--grey);
+}
+
+.subscribe-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.subscribe-email {
+  flex: 1 1 16rem;
+  padding: var(--space-3) var(--space-4);
+  font: inherit;
+  font-size: var(--text-base);
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--grey-light);
+  border-radius: var(--radius);
+}
+
+.subscribe-email:focus {
+  outline: 2px solid var(--yellow);
+  outline-offset: 1px;
+}
+
+.subscribe-btn {
+  /* Same vertical padding as the input, so the two controls match height. */
+  padding: var(--space-3) var(--space-5);
+  font: inherit;
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--yellow);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.subscribe-btn:hover {
+  background: var(--yellow-underline);
+}
+
+.subscribe-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.subscribe-hp {
+  position: absolute;
+  left: -9999px;
+}
+
+.subscribe-msg {
+  margin: 0;
+  font-weight: 500;
 }
 
 /* ---- Get-in-touch CTA ----
@@ -1115,8 +1416,9 @@ main,
    reads as a deliberate closing band rather than a stunted divider. The inner
    text still wraps at a comfortable measure. */
 .cta {
-  margin-top: clamp(3rem, 8vw, 5rem);
-  padding: clamp(2.75rem, 6vw, 4.5rem) 0 clamp(3rem, 8vw, 6rem);
+  margin-top: var(--band);
+  /* Heavier at the base than the top, deliberately: the band closes the page. */
+  padding: var(--band) 0 var(--band-lg);
   border-top: 2px solid var(--ink);
 }
 
@@ -1124,17 +1426,17 @@ main,
   max-width: 20ch;
   margin: 0;
   font-weight: 700;
-  font-size: clamp(1.8rem, 4.5vw, 2.6rem);
-  line-height: 1.15;
-  letter-spacing: -0.01em;
+  font-size: var(--display-3);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--track-heading);
   color: var(--ink);
 }
 
 .cta-line {
   max-width: var(--measure-wide);
-  margin: 1.2rem 0 0;
-  font-size: 1.2rem;
-  line-height: 1.6;
+  margin: var(--space-4) 0 0;
+  font-size: var(--text-xl);
+  line-height: var(--leading-body);
   color: var(--ink-soft);
 }
 
@@ -1142,23 +1444,24 @@ main,
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 1.5rem;
-  margin: 1.75rem 0 0;
+  gap: var(--space-5);
+  margin: var(--space-5) 0 0;
   font-weight: 500;
-  font-size: 1.05rem;
+  font-size: var(--text-base);
 }
 
 /* The calendar link is the low-friction primary action; email is the fallback. */
 .cta-primary {
-  font-size: 1.2rem;
-  font-weight: 600;
+  font-size: var(--text-xl);
+  /* 700, not 600: at body size a synthesised weight shows. */
+  font-weight: 700;
 }
 
 /* Human reassurance, set right at the point of action to defuse hesitation. */
 .cta-human {
   max-width: var(--measure-wide);
-  margin: 1.1rem 0 0;
-  font-size: 0.95rem;
+  margin: var(--space-4) 0 0;
+  font-size: var(--text-md);
   color: var(--grey);
 }
 
@@ -1166,13 +1469,13 @@ main,
    Just the copyright line: contact moved into the header, and the rule-less
    quiet close lets the content's own hairlines end the page. */
 .site-footer {
-  padding-top: clamp(2.5rem, 6vw, 4rem);
-  padding-bottom: clamp(2.5rem, 6vw, 4rem);
+  padding-top: var(--band);
+  padding-bottom: var(--band);
 }
 
 .copyright {
   margin: 0;
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
   color: var(--grey-light);
 }
 

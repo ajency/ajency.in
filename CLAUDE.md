@@ -95,8 +95,74 @@ and products.
 - **`static/_headers`** sets cache policy on Netlify: `/fonts/*` and `/css/*` immutable
   for a year (both are content-addressed — fonts by stable filename, CSS by hash),
   `/images/*` 30 days. HTML needs no rule: Netlify edge-caches it and purges on deploy.
-- `font-weight: 600` is used in a few rules but no 600 face is loaded; the browser
-  synthesises it from 500/700. Pre-existing and intentional-by-omission.
+- Only **three weights** are shipped (400/500/700) and only three are used. The
+  stylesheet used to ask for `600` in four rules with no 600 face loaded — the
+  browser synthesised it. That's gone; see the CSS section below.
+
+## CSS — rules the stylesheet enforces on itself
+- **⚠ Editing `assets/css/style.css` means re-running the design-system build:**
+  `npm --prefix design-system run build`. That script regenerates
+  `design-system/styles/` **from** the site stylesheet — the site is the single
+  source of truth and the package is derived output (`styles/` and `dist/` are
+  gitignored). Nothing triggers it automatically, so it silently goes stale: the
+  spacing + type refactor left it shipping the *old* CSS, tokens and all, until
+  it was rebuilt by hand. **Rebuild in the same change as the CSS edit**, never as
+  a follow-up you'll forget.
+- **Spacing comes from the scale.** `:root` defines `--space-1…7` (fixed, for
+  component internals) and `--band-lg` / `--band` / `--band-sm` (fluid, for the
+  separation between page bands), plus `--rule-inset` for text hanging off a
+  vertical rule. **A margin/padding/gap with a raw number in it is a smell** —
+  either it belongs on the scale, or it's one of the documented exemptions:
+  paragraph rhythm in `em` (it must scale with its own font-size), the ASCII
+  flow's `ch`/`em` monospace grid, and a few optical nudges (each commented as
+  such, so nobody "fixes" them). Full mapping: `docs/spacing-audit.md`.
+  - Why it matters: before the scale there were **nine** ad-hoc `clamp()`s doing
+    one job — separating bands — and 33 distinct rem values. Sections stacked
+    their cushions against each other and left voids (the dead space under the
+    subscribe form was `.essay`'s padding-bottom + `.cta`'s margin-top + `.cta`'s
+    padding-top, all doing the same job).
+- **⚠ Before defining a `:root` variable, `grep -- "--name"` first.** The
+  highlight wash reads `background-size: 100% var(--band, 0.32em)` and *depended
+  on `--band` being undefined* so the fallback applied. Adding a spacing token by
+  that name inherited 64px into it and would have painted a solid yellow slab
+  behind every highlighted phrase. It's `--hl-band` now. A `var(--x, fallback)`
+  that relies on `--x` being unset is a landmine — name such vars distinctively.
+- **⚠ A bare class on a `<p>` inside `.essay` loses to `.essay p`.** `.essay p`
+  is `0-1-1`; `.flow-jump` is `0-1-0`, so **every margin it set was silently
+  dropped** — the CSS comment described an offset the browser never applied.
+  Scope such rules (`.ascii-flow .flow-jump`) rather than reaching for
+  `!important`. Same trap for any new `.essay p.foo`.
+- **Inherited `white-space: pre` doesn't wrap.** `.ascii-flow` sets it, so any
+  prose inside a flow diagram must opt back out (`white-space: normal`) or it
+  runs as one unbroken line — `max-width` won't save it.
+- **Type comes from the scale too.** `--text-xs…2xl` (fixed), `--display-1…5` +
+  `--lead` (fluid), `--leading-*`, `--track-*`, `--font-mono`. Same rule: a raw
+  font-size/line-height is a smell unless it's relative-by-design (`em`, so it
+  tracks its parent — `.essay code`, `.ledger-unit`) or an icon glyph (the FAQ
+  `+`/`−`). There were **30 font-sizes** and **15 line-heights** before this;
+  `.copyright` (0.875) and `.rail-cta-human` (0.88) differed by 0.4 of a pixel.
+  Mapping: `docs/css-audit.md`.
+- **⚠ Never change `.ascii-flow`'s `--text-mono` / `--leading-mono` (0.74rem /
+  1.35).** They are **load-bearing, not style**: `.flow-jump` positions the
+  flowchart's connector at `margin-top: 20.25em` = *15 rows × 1.35em*, and the
+  two 44-char columns are sized to fit the measure at 0.74rem. Touch either and
+  the arrow slides off the box it points at.
+- **Only three font weights exist — 400 / 500 / 700 — because that's what we
+  ship.** `600` was in use with no 600 face loaded, so the browser synthesised it.
+  If a rule wants 600, it wants 500 (small letterspaced labels) or 700 (body-size
+  emphasis). Adding a weight means adding font files and a preload.
+- **Colour, radius, borders and transitions are already fully tokenized** — no
+  literal hex/rgb outside `:root`, one transition in the whole file. Keep it that
+  way; a new literal colour is a bug, not a choice.
+- **Breakpoints: three, all rem, none of them variables.** `bp-narrow` 38.75rem,
+  `bp-stack` 46rem, `bp-wide` 67.5rem — indexed in the comment block at the top of
+  `style.css`, and each `@media` repeats its name. ⚠ They **cannot** be custom
+  properties: `@media (min-width: var(--bp))` is invalid CSS and fails *silently*.
+  Rem (not px) so a reader's font-size setting moves the breakpoints with the type.
+- **Verify layout by measuring, not by eyeballing.** These were all invisible in
+  a screenshot until measured: `getBoundingClientRect()` in the browser tells you
+  a gap is 0px and a computed `margin-top` is `0px` when the source says
+  `20.25em`.
 
 ## Layout of the repo
 - `hugo.toml` — config (baseURL, OG image defaults, `security.allowContent` so
@@ -176,7 +242,7 @@ and products.
   One idea per sentence.
 - **Humor is self-deprecating and light** (seagull management, "I'm lazy in a
   specific way"). Metaphor budget: ~2 per post, never re-explained once landed.
-- **Specifics earn credibility**: ₹1,000-crore dealer, four months, 70k tokens,
+- **Specifics earn credibility**: ₹600-crore dealer, four months, 70k tokens,
   named models with links. Avoid startup-landing clichés ("worst case / best
   case", "no pitch, no funnel", "optional but encouraged").
 - First person, calm, curiosity-led. Personal warmth (motorcycles & cocktails) is
