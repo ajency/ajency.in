@@ -19,3 +19,15 @@ resources/_gen/
 
 # Local Netlify folder
 .netlify
+
+# Design-sync (claude.ai/design) — staged converter scripts, generated build
+# output, and machine state. The durable inputs (design-system/ source,
+# .design-sync/config.json, NOTES.md, conventions.md, previews/) ARE tracked.
+.ds-sync/
+ds-bundle/
+.design-sync/.cache/
+.design-sync/learnings/
+.design-sync/node_modules
+design-system/node_modules/
+design-system/dist/
+design-system/styles/

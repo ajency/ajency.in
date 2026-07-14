@@ -1,0 +1,18 @@
+{
+  "projectId": "cff8022a-7541-4199-a0d7-d8602da3bd70",
+  "shape": "package",
+  "pkg": "ajency-design",
+  "globalName": "AjencyDesign",
+  "buildCmd": "npm --prefix design-system run build",
+  "cssEntry": "styles/styles.css",
+  "extraFonts": ["styles/fonts.css"],
+  "docsDir": "docs",
+  "guidelinesGlob": [],
+  "readmeHeader": ".design-sync/conventions.md",
+  "overrides": {
+    "Hero": { "cardMode": "column" },
+    "Aside": { "cardMode": "single", "viewport": "1280x640" },
+    "Digression": { "cardMode": "single", "viewport": "1280x640" },
+    "MarginFig": { "cardMode": "column", "viewport": "1280x640" }
+  }
+}
