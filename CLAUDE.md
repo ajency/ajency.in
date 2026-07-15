@@ -100,6 +100,11 @@ and products.
     238 KB WebP.
   - Giant source exports (ChatGPT/originals) stay out of `static/` — resize on the
     way in; the original lives in `originals/` or just in Downloads.
+  - ⚠️ **Replacing an image means a new filename** (`-2` suffix or similar), never
+    overwriting in place. `/images/*` is browser-cached 30 days, so a swap at the
+    same URL keeps showing every prior visitor the old image — the UAT hero was
+    redrawn but phones kept the original colorful comic for weeks. Only CSS and
+    fonts are content-addressed; images get their versioning from the filename.
 - **Video over GIF**: `<video autoplay loop muted playsinline preload="none">` with
   a WebP poster (a 5.6 MB GIF became a 465 KB H.264). Source GIFs are archived in
   `originals/` (outside `static/`, so never published).

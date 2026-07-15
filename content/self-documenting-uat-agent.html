@@ -41,10 +41,10 @@ a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snap
 
       <figure class="figure-wide">
         <picture>
-          <source media="(max-width: 600px)" type="image/webp" srcset="/images/uat-storyboard-mobile.webp" width="864" height="1199" />
-          <source media="(max-width: 600px)" srcset="/images/uat-storyboard-mobile.jpg" width="864" height="1199" />
-          <source type="image/webp" srcset="/images/uat-storyboard.webp" />
-          <img src="/images/uat-storyboard.jpg" width="1280" height="853" alt="A six-panel storyboard: after a deploy, the UAT click-through gets skipped — 'next deploy, I promise'. An agent takes over the clicking in Chrome while the human is three terminals deep, screenshots every step into a filmstrip reviewed in two minutes, and when a cashier asks how to cancel a receipt, the same filmstrip is the documentation." fetchpriority="high" />
+          <source media="(max-width: 600px)" type="image/webp" srcset="/images/uat-inertia-newton-first-law-mobile.webp" width="1280" height="1280" />
+          <source media="(max-width: 600px)" srcset="/images/uat-inertia-newton-first-law-mobile.jpg" width="1280" height="1280" />
+          <source type="image/webp" srcset="/images/uat-inertia-newton-first-law.webp" />
+          <img src="/images/uat-inertia-newton-first-law.jpg" width="1280" height="640" alt="Fig. 01 — Newton's first law, UAT edition: a product manager at rest stays at rest, unless acted upon by an external agent. A stick figure sits with coffee (body at rest, v = 0, UAT pending) while the agent's dashed force arrow clicks through the live app's forms on its own (UAT in motion, v > 0), the mouse untouched. Observed: the body remains at rest. UAT moves anyway." fetchpriority="high" />
         </picture>
       </figure>
 
@@ -56,18 +56,20 @@ a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snap
 
       <p>Then the cashiers started asking:</p>
 
-      <div class="has-aside">
-        <blockquote>
-          <p>How do I cancel an incorrect money receipt?</p>
-        </blockquote>
+      <blockquote>
+        <p>How do I cancel an incorrect money receipt?</p>
+      </blockquote>
 
-        <p>Earlier, I'd write the steps out or hop on a call myself; now I just forward the question to the agent. It builds a walkthrough for that exact need: pulls the right screenshots, marks the buttons to press, and sends back something you click through instead of read. It's the same filmstrip it builds for UAT, pointed at whoever asked.</p>
+      <p>Earlier, I'd write the steps out or hop on a call myself; now I just forward the question to the agent. It builds a walkthrough for that exact need: pulls the right screenshots, marks the buttons to press, and sends back something you click through instead of read. It's the same filmstrip it builds for UAT, pointed at whoever asked.</p>
 
-        <figure class="margin-fig">
-          <video src="/images/cancel-receipt-walkthrough.mp4" poster="/images/cancel-receipt-poster.webp" width="480" height="852" autoplay loop muted playsinline preload="none" aria-label="A self-documenting walkthrough generated on demand: the UAT agent steps through cancelling an incorrect money receipt, screen by screen, highlighting the button to press at each step — built live against the current UI so it never goes stale."></video>
-          <figcaption>What comes back &mdash; click through, don't read.</figcaption>
-        </figure>
-      </div>
+      <figure class="figure-wide">
+        <picture>
+          <source media="(max-width: 600px)" type="image/webp" srcset="/images/uat-storyboard-mobile-2.webp" width="864" height="1199" />
+          <source media="(max-width: 600px)" srcset="/images/uat-storyboard-mobile-2.jpg" width="864" height="1199" />
+          <source type="image/webp" srcset="/images/uat-storyboard-2.webp" />
+          <img src="/images/uat-storyboard-2.jpg" width="1280" height="853" alt="A six-panel storyboard: after a deploy, the UAT click-through gets skipped — 'next deploy, I promise'. An agent takes over the clicking in Chrome while the human is three terminals deep, screenshots every step into a filmstrip reviewed in two minutes, and when a cashier asks how to cancel a receipt, the same filmstrip is the documentation." loading="lazy" />
+        </picture>
+      </figure>
 
       <p class="agency-lines">Most user docs are written once and go stale the moment the UI moves. These are built on the spot against the live app, and shaped around the person who asked. The walkthrough is never out of date because it's never written in advance.</p>
 

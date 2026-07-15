@@ -1,0 +1,192 @@
+<meta charset="utf-8">
+<title>Newton card — wide</title>
+<style>
+  @font-face {
+    font-family: "Work Sans";
+    font-weight: 400;
+    src: url("file:///Users/anuj/passport/ajency/static/fonts/work-sans-400-normal-latin.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "Work Sans";
+    font-weight: 700;
+    src: url("file:///Users/anuj/passport/ajency/static/fonts/work-sans-700-normal-latin.woff2") format("woff2");
+  }
+  :root {
+    --paper: #f6f3eb;
+    --ink: #1c1b18;
+    --muted: #55534d;
+    --red: #c8391f;
+    --hl: #f5e04e;
+    --mono: "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 600px; overflow: hidden; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Work Sans", sans-serif;
+    padding: 56px 64px 44px;
+    display: flex;
+    flex-direction: column;
+  }
+  .row { flex: 1; display: flex; align-items: center; gap: 48px; }
+  .left { width: 372px; flex: none; }
+  .kicker {
+    font-family: var(--mono);
+    font-size: 17px;
+    letter-spacing: 0.09em;
+    color: var(--muted);
+  }
+  h1 {
+    margin-top: 24px;
+    font-size: 38px;
+    line-height: 1.3;
+    font-weight: 700;
+    max-width: 15ch;
+  }
+  h1 .hl {
+    background: linear-gradient(transparent 62%, var(--hl) 62%, var(--hl) 94%, transparent 94%);
+  }
+  .diagram { flex: 1; display: flex; align-items: center; justify-content: center; }
+  svg { width: 656px; height: auto; display: block; }
+  .footnote {
+    margin-top: 20px;
+    font-family: var(--mono);
+    font-size: 18px;
+    color: var(--muted);
+  }
+  .footnote b { color: var(--ink); font-weight: 400; }
+
+  text { fill: var(--ink); }
+  .mono  { font-family: var(--mono); font-size: 15px; fill: var(--muted); }
+  .mono-sm { font-family: var(--mono); font-size: 12px; fill: var(--muted); }
+  .mono-red { font-family: var(--mono); font-size: 16px; fill: var(--red); }
+  .stroke { fill: none; stroke: var(--ink); stroke-width: 2.25; stroke-linecap: round; stroke-linejoin: round; }
+  .stroke-thin { fill: none; stroke: var(--ink); stroke-width: 1.5; stroke-linecap: round; }
+  .redline { fill: none; stroke: var(--red); stroke-width: 2.5; stroke-linecap: round; }
+</style>
+
+<div class="row">
+  <div class="left">
+    <div class="kicker">FIG. 01 &mdash; NEWTON&rsquo;S FIRST LAW, UAT&nbsp;EDITION</div>
+    <h1>A product manager at rest stays at rest &mdash; unless acted upon by <span class="hl">an external agent.</span></h1>
+  </div>
+
+  <div class="diagram">
+<svg viewBox="0 0 1040 650" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#c8391f"/>
+    </marker>
+    <filter id="wobble" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.009" numOctaves="2" seed="11" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.4"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#wobble)">
+
+    <!-- ground -->
+    <line class="stroke" x1="30" y1="560" x2="1010" y2="560"/>
+    <g class="stroke-thin" opacity="0.6">
+      <line x1="60"  y1="578" x2="74"  y2="562"/>
+      <line x1="105" y1="578" x2="119" y2="562"/>
+      <line x1="150" y1="578" x2="164" y2="562"/>
+      <line x1="195" y1="578" x2="209" y2="562"/>
+      <line x1="240" y1="578" x2="254" y2="562"/>
+      <line x1="285" y1="578" x2="299" y2="562"/>
+      <line x1="330" y1="578" x2="344" y2="562"/>
+      <line x1="375" y1="578" x2="389" y2="562"/>
+      <line x1="420" y1="578" x2="434" y2="562"/>
+      <line x1="660" y1="578" x2="674" y2="562"/>
+      <line x1="705" y1="578" x2="719" y2="562"/>
+      <line x1="750" y1="578" x2="764" y2="562"/>
+      <line x1="795" y1="578" x2="809" y2="562"/>
+      <line x1="840" y1="578" x2="854" y2="562"/>
+      <line x1="885" y1="578" x2="899" y2="562"/>
+      <line x1="930" y1="578" x2="944" y2="562"/>
+      <line x1="975" y1="578" x2="989" y2="562"/>
+    </g>
+
+    <!-- ===== left: PM seated at the desk, upright & easy ===== -->
+    <!-- chair -->
+    <path class="stroke" d="M96 360 L96 470"/>
+    <path class="stroke" d="M96 468 L188 468"/>
+    <path class="stroke" d="M112 468 L112 558"/>
+    <path class="stroke" d="M176 468 L176 558"/>
+
+    <!-- person -->
+    <circle class="stroke" cx="152" cy="326" r="22"/>
+    <path class="stroke" d="M146 350 C138 384 133 424 132 466"/>
+    <path class="stroke" d="M132 466 L204 462"/>
+    <path class="stroke" d="M204 462 L208 556"/>
+    <path class="stroke" d="M208 556 L230 556"/>
+    <path class="stroke" d="M144 384 C168 404 196 416 236 420"/>
+
+    <!-- desk -->
+    <path class="stroke" d="M232 428 L448 428"/>
+    <path class="stroke" d="M246 428 L246 558"/>
+    <path class="stroke" d="M434 428 L434 558"/>
+
+    <!-- coffee on desk -->
+    <path class="stroke" d="M268 400 L294 400 L291 424 L271 424 Z"/>
+    <path class="stroke" d="M294 405 C304 405 304 417 293 417"/>
+    <path class="stroke-thin" d="M277 392 C275 386 279 384 277 378" opacity="0.7"/>
+    <path class="stroke-thin" d="M286 392 C284 386 288 384 286 378" opacity="0.7"/>
+
+    <!-- sticky note: the chore being avoided -->
+    <g transform="rotate(-5 400 330)">
+      <rect class="stroke" x="352" y="288" width="98" height="86" fill="#f6f3eb"/>
+    </g>
+
+    <!-- untouched mouse beside the desk -->
+    <path class="stroke" d="M520 520 C520 506 546 506 546 520 L546 540 C546 554 520 554 520 540 Z"/>
+    <line class="stroke-thin" x1="533" y1="510" x2="533" y2="522"/>
+
+    <!-- ===== right: the browser, being clicked through ===== -->
+    <rect class="stroke" x="640" y="218" width="370" height="322" fill="#f6f3eb"/>
+    <line class="stroke" x1="640" y1="252" x2="1010" y2="252"/>
+    <circle class="stroke-thin" cx="660" cy="235" r="5"/>
+    <circle class="stroke-thin" cx="678" cy="235" r="5"/>
+
+    <rect class="stroke-thin" x="676" y="286" width="250" height="36"/>
+    <rect class="stroke-thin" x="676" y="344" width="250" height="36"/>
+    <rect class="stroke-thin" x="676" y="402" width="298" height="36"/>
+    <rect x="676" y="460" width="104" height="38" fill="#1c1b18"/>
+  </g>
+
+  <!-- force vector: bypasses the body entirely -->
+  <path class="redline" d="M200 128 C420 74 566 118 670 286" stroke-dasharray="9 8" marker-end="url(#arrow-red)"/>
+
+  <g>
+    <rect x="60" y="106" width="140" height="46" fill="none" stroke="#c8391f" stroke-width="2"/>
+    <text class="mono-red" x="80" y="135">AGENT</text>
+  </g>
+  <text class="mono-red" x="390" y="66">F = the agent I built</text>
+
+  <!-- click path inside the browser -->
+  <g stroke="#c8391f" stroke-width="2" stroke-dasharray="2 6" fill="none" stroke-linecap="round">
+    <path d="M700 304 C720 330 700 344 716 360"/>
+    <path d="M716 364 C736 388 712 402 722 418"/>
+    <path d="M722 424 C740 444 714 460 712 470"/>
+  </g>
+  <circle cx="700" cy="304" r="4" fill="none" stroke="#c8391f" stroke-width="2"/>
+  <circle cx="716" cy="362" r="4" fill="none" stroke="#c8391f" stroke-width="2"/>
+  <circle cx="722" cy="420" r="4" fill="none" stroke="#c8391f" stroke-width="2"/>
+  <path d="M712 468 l0 22 l6 -6 l5 10 l5 -3 l-5 -9 l8 -1 z" fill="#c8391f"/>
+
+  <!-- labels -->
+  <text class="mono" x="96" y="614">body at rest (v = 0)</text>
+  <text class="mono-sm" x="514" y="580">(untouched)</text>
+  <g transform="rotate(-5 400 330)">
+    <text class="mono-sm" x="368" y="322" fill="#1c1b18">UAT &mdash;</text>
+    <text class="mono-sm" x="368" y="342" fill="#1c1b18">pending</text>
+  </g>
+  <text class="mono" x="732" y="614">UAT in motion (v &gt; 0)</text>
+  <text class="mono-sm" x="944" y="240" fill="#c8391f">live</text>
+  <circle cx="986" cy="235" r="4" fill="#c8391f"/>
+</svg>
+  </div>
+</div>
+
+<div class="footnote">observed: the body remains at rest. <b>UAT moves anyway.</b></div>
