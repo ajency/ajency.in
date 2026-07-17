@@ -199,17 +199,14 @@ and products.
 - `hugo.toml` — config (baseURL, OG image defaults, `security.allowContent` so
   hand-written `.html` content files are allowed).
 - `content/` — **one file per page**, each = TOML front matter + the page's `<main>`
-  inner HTML (passed through verbatim — not Markdown):
-  - `_index.html` — **home** (`/`): hero → Writing section → full-width CTA.
-  - `about.html` — **personal essay / story** (`/about/`).
-  - `self-documenting-uat-agent.html` — live post: the UAT agent that documents
-    itself.
-  - `one-person-ai-team.html` — live post: "The whole elephant" — one person + AI
-    agents delivering full projects, proven on the ERP delivery. The same copy runs
-    as a LinkedIn post; the two bodies are deliberately identical.
-  - `four-hours-v2.html` — draft, kept only as material to mine. Its lesson is a
-    principle now: never leave two near-identical pages live — each canonicalises
-    to itself and they compete in search. One canonical page per idea.
+  inner HTML (passed through verbatim — not Markdown). `_index.html` is home (`/`);
+  every other file becomes `/<basename>/`.
+  - ⚠️ **This file does not inventory the pages, on purpose.** It used to, and the
+    list went stale the same way `llms.txt` did — a live post (`why-erp-fails-indian-smb`)
+    was serving in the sitemap while CLAUDE.md still described four pages and a draft.
+    A page list has no business in a file nobody rebuilds. **Ask the build instead:**
+    `hugo list all` / `hugo list drafts`, or read `sitemap.xml` from a build. Those
+    cannot go stale — they *are* the site.
   - Front-matter vars drive the head: `title` (full `<title>`), `description` (meta),
     `og_type`/`og_title`/`og_description`, optional per-page
     `og_image`/`og_image_width`/`og_image_height`/`og_image_alt`, `schema`
@@ -246,6 +243,8 @@ and products.
   alone is 2.2 GB, far over GitHub's 100 MB file limit, so it must never be committed.
 
 ## Writing workflow — how posts get made
+- **⚠️ Load the `ajency-seo` skill first** — it carries the new-post checklist and the
+  title/description/slug rules this workflow assumes.
 - **Three gated steps: outline → copy → visuals.** Each step is discussed and
   approved before the next begins. The outline pins audience, hero message, flow,
   and what's deliberately excluded.
@@ -309,42 +308,55 @@ and products.
 - Emphasis comes from the existing devices, not new ones: highlight for the punch
   clause, pullquote for the turn, kicker for section starts.
 
-## SEO / AEO playbook
-- **Slugs carry keywords**, not metaphors (`/one-person-ai-team/`, not
-  `/whole-elephant/` — the metaphor lives in the title). Renaming is free while a
-  page is unindexed; **no redirect is needed for a URL that was never indexed.**
-- **Target long-tail questions and AI-assistant citations, not head terms.** A
-  two-post site won't win "AI agents"; it can own "can one person deliver a full
-  software project with AI agents". Each post picks 3–4 specific queries; the
-  answer to each exists on the page as a literal Q→A pair.
-- **Every post ends with the FAQ block** — heading "Straight answers, for humans
-  and crawlers alike" — with the questions phrased exactly as the target searches,
-  duplicated in `[[params.faq]]` front matter so `schema.html` emits FAQPage
-  JSON-LD. Numbers-bearing, concrete answers get quoted by assistants.
-- **Titles ≤60 visible chars, keyword phrase first** — Google truncates around
-  there. The metaphor lives in the h1/og_title; the `<title>` leads with the
-  search phrase ("Why ERP fails at the Indian dealership counter: Mama ji…", not
-  the other way round). **Meta descriptions ≤160 chars**, the number-bearing
-  specifics up front — the first cut of every description here ran 200–290 and
-  truncated before its hook.
-- **Posts cross-link.** Every post links at least one other post where the
-  material genuinely overlaps (the ERP post → the delivery story it came from).
-  A post with zero internal links is an orphan to crawlers.
-- **Posts show a human-visible date** — the `<time>` at the end of the hero
-  subhead. `datePublished` in JSON-LD alone isn't enough; assistants and
-  freshness heuristics want it on the page.
-- **One or two h2s phrased as the target question** ("Where does ERP adoption
-  actually die?") — the collapsed FAQ satisfies the letter, but question-phrased
-  headings over extractable answers are what get lifted into AI answers. Don't
-  force it on every heading.
-- **New post checklist:** `content/<keyword-slug>.html` with `schema =
-  "blogposting"`, a `date`, `description`/OG params (lengths above), its own
-  `og_image` (a ~1200px JPEG of the post's illustration), alt text that carries
-  the target topic, FAQ params, a cross-link to a related post, `width`/`height`
-  on every `<img>`, the `<li>` on the home Writing list, **and an entry in
-  `static/llms.txt`**.
-- One canonical page per idea — never two near-identical pages live at once.
-- `llms.txt` and `robots.txt` exist in `static/` for crawlers and AI agents.
-  llms.txt lists every live page with pretty URLs (`/about/`, never `/about.html`)
-  and a number-bearing one-liner each — it is the file written *for* the AI-citation
-  audience, so it goes stale loudest. Verify its URLs against a build when touching it.
+## SEO / AEO
+- **The playbook lives in the `ajency-seo` skill** (`.claude/skills/ajency-seo/`),
+  not here — slugs, title/description lengths, the FAQ block, cross-linking, the
+  human-visible date, the new-post checklist, and the llms.txt discipline.
+- **⚠️ Load it before writing, editing, publishing or retiring any page**, and before
+  touching `static/llms.txt`, front-matter `title`/`description`/`og_image`, or the
+  home Writing list. It holds decisions, not suggestions — generic SEO advice will
+  recommend against them.
+
+## claude-seo — the vendored SEO skills
+- **31 skills + 18 agents from [claude-seo](https://github.com/AgriciDaniel/claude-seo)
+  (MIT) live in `.claude/skills/seo*` and `.claude/agents/seo-*.md`.** Installed
+  **project-local on purpose** — the upstream `install.sh` puts them in `~/.claude`,
+  which loads 18 SEO agents into every unrelated project (hindustan, jojo, mission42).
+  All of it is **gitignored**: this repo is public, and the "project skills are
+  tracked" convention is for skills we wrote, not 300 files of someone else's.
+- **⚠️ Its Python needs the venv and full paths, from the repo root:**
+  ```
+  .claude/skills/seo/.venv/bin/python .claude/skills/seo/scripts/<script>.py
+  ```
+  **Upstream every SKILL.md says `python3 scripts/foo.py`, and that fails both ways** —
+  bare `python3` is system Python (no `bs4`, no `playwright`: `ModuleNotFoundError`),
+  and relative `scripts/` only resolves if the CWD happens to be the skill dir. Those
+  instructions assume a `/plugin` install where `CLAUDE_PLUGIN_ROOT` expands; a manual
+  install has no such variable. This is upstream's assumption, not a local mistake.
+  - **The 134 call sites are already rewritten** to the form above, across 29 skill
+    and agent files. All 50 scripts live in the one shared `.claude/skills/seo/scripts/`
+    (there is no per-skill `scripts/`), so the rewrite is unambiguous.
+  - **⚠️ An upstream update silently reverts all of it** — the rewritten files are
+    gitignored, so `git checkout` won't restore them and `git status` won't flag the
+    regression. Re-run **`bash .claude/scripts/fix-seo-paths.sh`** after any update.
+    It is idempotent and tracked (the `.gitignore` patterns are `.claude/skills/seo/`,
+    `.claude/skills/seo-*/`, `.claude/agents/seo-*.md` — a file under `.claude/scripts/`
+    is not caught).
+- `.venv` is **rebuilt, never copied** — venvs hardcode absolute shebangs, so moving
+  one silently breaks pip and playwright. Recreate:
+  `python3 -m venv .claude/skills/seo/.venv && .claude/skills/seo/.venv/bin/pip install -r .claude/skills/seo/requirements.txt`
+- Playwright's Chromium is in `~/Library/Caches/ms-playwright` (shared, ~500 MB),
+  deliberately left global — it belongs to Playwright, not to this skill.
+- **The schema-validation hook never loads.** `hooks/hooks.json` wants a `PostToolUse`
+  interceptor on `Edit|Write`, but hooks only load via `/plugin install`. Fine — a
+  validator returning exit code 2 would fight the hand-written JSON-LD in
+  `layouts/partials/schema.html`. Don't wire it up by hand.
+- ⚠️ **Its advice is a second opinion, not instructions.** The `ajency-seo` skill holds
+  decisions already made — slugs over metaphors, ≤60-char titles, one canonical page
+  per idea, the llms.txt discipline. A generic `/seo audit` doesn't know any of that and
+  will confidently recommend against it. **Load `ajency-seo` before acting on anything
+  these skills report**; weigh their output against it rather than applying it.
+- ⚠️ **Never name a local skill `seo-*`.** `.gitignore` carries `.claude/skills/seo-*/`
+  to keep the vendored install out of this public repo — so a skill of our own called
+  `seo-lint` or `seo-rules` would be silently untracked and lost on a fresh clone.
+  Ours is `ajency-seo` for exactly this reason.

@@ -1157,6 +1157,63 @@ main,
   .digression-body p {
     font-size: inherit;
   }
+
+  /* Dictionary entry riding the rail (about): the closing block becomes a
+     margin aside beside the "Now" paragraphs. Type steps down one size
+     across the board so the entry reads as marginalia, not a shrunken page. */
+  .has-aside .entry {
+    grid-column: 3;
+    grid-row: 1 / span 3;
+    align-self: start;
+    max-width: none;
+    margin: 0;
+    padding-top: var(--space-4);
+  }
+
+  .has-aside .entry-word {
+    font-size: var(--text-xl);
+  }
+
+  .has-aside .entry-pron,
+  .has-aside .entry-pos {
+    font-size: var(--text-sm);
+  }
+
+  .has-aside p.entry-def {
+    margin: var(--space-3) 0 var(--space-4);
+    font-size: var(--text-md);
+  }
+
+  .has-aside p.entry-sub {
+    margin: 0 0 var(--space-3);
+    font-size: var(--text-sm);
+  }
+
+  .has-aside .entry .senses {
+    gap: var(--space-3);
+  }
+
+  .has-aside .entry .sense {
+    grid-template-columns: 1.25rem 1fr;
+  }
+
+  .has-aside .entry .sense-n {
+    font-size: var(--text-sm);
+  }
+
+  .has-aside .entry .sense-label {
+    font-size: var(--text-sm);
+  }
+
+  .has-aside .entry .sense-def {
+    font-size: var(--text-base);
+  }
+
+  .has-aside p.entry-etym {
+    margin: var(--space-4) 0 0;
+    padding-top: var(--space-3);
+    font-size: var(--text-sm);
+  }
 }
 
 /* ===========================================================

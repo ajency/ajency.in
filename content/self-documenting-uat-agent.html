@@ -1,5 +1,5 @@
 +++
-title = "A self-documenting UAT agent: walkthroughs that never go stale — Ajency.in"
+title = "Self-documenting UAT agent: walkthroughs that never go stale"
 description = "An agent does the UAT click-through, screenshotting every step — walkthroughs that never go stale, for ~70k tokens at $0 on a local Qwen 3.5 35B."
 date = 2026-06-30
 [params]
@@ -35,9 +35,9 @@ a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snap
     </section>
 
     <article class="essay">
-      <p>UAT is a product person's chore: after a new feature ships, or an old one changes, log in, fill the forms, click through the whole flow (job card, invoice, payment) just to look at it. Not for bugs, since API and browser tests already catch those, but for the subjective pass only a human notices.</p>
+      <p>UAT is a product person's chore: after a new feature ships, or an old one changes, log in &gt; fill the forms &gt; click through the whole flow (job card, invoice, payment) just to look at it. And mind you this is not for bugs, since API and browser tests already catch those, but for the subjective pass only a PM notices.</p>
 
-      <p>And it gets skipped, by me more than anyone: the logging in, the form-filling, the clicking. The inertia wins more often than I'd like to admit, so I spent four hours building an agent to save myself the fifteen minutes.</p>
+      <p>And it gets skipped, by me more than anyone: the logging in, the form-filling, the clicking. Ugh. The inertia wins more often than I'd like to admit, so I spent four hours building an agent to save myself the fifteen minutes :)</p>
 
       <figure class="figure-wide">
         <picture>
@@ -48,13 +48,13 @@ a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snap
         </picture>
       </figure>
 
-      <p>The plan was simple: the agent clicks, I watch the screen. In practice I was running Claude Code sessions in parallel, and &ldquo;watching&rdquo; meant glancing over after the moment had passed. I kept missing steps.</p>
+      <p>The plan was simple: the agent clicks, I watch the screen. But that is theory. In practice I was running Claude Code sessions in parallel, and &ldquo;watching&rdquo; meant glancing over after the moment had passed. I kept missing steps.</p>
 
-      <p>So I got the agent to record a screenshot at every step and stitch them into a journey it hands me at the end of the run. Now I review a filmstrip in two minutes instead of pretending to watch a screen for fifteen.</p>
+      <p>So I got the agent to record a screenshot at every step and stitch them into a journey it hands me at the end of the run. Now I review a filmstrip in two minutes instead of pretending to watch a screen for fifteen. Claude to the rescue again :)</p>
 
       <h2 class="kicker">Self-documenting walkthroughs that never go stale</h2>
 
-      <p>Then the cashiers started asking:</p>
+      <p>Then the <a href="/why-erp-fails-indian-smb/">cashiers at the dealership</a> started asking:</p>
 
       <blockquote>
         <p>How do I cancel an incorrect money receipt?</p>
@@ -71,13 +71,13 @@ a = "Yes. A local Qwen 3.5 35B makes the per-step click decision from a DOM snap
         </picture>
       </figure>
 
-      <p class="agency-lines">Most user docs are written once and go stale the moment the UI moves. These are built on the spot against the live app, and shaped around the person who asked. The walkthrough is never out of date because it's never written in advance.</p>
+      <p class="agency-lines">Most user docs are written once and go stale the moment the UI moves. But now mine are built on the spot against the live app, and shaped around the person who asked. The walkthrough is never out of date or context because it's never written in advance.</p>
 
-      <p class="pullquote">The support tool was an accident. All I wanted was out of UAT.</p>
+      <p class="pullquote">The support tool was a happy accident. All I wanted was to save those 15 mins of UAT and form filling :)</p>
 
       <h2 class="kicker">How much does it cost to run?</h2>
 
-      <p>The obvious worry is the token bill. Only the part that needs judgment runs on the pricey model; everything repeatable is pushed down to things that run for free:</p>
+      <p>The obvious worry is the token bill with an AI agent driving the browser. Only the part that needs judgment runs on the pricey model; everything repeatable is pushed down to things that run for free:</p>
 
       <div class="ascii-flow ascii-flow-split">
 <pre>

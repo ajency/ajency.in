@@ -20,6 +20,16 @@ resources/_gen/
 # Local Netlify folder
 .netlify
 
+# claude-seo (github.com/AgriciDaniel/claude-seo, MIT) — vendored third-party
+# skills + agents, installed project-local so they don't load in every other
+# project under ~/passport. Untracked deliberately: this repo is public, and the
+# "project skills are shared" convention is for skills we wrote, not 300 files of
+# someone else's. Reinstall: bash claude-seo/install.sh, then move seo* here.
+# .venv is a Python venv (absolute shebangs — never relocatable, always rebuild).
+.claude/skills/seo/
+.claude/skills/seo-*/
+.claude/agents/seo-*.md
+
 # Design-sync (claude.ai/design) — staged converter scripts, generated build
 # output, and machine state. The durable inputs (design-system/ source,
 # .design-sync/config.json, NOTES.md, conventions.md, previews/) ARE tracked.

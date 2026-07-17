@@ -1,4 +1,4 @@
-{{ if eq .Params.schema "blogposting" }}
+{{ if or (eq .Params.schema "blogposting") (eq .Params.schema "aboutpage") }}
   <!-- Subscribe + the More-writing rail share one grid row on wide screens
        (same columns as .has-aside); below bp-wide they stack. -->
   <div class="subscribe-row">

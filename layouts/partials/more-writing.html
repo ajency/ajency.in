@@ -1,4 +1,4 @@
-{{ if eq .Params.schema "blogposting" }}
+{{ if or (eq .Params.schema "blogposting") (eq .Params.schema "aboutpage") }}
 {{/* Miniature of the home Writing list, on every post: the other posts
      (never itself), newest first. Meta is the post date; the title comes
      from og_title (the short display title — front-matter `title` is the
