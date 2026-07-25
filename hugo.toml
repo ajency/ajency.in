@@ -7,6 +7,17 @@ title = "Ajency.in"
 enableInlineShortcodes = false
 disableKinds = ["taxonomy", "term"]
 
+# /llms.txt is generated (layouts/index.llms.txt), not a static file — it
+# ranges the same page collection as the sitemap, so it can't fall out of step.
+# Adding LLMS to home's outputs means HTML + RSS must be listed too, or they drop.
+[outputs]
+  home = ["HTML", "RSS", "LLMS"]
+
+[outputFormats.LLMS]
+  mediaType = "text/plain"   # built-in; suffix "txt" → /llms.txt
+  baseName = "llms"
+  isPlainText = true         # text template: no HTML escaping
+
 [markup.goldmark.renderer]
   unsafe = true  # harmless here (content is .html, passed through verbatim)
 

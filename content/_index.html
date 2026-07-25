@@ -6,6 +6,9 @@ og_type = "website"
 og_title = "Independent builder in pursuit of agency."
 og_description = "Anuj Khurana, an independent builder in pursuit of agency. Helping small teams deliver what a much larger team would, with AI agents and rethought workflows."
 schema = "website"
+[params.llms]
+label = "Home"
+summary = "Who Anuj is and what he does — helping small teams deliver what a much larger team would, with AI agents and rethought workflows."
 +++
     <section class="hero">
       <h1>Independent builder in pursuit of agency.</h1>
@@ -22,27 +25,7 @@ schema = "website"
 
       <div class="writing-row">
       <ul class="post-list">
-        <li class="post">
-          <a href="/why-erp-fails-indian-smb/">
-            <span class="post-meta">2026 &middot; Building for Bharat</span>
-            <span class="post-title">Mama ji is not a discrepancy</span>
-            <span class="post-dek">The day's cash goes home with a man everyone trusts, and software has one word for it: discrepancy. Notes from a &#8377;500-crore-plus dealership's cash counters.</span>
-          </a>
-        </li>
-        <li class="post">
-          <a href="/one-person-ai-team/">
-            <span class="post-meta">2026 &middot; AI Agents</span>
-            <span class="post-title">The whole elephant</span>
-            <span class="post-dek">A project that used to take a team of specialists, each holding one part of the elephant, delivered end to end by one person and a bench of AI agents.</span>
-          </a>
-        </li>
-        <li class="post">
-          <a href="/self-documenting-uat-agent/">
-            <span class="post-meta">2026 &middot; AI Agents</span>
-            <span class="post-title">UAT has an inertia problem</span>
-            <span class="post-dek">I automated the click-through I kept skipping. It turned into an agent that documents itself and answers support questions, for almost no tokens.</span>
-          </a>
-        </li>
+        {{< writing-list >}}
       </ul>
 
       <!-- Desktop-only compact CTA in the margin column; below the wide

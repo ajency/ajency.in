@@ -1,0 +1,15 @@
+{{- /* Home Writing list, generated from the posts (schema = "blogposting"),
+     newest first — the same source as more-writing.html, the 404 list, RSS and
+     the sitemap. Adding or drafting a post updates this list with no hand-edit.
+     Title from og_title (period trimmed), as more-writing does; the card meta and
+     dek come from front-matter `category`/`dek`. Build fails if either is unset. */ -}}
+{{- range (where site.RegularPages "Params.schema" "blogposting").ByDate.Reverse }}
+{{- if or (not .Params.category) (not .Params.dek) }}{{ errorf "%s is missing params.category/dek (required for the home Writing list)" .File.Path }}{{ end }}
+        <li class="post">
+          <a href="{{ .RelPermalink }}">
+            <span class="post-meta">{{ .Date.Format "2006" }} &middot; {{ .Params.category }}</span>
+            <span class="post-title">{{ strings.TrimSuffix "." .Params.og_title }}</span>
+            <span class="post-dek">{{ .Params.dek | safeHTML }}</span>
+          </a>
+        </li>
+{{- end }}

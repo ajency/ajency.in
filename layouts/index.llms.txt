@@ -1,0 +1,31 @@
+# Ajency.in
+
+> Ajency.in is the personal site of Anuj Khurana — an independent builder based in
+> Goa, India, working with early-stage startups through listed enterprises on AI
+> agents, automation, and products. He founded the Ajency.in studio in 2012, grew it
+> to ~50 people, and it was acquired by Turtlemint in 2022; he now works solo,
+> delivering full projects with a bench of AI agents. There is no product, login,
+> or API here; it is a personal/professional site.
+
+## Pages
+- [{{ .Site.Home.Params.llms.label }}]({{ .Site.Home.Permalink }}): {{ .Site.Home.Params.llms.summary }}
+{{- range (where .Site.RegularPages "Params.schema" "ne" "blogposting").ByWeight }}
+{{- if or (not .Params.llms) (not .Params.llms.label) (not .Params.llms.summary) }}{{ errorf "%s is missing params.llms.label/summary (required for llms.txt)" .File.Path }}{{ end }}
+- [{{ .Params.llms.label }}]({{ .Permalink }}): {{ .Params.llms.summary }}
+{{- end }}
+
+## Writing
+{{- range (where .Site.RegularPages "Params.schema" "blogposting").ByDate.Reverse }}
+{{- if or (not .Params.llms) (not .Params.llms.label) (not .Params.llms.summary) }}{{ errorf "%s is missing params.llms.label/summary (required for llms.txt)" .File.Path }}{{ end }}
+- [{{ .Params.llms.label }}]({{ .Permalink }}): {{ .Params.llms.summary }}
+{{- end }}
+
+## Contact
+- Email (best): talktous@ajency.in
+- LinkedIn: https://www.linkedin.com/in/anujkhurana/
+- Location: Panjim, Goa, India
+
+## For agents
+- Topics of interest: AI agents and autonomy, product, design, automation.
+- Also happy to chat about bike trips and cocktails.
+- Reach out by email rather than any form.
