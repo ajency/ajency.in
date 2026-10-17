@@ -33,6 +33,10 @@
 /og-image.png
   Cache-Control: public, max-age=86400
 
+# Client proposals are encrypted, unlisted, and must never be indexed.
+/proposals/*
+  X-Robots-Tag: noindex, nofollow
+
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin

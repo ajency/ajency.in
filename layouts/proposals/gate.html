@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {{/* StatiCrypt's password screen, in the site's own type and header.
+       Standalone on purpose: no head.html (its canonical and OG tags would
+       describe this template, not the proposal) and no footer.html, whose
+       GoatCounter would count the password screen as a visit — counting
+       happens inside the encrypted page, once it's open.
+       StatiCrypt finds the form by its ids; the logic is spliced into
+       #staticrypt-script by publish.sh (scripts/staticrypt-gate.js), because
+       Hugo's minifier would strip StatiCrypt's placeholder comments. */}}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ .Title }}</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="preload" href="/fonts/work-sans-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/work-sans-700-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
+  {{ $css := resources.Get "css/style.css" | minify | fingerprint "sha256" }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" crossorigin="anonymous" />
+  {{ $pcss := resources.Get "css/proposal.css" | minify | fingerprint "sha256" }}
+  <link rel="stylesheet" href="{{ $pcss.RelPermalink }}" integrity="{{ $pcss.Data.Integrity }}" crossorigin="anonymous" />
+</head>
+<body>
+{{ partial "header.html" . }}
+
+  <main class="gate">
+    <div id="staticrypt_loading"></div>
+    <div id="staticrypt_content" class="hidden">
+      <h1 class="gate-title">This page is private.</h1>
+      <p class="gate-line">Enter the password you were sent.</p>
+      <form id="staticrypt-form" class="subscribe-form" action="#" method="post">
+        <input id="staticrypt-password" class="subscribe-email" type="password" name="password"
+               placeholder="Password" aria-label="Password" autocomplete="current-password" autofocus />
+        <button type="submit" class="subscribe-btn">Open</button>
+      </form>
+      <p id="staticrypt-error" class="gate-error hidden" role="alert">That password didn't work. Check it and try again.</p>
+      <label id="staticrypt-remember-label" class="gate-remember hidden">
+        <input id="staticrypt-remember" type="checkbox" name="remember" />
+        Remember me on this device
+      </label>
+    </div>
+  </main>
+
+  <script id="staticrypt-script"></script>
+</body>
+</html>

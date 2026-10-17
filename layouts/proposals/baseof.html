@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+{{ partial "head.html" . }}
+  {{/* Proposals: never indexed (also set as X-Robots-Tag in static/_headers).
+       The pages are encrypted after the build, so this head is only seen once
+       the password is entered — it's belt and braces, not the protection. */}}
+  <meta name="robots" content="noindex, nofollow" />
+
+  {{/* Components the site lacks, on top of style.css. Kept out of style.css
+       because no public page needs them. A client's one-off visuals go in
+       assets/css/proposals/<client>.css, named by `extra_css` in front matter. */}}
+  {{ $pcss := resources.Get "css/proposal.css" | minify | fingerprint "sha256" }}
+  <link rel="stylesheet" href="{{ $pcss.RelPermalink }}" integrity="{{ $pcss.Data.Integrity }}" crossorigin="anonymous" />
+  {{ with .Params.extra_css }}
+  {{ $xcss := resources.Get . | minify | fingerprint "sha256" }}
+  <link rel="stylesheet" href="{{ $xcss.RelPermalink }}" integrity="{{ $xcss.Data.Integrity }}" crossorigin="anonymous" />
+  {{ end }}
+
+  {{/* Client data a page's script reads (`inline_js` in front matter), inlined
+       rather than linked: StatiCrypt encrypts HTML only, so a linked .js would
+       be published in the clear. publish.sh refuses to deploy one. */}}
+  {{ range .Params.inline_js }}
+  <script>{{ (resources.Get .).Content | safeJS }}</script>
+  {{ end }}
+</head>
+<body>
+{{/* Every proposal, deck or page, opens under the site header. No CTA or FAQ
+     on any proposal: those are lead-gen, and the reader is already a client. */}}
+{{ partial "header.html" . }}
+
+  <main class="{{ if .Params.deck }}deck{{ else }}prop-doc{{ end }}">
+{{ block "main" . }}{{ end }}
+  </main>
+
+{{ partial "footer.html" . }}
+</body>
+</html>

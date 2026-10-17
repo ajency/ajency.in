@@ -16,9 +16,35 @@ and products.
   publish decision:**
   - Commit freely; **batch pushes** (target: every 2–3 days, or when a piece of
     work is done).
-  - **Publish** = `rm -rf public && hugo --gc --minify && netlify deploy --prod
-    --dir public` (the CLI is logged in and linked to the `ajency` project;
-    `rm -rf public` first because Hugo doesn't prune stale files).
+  - **Publish** = `scripts/publish.sh` — `rm -rf public` → `hugo --gc --minify` →
+    encrypt the client proposals → verify → `netlify deploy --prod --dir public`
+    (the CLI is logged in and linked to the `ajency` project). `--no-deploy` stops
+    before the upload. ⚠️ **Never run the bare `hugo` + `netlify deploy` pair
+    any more** — it would publish the proposals in plaintext.
+  - **Client proposals** live at `/proposals/<client>/`, password-protected by
+    StatiCrypt (client-side AES; Netlify's password protection isn't on the Free
+    plan). Content (`content/proposals/`), per-client CSS/JS/assets
+    (`assets/css/proposals/`, `assets/js/proposals/`, `static/proposals/`) and
+    `private/` are **gitignored** — this repo is public — so only this machine can
+    deploy them; a deploy from a fresh clone silently drops every proposal.
+    - `layouts/proposals/` + `assets/css/proposal.css` are the tracked, generic part.
+      `content/proposals/_index.html` keeps the section out of every list, the
+      sitemap, RSS and llms.txt, and `/proposals/` itself 404s.
+    - **Only HTML is encrypted.** Client data a page's script needs goes inline
+      via `inline_js` in front matter, never as a linked `.js`/`.json`;
+      `publish.sh` refuses to deploy any non-HTML file type that could carry
+      content, and any page without StatiCrypt's marker.
+    - Password per client, 16+ chars, via `STATICRYPT_PASSWORD_<SLUG>` or the
+      prompt. **Same password every redeploy** — the key also uses the salt in
+      `private/.staticrypt-<slug>.json`, and a new password logs the client out.
+    - GoatCounter runs inside the encrypted page, so a pageview means the client
+      got past the password.
+    - The password screen is a Hugo page in the site's design
+      (`content/staticrypt-gate.html` + `layouts/proposals/gate.html`, styles under
+      "Gate" in `proposal.css`). `publish.sh` splices `scripts/staticrypt-gate.js`
+      into it unminified, uses it as StatiCrypt's template, and deletes it from
+      `public/`. ⚠ Bumping StatiCrypt means re-checking that JS against the new
+      version's `lib/password_template.html`.
   - `netlify api listSiteDeploys …` shows deploy states if something looks off.
   - `netlify.toml` pins `HUGO_VERSION`; keep it in step with local `hugo version`.
   - `public/` is **gitignored**.

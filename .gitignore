@@ -41,3 +41,14 @@ ds-bundle/
 design-system/node_modules/
 design-system/dist/
 design-system/styles/
+
+# Client proposals (/proposals/<client>/). Content, per-client CSS and assets
+# stay out of git: this repo is public. Only the generic pieces are tracked —
+# layouts/proposals/, assets/css/proposal.css, scripts/publish.sh. The pages are
+# encrypted after the Hugo build (scripts/publish.sh); deploys from this machine
+# carry them. private/ holds notes that name clients.
+private/
+content/proposals/
+assets/css/proposals/
+assets/js/proposals/
+static/proposals/

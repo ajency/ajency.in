@@ -1,0 +1,13 @@
++++
+title = "Private document · Ajency"
+# The password screen in front of every client proposal. Not a page: publish.sh
+# renders it, uses it as StatiCrypt's template, then deletes it from public/.
+# Kept out of every list, the sitemap and RSS in case a preview renders it.
+type = "proposals"
+layout = "gate"
+outputs = ["HTML"]
+[build]
+  list = "never"
+[sitemap]
+  disable = true
++++
