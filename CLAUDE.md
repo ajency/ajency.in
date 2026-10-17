@@ -20,7 +20,11 @@ and products.
     encrypt the client proposals → verify → `netlify deploy --prod --dir public`
     (the CLI is logged in and linked to the `ajency` project). `--no-deploy` stops
     before the upload. ⚠️ **Never run the bare `hugo` + `netlify deploy` pair
-    any more** — it would publish the proposals in plaintext.
+    any more** — it would publish the proposals in plaintext. Same for a
+    `netlify deploy` without `--no-build`: the CLI re-runs `netlify.toml`'s build
+    over the encrypted `public/` (it did once, live ~46 s). The script uploads
+    with `--no-build`, then fetches every live proposal page and, if any isn't
+    the password screen, restores the previous deploy and deletes the new one.
   - **Client proposals** live at `/proposals/<client>/`, password-protected by
     StatiCrypt (client-side AES; Netlify's password protection isn't on the Free
     plan). Content (`content/proposals/`), per-client CSS/JS/assets

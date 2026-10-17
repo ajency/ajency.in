@@ -75,8 +75,40 @@ if [ -d public/proposals ]; then
   echo "verified: public/proposals/ is encrypted and unlisted"
 fi
 
-if [ "$deploy" = 1 ]; then
-  netlify deploy --prod --dir public
-else
-  echo "built, not deployed (--no-deploy)"
+[ "$deploy" = 1 ] || { echo "built, not deployed (--no-deploy)"; exit 0; }
+
+# ⚠ --no-build is load-bearing. Without it the CLI re-runs netlify.toml's build
+# command, which rebuilds public/ over the encrypted pages and ships them in
+# plaintext. That happened once (17 Oct 2026): live for ~46 s, then rolled back.
+site="$(python3 -c 'import json; print(json.load(open(".netlify/state.json"))["siteId"])')"
+prev="$(netlify api getSite --data "{\"site_id\":\"$site\"}" \
+  | python3 -c 'import json,sys; print(json.load(sys.stdin)["published_deploy"]["id"])')"
+out="$(mktemp)"
+netlify deploy --prod --dir public --no-build --json > "$out"
+# Never let a parse failure skip the live check below: the upload already happened.
+new="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["deploy_id"])' "$out" 2>/dev/null || true)"
+echo "deployed ${new:-<unknown id, see $out>} (previous: $prev)"
+
+# Check what is actually live, not what we meant to upload. Any proposal page
+# that isn't StatiCrypt's gate → restore the previous deploy and delete this one
+# (its own --ajency.netlify.app link would keep serving the plaintext).
+live_ok=1
+while IFS= read -r f; do
+  path="/${f#public/}"; path="${path%index.html}"
+  body="$(curl -fsS "https://ajency.in$path?v=$RANDOM")" || { echo "unreachable: $path" >&2; live_ok=0; continue; }
+  if ! grep -q staticrypt <<<"$body" || grep -o "<main[^>]*>" <<<"$body" | grep -qv "^<main class=gate>$"; then
+    echo "NOT ENCRYPTED LIVE: $path" >&2; live_ok=0
+  fi
+done < <(find public/proposals -name index.html 2>/dev/null)
+
+if [ "$live_ok" = 0 ]; then
+  netlify api restoreSiteDeploy --data "{\"site_id\":\"$site\",\"deploy_id\":\"$prev\"}" >/dev/null
+  if [ -n "$new" ]; then
+    netlify api deleteDeploy --data "{\"deploy_id\":\"$new\"}" >/dev/null
+    echo "ROLLED BACK to $prev and deleted $new" >&2
+  else
+    echo "ROLLED BACK to $prev. DELETE THE NEW DEPLOY BY HAND (id in $out)" >&2
+  fi
+  exit 1
 fi
+echo "live check passed: every /proposals/ page is behind the password"
